@@ -63,7 +63,7 @@ svg{display:block}
 /* ---------- Cabeçalho (celular) ---------- */
 #topbar{position:sticky;top:0;background:var(--bg);border-bottom:2px solid var(--line);z-index:40;transition:background .25s}
 #topbar .tb-in{max-width:640px;margin:0 auto;padding:0 16px;height:62px;display:flex;align-items:center;gap:10px}
-.logo-wrap{display:flex;align-items:center;gap:8px;min-width:0}
+.logo-wrap{display:flex;align-items:center;gap:8px;min-width:0;user-select:none;-webkit-user-select:none}
 .logo-img{height:36px;max-width:120px;object-fit:contain;border-radius:8px;flex:none}
 .logo-name{font-weight:900;font-size:23px;color:var(--p1);letter-spacing:-.5px;white-space:nowrap}
 .tb-stats{margin-left:auto;display:flex;gap:14px;align-items:center}
@@ -939,6 +939,166 @@ const LESSONS = [
   {t:'riddle',cat:'Enigmas',q:'Tenho 88 teclas, mas não abro nenhuma porta. O que sou?',o:['O piano','O mapa','O relógio','O teclado'],a:0,h:'Pense em música, não em casas.',x:'O piano tem 88 teclas — e nenhuma porta para abrir!'},
   {t:'riddle',cat:'Enigmas',q:'O pai do pai do pai de Pedro é o seu…',o:['Bisavô','Avô','Tio-avô','Trisavô'],a:0,h:'Vá subindo geração por geração.',x:'Pai do pai = avô. Pai do avô = bisavô. Pedro é bisneto dele.'},
 ]},
+{ id:'extra1', mod:'pat', d:4, title:'Padrões em camadas', desc:'Duas regras acontecendo ao mesmo tempo',
+  ex:[
+  {t:'seq',cat:'Padrões',v:seqHTML(['2','4','8','16','?']),q:'Complete o padrão.',o:['20','24','32','36'],a:2,h:'Teste multiplicar por 2.',x:'Cada termo dobra: 16 × 2 = 32.'},
+  {t:'mc',cat:'Padrões',q:'Qual símbolo vem depois: A, B, A, C, A, D, A, …?',o:['A','B','C','E'],a:3,h:'Separe as posições pares das ímpares.',x:'A ocupa as posições ímpares; as letras B, C, D avançam nas pares. Depois de D vem E.'},
+  {t:'tf',cat:'Padrões',q:'Na sequência 1, 4, 9, 16, a diferença entre os termos aumenta de 2 em 2.',a:true,h:'Calcule os saltos: +3, +5, +7.',x:'Os saltos são números ímpares consecutivos: 3, 5 e 7. Verdadeiro!'},
+  {t:'match',cat:'Padrões',q:'Associe o padrão à sua regra.',pairs:[['2, 4, 6','Soma 2'],['3, 6, 12','Dobra'],['5, 10, 15','Soma 5']],h:'Compare um termo com o seguinte.',x:'Os saltos ou multiplicadores revelam a regra de cada sequência.'},
+  {t:'riddle',cat:'Padrões',q:'Tenho 4 lados iguais, mas não sou necessariamente um quadrado. O que posso ser?',o:['Um losango','Um círculo','Um triângulo','Uma esfera'],a:0,h:'Pense em outra figura com quatro lados.',x:'Um losango tem quatro lados iguais; o quadrado é apenas um caso especial.'},
+ ]},
+{ id:'extra2', mod:'seq', d:4, title:'Números alternados', desc:'Regras que trocam a cada passo',
+  ex:[
+  {t:'seq',cat:'Sequências',v:seqHTML(['2','5','10','13','26','?']),q:'Qual é o próximo número?',o:['29','39','52','54'],a:0,h:'Os passos alternam +3 e ×2.',x:'26 + 3 = 29.'},
+  {t:'mc',cat:'Sequências',q:'Qual continua: 100, 90, 81, 73, …?',o:['66','64','65','63'],a:0,h:'Os descontos são 10, 9, 8…',x:'Subtraímos 10, depois 9, depois 8. Agora subtraímos 7: 73 − 7 = 66.'},
+  {t:'tf',cat:'Sequências',q:'Na sequência 1, 2, 6, 24, cada termo é multiplicado pela posição seguinte.',a:true,h:'1×2, 2×3, 6×4.',x:'O próximo fator aumenta: 1×2, 2×3, 6×4. Verdadeiro!'},
+  {t:'order',cat:'Sequências',q:'Ordene os valores do menor para o maior.',items:['0,25','0,5','0,75'],h:'Compare as partes de um inteiro.',x:'Um quarto, metade e três quartos: 0,25 → 0,5 → 0,75.'},
+  {t:'riddle',cat:'Sequências',q:'Qual número falta: 2, 6, 12, 20, 30, …?',o:['36','40','42','44'],a:2,h:'Observe os produtos: 1×2, 2×3, 3×4…',x:'O próximo é 6×7 = 42.'},
+ ]},
+{ id:'extra3', mod:'cls', d:4, title:'Classificação relâmpago', desc:'Encontre propriedades escondidas',
+  ex:[
+  {t:'mc',cat:'Classificação',q:'Qual é o intruso: 8, 16, 24, 31, 40?',o:['8','16','31','40'],a:2,h:'Quatro números são divisíveis por 8.',x:'8, 16, 24 e 40 são múltiplos de 8. 31 é o intruso.'},
+  {t:'tf',cat:'Classificação',q:'Todo quadrado é também um retângulo.',a:true,h:'Compare as definições: quatro ângulos retos.',x:'O quadrado possui quatro ângulos retos, portanto pertence ao conjunto dos retângulos.'},
+  {t:'match',cat:'Classificação',q:'Associe cada objeto ao material mais provável.',pairs:[['Janela','Vidro'],['Panela','Metal'],['Caderno','Papel']],h:'Pense no uso cotidiano.',x:'Vidro, metal e papel são os materiais mais associados a esses objetos.'},
+  {t:'mc',cat:'Classificação',q:'Qual palavra pertence ao grupo: correr, saltar, nadar?',o:['Azul','Nadar','Mesa','Doce'],a:1,h:'Qual opção também é uma ação corporal?',x:'Nadar é uma atividade, assim como correr e saltar.'},
+  {t:'seq',cat:'Classificação',v:seqHTML(['2','3','5','7','11','?']),q:'Qual primo vem depois?',o:['12','13','14','15'],a:1,h:'Procure um número divisível apenas por 1 e por ele mesmo.',x:'Depois de 11 vem 13; 12, 14 e 15 não são primos.'},
+ ]},
+{ id:'extra4', mod:'ded', d:4, title:'Pistas cruzadas', desc:'Elimine possibilidades com atenção',
+  ex:[
+  {t:'mc',cat:'Dedução',q:'O número é menor que 20, maior que 10 e múltiplo de 3. Qual opção serve?',o:['9','12','20','22'],a:1,h:'Aplique as três pistas.',x:'12 é maior que 10, menor que 20 e divisível por 3.'},
+  {t:'tf',cat:'Dedução',q:'Se Ana está à esquerda de Bia e Bia está à esquerda de Caio, Ana está à esquerda de Caio.',a:true,h:'Encadeie as duas posições.',x:'A relação de ordem é transitiva: Ana → Bia → Caio.'},
+  {t:'match',cat:'Dedução',q:'Associe a pista à conclusão.',pairs:[['Não é par','É ímpar'],['Maior que 5','Pode ser 6'],['Múltiplo de 10','Termina em 0']],h:'Transforme cada frase em uma regra.',x:'Cada pista reduz as possibilidades de forma diferente.'},
+  {t:'order',cat:'Dedução',q:'Organize as pessoas sabendo que Bia veio antes de Caio e Ana antes de Bia.',items:['Ana','Bia','Caio'],h:'Comece por quem vem antes de todos.',x:'As pistas formam Ana → Bia → Caio.'},
+  {t:'riddle',cat:'Dedução',q:'Três irmãos têm idades consecutivas e somam 36. Qual a idade do irmão do meio?',o:['10','11','12','13'],a:2,h:'Chame a idade do meio de x.',x:'As idades são x−1, x e x+1. A soma é 3x = 36, então x = 12.'},
+ ]},
+{ id:'extra5', mod:'ord', d:4, title:'Ordem e tempo', desc:'Sequências de eventos do cotidiano',
+  ex:[
+  {t:'order',cat:'Ordenação',q:'Organize o caminho de uma mensagem.',items:['Escrever','Enviar','Receber'],h:'O que acontece antes do envio?',x:'Primeiro escrevemos, depois enviamos e então alguém recebe.'},
+  {t:'mc',cat:'Ordenação',q:'Lia chegou depois de Bia, mas antes de Caio. Quem chegou primeiro?',o:['Lia','Bia','Caio','Não dá para saber'],a:1,h:'Monte a fila completa.',x:'Bia → Lia → Caio. Bia chegou primeiro.'},
+  {t:'tf',cat:'Ordenação',q:'Se janeiro vem antes de março, fevereiro pode estar entre os dois.',a:true,h:'Lembre da ordem dos meses.',x:'A sequência é janeiro, fevereiro, março. Verdadeiro!'},
+  {t:'match',cat:'Ordenação',q:'Associe a etapa à posição correta.',pairs:[['Semente','Antes do broto'],['Broto','Antes da flor'],['Flor','Depois do broto']],h:'Pense no crescimento de uma planta.',x:'As etapas seguem uma cadeia temporal: semente, broto e flor.'},
+  {t:'riddle',cat:'Ordenação',q:'Se ontem foi domingo, que dia será amanhã?',o:['Segunda','Terça','Quarta','Sábado'],a:1,h:'Hoje é segunda-feira.',x:'Se ontem foi domingo, hoje é segunda e amanhã será terça.'},
+ ]},
+{ id:'extra6', mod:'log', d:4, title:'Lógica do cotidiano', desc:'Proposições em situações reais',
+  ex:[
+  {t:'tf',cat:'Lógica',q:'A frase "Feche a janela!" é uma proposição.',a:false,h:'Ela pode ser verdadeira ou falsa?',x:'É uma ordem, não uma afirmação com valor de verdade. Portanto não é proposição.'},
+  {t:'mc',cat:'Lógica',q:'Se p é verdadeira e q é falsa, qual é o valor de "p OU q"?',o:['Verdadeiro','Falso','Impossível saber','Nenhuma'],a:0,h:'O OU precisa de apenas uma parte verdadeira.',x:'V OU F = V.'},
+  {t:'match',cat:'Lógica',q:'Associe o operador à regra.',pairs:[['E','As duas partes'],['OU','Pelo menos uma'],['NÃO','Inverte']],h:'Pense nas tabelas-verdade.',x:'Cada operador combina ou transforma valores de um jeito específico.'},
+  {t:'mc',cat:'Lógica',q:'A negação de "p é verdadeiro" é:',o:['p é falso','p é maior','p é igual','p é impossível'],a:0,h:'NÃO troca verdadeiro por falso.',x:'A negação de uma afirmação verdadeira é que ela é falsa.'},
+  {t:'riddle',cat:'Lógica',q:'Se todos os zogs são azuis e Luma é um zog, o que sabemos?',o:['Luma é azul','Luma é vermelha','Luma não existe','Nada'],a:0,h:'Use a regra universal no caso de Luma.',x:'Como todo zog é azul e Luma é zog, Luma é azul.'},
+ ]},
+{ id:'extra7', mod:'eni', d:4, title:'Enigmas de bolso', desc:'Pequenas charadas, grandes viradas',
+  ex:[
+  {t:'riddle',cat:'Enigmas',q:'O que tem dentes mas não morde?',o:['Um pente','Um cachorro','Uma faca','Um peixe'],a:0,h:'Pense em algo usado no cabelo.',x:'O pente tem dentes, mas não morde.'},
+  {t:'mc',cat:'Enigmas',q:'Um número somado a ele mesmo dá 18. Qual é o número?',o:['6','8','9','12'],a:2,h:'Divida a soma em duas partes iguais.',x:'18 ÷ 2 = 9.'},
+  {t:'tf',cat:'Enigmas',q:'Uma semana tem exatamente 7 dias.',a:true,h:'É uma informação básica do calendário.',x:'De segunda a domingo, contamos sete dias. Verdadeiro!'},
+  {t:'match',cat:'Enigmas',q:'Associe a charada à resposta.',pairs:[['Tem teclas e faz música','Piano'],['Tem páginas e conta histórias','Livro'],['Tem ponteiros e marca horas','Relógio']],h:'Use as pistas mais concretas.',x:'Cada objeto é identificado pela função descrita.'},
+  {t:'riddle',cat:'Enigmas',q:'Quanto mais eu trabalho, menor eu fico. O que sou?',o:['Uma vela','Uma montanha','Uma janela','Uma pedra'],a:0,h:'Pense em algo que se consome enquanto funciona.',x:'A vela diminui enquanto queima.'},
+ ]},
+{ id:'extra8', mod:'pat', d:4, title:'Formas e simetrias', desc:'Visualize, gire e compare',
+  ex:[
+  {t:'mc',cat:'Padrões',q:'Qual figura tem exatamente três lados?',o:['Círculo','Triângulo','Quadrado','Hexágono'],a:1,h:'Conte os lados das opções.',x:'O triângulo possui três lados.'},
+  {t:'tf',cat:'Padrões',q:'Girar um quadrado 90 graus mantém a mesma forma.',a:true,h:'A forma muda ou apenas sua orientação?',x:'O quadrado continua quadrado após a rotação.'},
+  {t:'match',cat:'Padrões',q:'Associe a figura à quantidade de lados.',pairs:[['Triângulo','3'],['Quadrado','4'],['Pentágono','5']],h:'Conte os lados.',x:'Os nomes indicam quantidades diferentes de lados.'},
+  {t:'seq',cat:'Padrões',v:seqHTML(['círculo','quadrado','círculo','quadrado','?']),q:'Qual forma continua?',o:['Círculo','Triângulo','Pentágono','Hexágono'],a:0,h:'Observe a alternância.',x:'O padrão alterna círculo e quadrado; depois do quadrado vem círculo.'},
+  {t:'riddle',cat:'Padrões',q:'Tenho muitos lados e pareço uma bola quando sou desenhado. O que posso representar?',o:['Um polígono','Uma linha','Um ponto','Um ângulo'],a:0,h:'Pense numa forma fechada com lados.',x:'Um polígono pode ter muitos lados e aproximar o contorno de um círculo.'},
+ ]},
+{ id:'extra9', mod:'seq', d:4, title:'Cálculo esperto', desc:'Descubra atalhos numéricos',
+  ex:[
+  {t:'seq',cat:'Sequências',v:seqHTML(['10','20','40','80','?']),q:'Complete a sequência.',o:['90','100','120','160'],a:3,h:'Dobre cada termo.',x:'80 × 2 = 160.'},
+  {t:'mc',cat:'Sequências',q:'Qual é a metade de 3/4?',o:['1/4','3/8','2/4','6/4'],a:1,h:'Dividir por 2 é multiplicar o denominador por 2.',x:'3/4 ÷ 2 = 3/8.'},
+  {t:'tf',cat:'Sequências',q:'Se 5 × 6 = 30, então 30 ÷ 5 = 6.',a:true,h:'Multiplicação e divisão desfazem uma à outra.',x:'A divisão retorna o fator que foi usado: 30 ÷ 5 = 6.'},
+  {t:'order',cat:'Sequências',q:'Ordene as frações do menor para o maior.',items:['1/4','1/2','3/4'],h:'Imagine uma pizza dividida em quatro partes.',x:'Uma parte, duas partes e três partes: 1/4 → 1/2 → 3/4.'},
+  {t:'riddle',cat:'Sequências',q:'Tenho dois algarismos, sou par e minha soma é 9. Qual opção pode ser?',o:['18','27','36','45'],a:2,h:'Teste paridade e soma dos algarismos.',x:'36 é par e 3 + 6 = 9.'},
+ ]},
+{ id:'extra10', mod:'cls', d:4, title:'Categorias misturadas', desc:'Descubra o critério comum',
+  ex:[
+  {t:'mc',cat:'Classificação',q:'Qual item não é um meio de transporte?',o:['Bicicleta','Trem','Avião','Caderno'],a:3,h:'Pense no que leva pessoas de um lugar a outro.',x:'Caderno é material escolar, não transporte.'},
+  {t:'tf',cat:'Classificação',q:'Um quadrado possui quatro ângulos retos.',a:true,h:'Lembre da definição de quadrado.',x:'Todos os ângulos internos de um quadrado medem 90 graus.'},
+  {t:'match',cat:'Classificação',q:'Associe cada alimento à categoria.',pairs:[['Maçã','Fruta'],['Cenoura','Legume'],['Arroz','Grão']],h:'Classifique pelo tipo de alimento.',x:'Cada exemplo pertence a uma categoria alimentar diferente.'},
+  {t:'mc',cat:'Classificação',q:'Qual número é múltiplo de 5?',o:['12','18','25','31'],a:2,h:'Múltiplos de 5 terminam em 0 ou 5.',x:'25 termina em 5, então é múltiplo de 5.'},
+  {t:'riddle',cat:'Classificação',q:'Qual palavra é diferente: azul, verde, quente, amarelo?',o:['Azul','Verde','Quente','Amarelo'],a:2,h:'Três são cores.',x:'Quente é uma característica de temperatura, não uma cor.'},
+ ]},
+{ id:'extra11', mod:'ded', d:4, title:'Detetive de pistas', desc:'Resolva por exclusão',
+  ex:[
+  {t:'mc',cat:'Dedução',q:'Há três copos: alto, baixo e médio. A moeda não está no alto nem no baixo. Onde está?',o:['Alto','Baixo','Médio','Em nenhum'],a:2,h:'Elimine os dois copos proibidos.',x:'Só o copo médio permanece.'},
+  {t:'tf',cat:'Dedução',q:'Se ninguém além de Lara chegou antes, Lara foi a primeira.',a:true,h:'Interprete "ninguém além".',x:'Se nenhuma pessoa chegou antes de Lara, ela ocupa a primeira posição.'},
+  {t:'match',cat:'Dedução',q:'Associe a pista à eliminação.',pairs:[['É ímpar','Elimina 2'],['É menor que 5','Elimina 8'],['É azul','Elimina objetos vermelhos']],h:'Cada pista remove alternativas.',x:'Raciocinar também é retirar o que não pode ser verdade.'},
+  {t:'order',cat:'Dedução',q:'Ana é antes de Bia, e Bia é antes de Caio. Ordene.',items:['Ana','Bia','Caio'],h:'Siga as setas das pistas.',x:'Ana → Bia → Caio.'},
+  {t:'riddle',cat:'Dedução',q:'Em uma caixa há 4 bolas vermelhas e 4 azuis. Quantas tirar para garantir duas da mesma cor?',o:['2','3','4','5'],a:1,h:'Considere o pior caso.',x:'Com duas, podem sair cores diferentes. A terceira certamente repete uma cor.'},
+ ]},
+{ id:'extra12', mod:'ord', d:4, title:'Filas e posições', desc:'Leia relações de vizinhança',
+  ex:[
+  {t:'order',cat:'Ordenação',q:'Coloque do primeiro ao último: Cora venceu Beto; Beto venceu Davi.',items:['Cora','Beto','Davi'],h:'Quem venceu todos?',x:'Cora → Beto → Davi.'},
+  {t:'mc',cat:'Ordenação',q:'Numa fila, Leo está entre Nina e Rui. Quem não pode ser o primeiro?',o:['Nina','Leo','Rui','Todos podem'],a:1,h:'"Entre" significa que há alguém dos dois lados.',x:'Leo não pode ser o primeiro porque precisa ter alguém antes e depois.'},
+  {t:'tf',cat:'Ordenação',q:'Se A está imediatamente antes de B, não há outra pessoa entre eles.',a:true,h:'A palavra imediatamente é decisiva.',x:'Imediatamente antes significa posição consecutiva.'},
+  {t:'match',cat:'Ordenação',q:'Associe o termo à explicação.',pairs:[['Primeiro','Não há ninguém antes'],['Último','Não há ninguém depois'],['Meio','Há pessoas dos dois lados']],h:'Pense numa fila.',x:'As posições são definidas pelos vizinhos.'},
+  {t:'riddle',cat:'Ordenação',q:'Qual mês vem dois meses depois de março?',o:['Abril','Maio','Junho','Julho'],a:1,h:'Conte abril como o primeiro passo.',x:'Abril é um mês depois; maio é dois meses depois de março.'},
+ ]},
+{ id:'extra13', mod:'log', d:4, title:'Conectivos em ação', desc:'Combine afirmações',
+  ex:[
+  {t:'mc',cat:'Lógica',q:'p é falsa e q é falsa. Qual o valor de "p OU q"?',o:['Verdadeiro','Falso','Depende','Não existe'],a:1,h:'O OU só é falso quando as duas são falsas.',x:'F OU F = F.'},
+  {t:'tf',cat:'Lógica',q:'A expressão p E q é verdadeira quando pelo menos uma das duas é verdadeira.',a:false,h:'Essa é a regra do OU, não do E.',x:'O E exige que as duas sejam verdadeiras.'},
+  {t:'match',cat:'Lógica',q:'Associe a expressão à leitura.',pairs:[['p E q','p e q'],['p OU q','p ou q'],['NÃO p','não p']],h:'Leia os símbolos em voz alta.',x:'A tradução literal ajuda a evitar confusões.'},
+  {t:'mc',cat:'Lógica',q:'Se p é verdadeira, quanto vale NÃO p?',o:['Verdadeiro','Falso','Sempre p','Indefinido'],a:1,h:'A negação troca o valor.',x:'NÃO V = F.'},
+  {t:'riddle',cat:'Lógica',q:'Uma frase que pode ser verdadeira ou falsa é chamada de quê?',o:['Proposição','Pergunta','Ordem','Desenho'],a:0,h:'É o conceito básico desta categoria.',x:'Uma proposição é uma frase declarativa com valor de verdade.'},
+ ]},
+{ id:'extra14', mod:'eni', d:4, title:'Pegadinhas clássicas', desc:'Leia o enunciado até o fim',
+  ex:[
+  {t:'riddle',cat:'Enigmas',q:'Você ultrapassa o último colocado. Em qual posição fica?',o:['Primeiro','Segundo','Último','Isso é impossível'],a:3,h:'Pense se é possível ultrapassar quem está em último.',x:'É impossível ultrapassar o último colocado sem que ele deixe de ser o último.'},
+  {t:'mc',cat:'Enigmas',q:'Um ano tem quantos meses com pelo menos 28 dias?',o:['1','2','6','12'],a:3,h:'Não confunda "exatamente" com "pelo menos".',x:'Todos os 12 meses têm pelo menos 28 dias.'},
+  {t:'tf',cat:'Enigmas',q:'Se há três maçãs e você pega duas, você tem duas maçãs.',a:true,h:'A pergunta fala das que você pegou.',x:'Você pegou duas, então tem duas em suas mãos.'},
+  {t:'match',cat:'Enigmas',q:'Associe a resposta à pegadinha.',pairs:[['Pelo menos 28 dias','12 meses'],['Ultrapassar o último','Impossível'],['Pegar duas maçãs','Ficar com duas']],h:'Observe exatamente o que foi perguntado.',x:'A leitura cuidadosa vence a pressa.'},
+  {t:'riddle',cat:'Enigmas',q:'O que fica mais molhado enquanto seca?',o:['A toalha','O papel','A areia','O espelho'],a:0,h:'É usada para secar pessoas ou objetos.',x:'A toalha absorve água enquanto seca algo.'},
+ ]},
+{ id:'extra15', mod:'pat', d:4, title:'Padrões de palavras', desc:'Observe letras e posições',
+  ex:[
+  {t:'mc',cat:'Padrões',q:'Qual palavra continua: pedra, papel, tesoura, pedra, papel, …?',o:['Pedra','Papel','Tesoura','Fogo'],a:2,h:'É um ciclo de três elementos.',x:'Depois de pedra e papel, vem tesoura.'},
+  {t:'tf',cat:'Padrões',q:'Na sequência segunda, quarta, sexta, os termos avançam de dois em dois dias.',a:true,h:'Conte os dias pulados.',x:'Segunda → quarta → sexta, sempre avançando dois dias.'},
+  {t:'match',cat:'Padrões',q:'Associe a sequência à continuação.',pairs:[['A, C, E','G'],['1, 3, 5','7'],['B, D, F','H']],h:'Observe o salto entre letras ou números.',x:'Todas avançam pulando um elemento.'},
+  {t:'seq',cat:'Padrões',v:seqHTML(['A','B','A','C','A','D','A','?']),q:'Qual letra falta?',o:['A','B','C','E'],a:3,h:'A aparece sempre nas posições ímpares.',x:'Nas posições pares aparecem B, C, D, E.'},
+  {t:'riddle',cat:'Padrões',q:'Qual é o próximo mês depois de dezembro?',o:['Janeiro','Fevereiro','Novembro','Não há próximo'],a:0,h:'O calendário é circular.',x:'Depois de dezembro começa janeiro de novo.'},
+ ]},
+{ id:'extra16', mod:'seq', d:4, title:'Proporções simples', desc:'Compare quantidades sem decorar',
+  ex:[
+  {t:'seq',cat:'Sequências',v:seqHTML(['1','2','4','8','?']),q:'Complete dobrando os termos.',o:['10','12','14','16'],a:3,h:'Multiplique o último valor por 2.',x:'8 × 2 = 16.'},
+  {t:'mc',cat:'Sequências',q:'Se 2 cadernos custam 10 reais, quanto custam 4 pelo mesmo preço?',o:['15','20','25','40'],a:1,h:'Quatro é o dobro de dois.',x:'Dobrar a quantidade dobra o preço: 20 reais.'},
+  {t:'tf',cat:'Sequências',q:'Metade de 50 é 25.',a:true,h:'Divida 50 em duas partes iguais.',x:'50 ÷ 2 = 25.'},
+  {t:'order',cat:'Sequências',q:'Ordene as medidas do menor para o maior.',items:['10 cm','1 m','2 m'],h:'Converta metros em centímetros se precisar.',x:'10 cm, 1 m (100 cm), 2 m (200 cm).'},
+  {t:'riddle',cat:'Sequências',q:'Se 3 caixas têm 6 bolas cada, quantas bolas há?',o:['9','12','18','24'],a:2,h:'Multiplique caixas por bolas.',x:'3 × 6 = 18 bolas.'},
+ ]},
+{ id:'extra17', mod:'cls', d:4, title:'Mundo em grupos', desc:'Classifique conceitos e objetos',
+  ex:[
+  {t:'mc',cat:'Classificação',q:'Qual não é um instrumento musical?',o:['Violão','Piano','Tambor','Martelo'],a:3,h:'Qual objeto não produz música como função principal?',x:'Martelo é ferramenta.'},
+  {t:'tf',cat:'Classificação',q:'Um mamífero é um animal.',a:true,h:'Pense na classificação biológica.',x:'Mamíferos pertencem ao grupo dos animais.'},
+  {t:'match',cat:'Classificação',q:'Associe o animal ao habitat.',pairs:[['Camelo','Deserto'],['Baleia','Oceano'],['Águia','Montanha']],h:'Relacione o ambiente mais provável.',x:'Cada animal está associado ao habitat indicado.'},
+  {t:'mc',cat:'Classificação',q:'Qual item é líquido?',o:['Pedra','Leite','Lápis','Areia'],a:1,h:'Pense no que pode ser derramado.',x:'Leite é líquido.'},
+  {t:'riddle',cat:'Classificação',q:'Qual destes é um número primo?',o:['4','6','9','11'],a:3,h:'Só pode ser dividido por 1 e por ele mesmo.',x:'11 é primo; 4, 6 e 9 têm outros divisores.'},
+ ]},
+{ id:'extra18', mod:'ded', d:4, title:'Mistério das condições', desc:'Use todas as pistas, sem pular nenhuma',
+  ex:[
+  {t:'mc',cat:'Dedução',q:'Um código é maior que 20, menor que 30 e termina em 5. Qual é?',o:['15','25','35','45'],a:1,h:'Aplique limite e final do número.',x:'25 é o único entre 20 e 30 que termina em 5.'},
+  {t:'tf',cat:'Dedução',q:'Se todo A é B e Carla é A, então Carla é B.',a:true,h:'Aplique a regra geral a Carla.',x:'A regra vale para todos os A, incluindo Carla.'},
+  {t:'match',cat:'Dedução',q:'Associe o conjunto à pessoa que pode pertencer a ele.',pairs:[['Músicos','Lia toca piano'],['Atletas','Rui corre'],['Cozinheiros','Bia prepara pratos']],h:'Use a ação como evidência.',x:'Cada ação fornece uma pista sobre o grupo.'},
+  {t:'order',cat:'Dedução',q:'Sabendo que Ana é antes de Bia e Caio é depois de Bia, ordene.',items:['Ana','Bia','Caio'],h:'Bia fica entre os dois.',x:'Ana → Bia → Caio.'},
+  {t:'riddle',cat:'Dedução',q:'Quatro pessoas apertam as mãos uma vez entre cada par. Quantos apertos acontecem?',o:['4','6','8','12'],a:1,h:'Liste os pares sem repetir.',x:'Os pares são AB, AC, AD, BC, BD e CD: 6 apertos.'},
+ ]},
+{ id:'extra19', mod:'ord', d:4, title:'Rota dos processos', desc:'Descubra o que depende do quê',
+  ex:[
+  {t:'order',cat:'Ordenação',q:'Organize o processo de fazer suco.',items:['Cortar a fruta','Espremer','Beber'],h:'Uma etapa prepara a próxima.',x:'Cortar → espremer → beber.'},
+  {t:'mc',cat:'Ordenação',q:'Duda chegou antes de Eva, e Eva antes de Fê. Quem chegou por último?',o:['Duda','Eva','Fê','Não dá para saber'],a:2,h:'Siga a cadeia até o fim.',x:'Duda → Eva → Fê. Fê chegou por último.'},
+  {t:'tf',cat:'Ordenação',q:'O minuto 10 vem antes do minuto 20.',a:true,h:'Compare os valores.',x:'10 é menor que 20, então vem antes.'},
+  {t:'match',cat:'Ordenação',q:'Associe a ação à ordem.',pairs:[['Acordar','Antes de sair'],['Sair','Antes de chegar'],['Chegar','Depois de sair']],h:'Imagine uma viagem.',x:'As ações formam uma sequência natural.'},
+  {t:'riddle',cat:'Ordenação',q:'Qual vem primeiro numa receita: assar ou misturar?',o:['Assar','Misturar','Ao mesmo tempo','Depende'],a:1,h:'A massa precisa ser preparada antes do forno.',x:'Primeiro misturamos, depois assamos.'},
+ ]},
+{ id:'extra20', mod:'eni', d:4, title:'Desafio final extra', desc:'Misture todas as habilidades',
+  ex:[
+  {t:'mc',cat:'Enigmas',q:'Qual número completa: 4, 8, 16, 32, …?',o:['36','40','48','64'],a:3,h:'Dobre o último número.',x:'32 × 2 = 64.'},
+  {t:'tf',cat:'Enigmas',q:'Se todos os círculos são redondos e esta figura é um círculo, ela é redonda.',a:true,h:'Aplique a regra ao exemplo.',x:'A figura pertence ao grupo definido como redondo.'},
+  {t:'match',cat:'Enigmas',q:'Associe o problema à ferramenta mental.',pairs:[['Sequência','Comparar saltos'],['Fila','Marcar posições'],['Intruso','Encontrar regra comum']],h:'Escolha a estratégia adequada.',x:'Cada tipo de desafio pede uma forma de pensar.'},
+  {t:'order',cat:'Enigmas',q:'Organize uma solução lógica.',items:['Ler pistas','Eliminar opções','Concluir'],h:'O raciocínio começa pelas informações.',x:'Ler → eliminar → concluir.'},
+  {t:'riddle',cat:'Enigmas',q:'Qual é o único número que não muda quando virado de cabeça para baixo?',o:['0','6','8','9'],a:2,h:'Pense na simetria do algarismo.',x:'O 8 mantém a mesma forma quando girado.'},
+ ]},
 ];
 
 /* ---------- Conquistas (marcos calibrados para 33 fases) ---------- */
@@ -1201,6 +1361,16 @@ function levelUpModal(lvl){
     <button class="btn purple" id="lvOk">Continuar evoluindo</button>`, false);
   m.querySelector('#lvOk').onclick = () => { closeModal(); confetti(110); };
   confetti(130);
+}
+
+function booHello(){
+  const m = openModal(`
+    <div class="scene-center">${booScene('feliz')}</div>
+    <h2 style="text-align:center">Wazyboo está aqui!</h2>
+    <p style="text-align:center">${esc(BOO_FALAS.feliz[Math.floor(Math.random()*BOO_FALAS.feliz.length)])}</p>
+    <button class="btn purple" id="booHelloOk">Continuar treinando</button>`);
+  m.querySelector('#booHelloOk').onclick = closeModal;
+  confetti(45);
 }
 
 /* ================================================================
@@ -1813,6 +1983,14 @@ function renderTop(){
       </div>`;
     const tbBtn = $('#tTheme');
     if (tbBtn) tbBtn.onclick = () => setTheme(dark ? 'light' : 'dark');
+    const logo = tb.querySelector('.logo-wrap');
+    if (logo) {
+      logo.setAttribute('role', 'button');
+      logo.setAttribute('tabindex', '0');
+      logo.setAttribute('aria-label', 'Abrir surpresa do Wazyboo');
+      logo.onclick = booHello;
+      logo.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); booHello(); } };
+    }
   }
 
   const sb = $('#sidebar');
