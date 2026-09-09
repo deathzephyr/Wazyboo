@@ -2037,7 +2037,7 @@ function viewLearn(){
   const NODE = wide ? 70  : 58;   /* no celular as bolinhas ficam maiores, fáceis de tocar */
   const OFF  = wide ? [0,-60,-100,-60,0,60,100,60] : [0,-42,-52,-42,0,42,52,42];
   const STEP = wide ? 120 : 136;  /* no celular as bolinhas ficam mais afastadas verticalmente */
-  const HEADH = 56, HEADGAP = 34, BANH = 90, PAD = 76, C = PW / 2;
+  const HEADH = 56, HEADGAP = 34, BANH = wide ? 90 : 108, PAD = 76, C = PW / 2;
   const doneTotal = doneCount();
   const cd = currentDiff();
   let y = PAD, rowsHtml = '', pts = [];
