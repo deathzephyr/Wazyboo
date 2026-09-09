@@ -1,0 +1,2356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Wazyboo — Treine seu raciocínio lógico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WAZYBOO — marca ROXA · temas branco/preto · layout PC + celular
+   Trilha única sequencial, sem fases repetitivas · v1.8
+   ============================================================ */
+:root{
+  --p1:#8B5CF6; --p2:#6D28D9; --p3:#A78BFA;
+  --y1:#FFC800; --y2:#DBA800;
+  --r1:#FF4B4B; --r2:#E13C3C;
+  --bg:#FFFFFF; --card:#FFFFFF; --bg2:#F7F7F7;
+  --line:#E5E5E5; --line2:#CFCFCF;
+  --ink:#3C3C3C; --ink2:#777; --faint:#AFAFAF;
+  --hover:#F6F1FF;
+  --sel:#EDE4FF; --selB:#C4A5F5; --selT:#7C3AED;
+  --accBg:#EDE4FF; --accB:#B98EF5; --accT:#6D28D9;
+  --badBg:#FFE3E5; --badB:#FFB2B2; --badT:#D63333;
+  --goldBg:#FFF8E1; --goldT:#9A7400;
+  --fire:#FF9600; --hpill:#FF5A5A; --coin:#1CB0F6;
+}
+html[data-theme="dark"]{
+  --bg:#131318; --card:#1D1D24; --bg2:#26262E;
+  --line:#33333D; --line2:#45454F;
+  --ink:#F1F1F4; --ink2:#B0B0BA; --faint:#7A7A85;
+  --hover:#2A2440;
+  --sel:#2E2650; --selB:#6D4FD1; --selT:#B79CFF;
+  --accBg:#2E2650; --accB:#7C5CC4; --accT:#C9B0FF;
+  --badBg:#3A1D22; --badB:#8A4048; --badT:#FF8A8A;
+  --goldBg:#383014; --goldT:#E8C558;
+  --fire:#FFB020; --hpill:#FF7B7B; --coin:#4CC3FF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Nunito',sans-serif;color:var(--ink);background:var(--bg);min-height:100dvh;transition:background .25s,color .25s}
+button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:'Nunito',sans-serif}
+svg{display:block}
+.sym{display:inline-block;vertical-align:middle}
+
+/* ============ Estrutura: sidebar | conteúdo | rail ============ */
+#layout{display:flex;max-width:1240px;margin:0 auto}
+#sidebar{display:none;width:250px;flex:none;position:sticky;top:0;height:100dvh;
+  padding:22px 14px;flex-direction:column;gap:6px;border-right:2px solid var(--line)}
+#mainCol{flex:1;min-width:0}
+#rail{display:none;width:320px;flex:none;position:sticky;top:0;height:100dvh;
+  padding:22px 16px;gap:12px;flex-direction:column;overflow-y:auto;border-left:2px solid var(--line)}
+@media (min-width:1024px){
+  #topbar{display:none}
+  #sidebar{display:flex}
+}
+@media (min-width:1280px){ #rail{display:flex} }
+
+/* ---------- Cabeçalho (celular) ---------- */
+#topbar{position:sticky;top:0;background:var(--bg);border-bottom:2px solid var(--line);z-index:40;transition:background .25s}
+#topbar .tb-in{max-width:640px;margin:0 auto;padding:0 16px;height:62px;display:flex;align-items:center;gap:10px}
+.logo-wrap{display:flex;align-items:center;gap:8px;min-width:0}
+.logo-img{height:36px;max-width:120px;object-fit:contain;border-radius:8px;flex:none}
+.logo-name{font-weight:900;font-size:23px;color:var(--p1);letter-spacing:-.5px;white-space:nowrap}
+.tb-stats{margin-left:auto;display:flex;gap:14px;align-items:center}
+.pill{display:flex;align-items:center;gap:6px;font-weight:900;font-size:15.5px;color:var(--ink)}
+.pill.fire{color:var(--fire)}.pill.hpill{color:var(--hpill)}.pill.coin{color:var(--coin)}.pill.xp{color:var(--selT)}
+.theme-btn{width:38px;height:38px;border-radius:12px;border:2px solid var(--line);display:grid;place-items:center;color:var(--ink2);transition:.15s}
+.theme-btn:hover{color:var(--selT);border-color:var(--selB)}
+@media (max-width:470px){ .pill.xp,.theme-btn{display:none} .logo-name{font-size:19px} .logo-img{height:30px;max-width:90px} }
+@media (max-width:380px){ .pill.coin{display:none} }
+
+/* ---------- Sidebar (PC) ---------- */
+.sb-logo{display:flex;align-items:center;padding:4px 10px 18px;border-bottom:2px solid var(--line);margin-bottom:12px}
+#sidebar .logo-img{height:30px;max-width:88px}
+#sidebar .logo-name{font-size:20px}
+.snav{display:flex;align-items:center;gap:13px;padding:13px 14px;border-radius:14px;border:2px solid transparent;
+  font-weight:900;font-size:13.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--faint);transition:.15s;width:100%;text-align:left}
+.snav svg{flex:none}
+.snav.on{background:var(--sel);border-color:var(--selB);color:var(--selT)}
+.snav:not(.on):hover{background:var(--hover);color:var(--selT)}
+.sb-foot{margin-top:auto;display:grid;gap:8px}
+.sb-user{display:flex;align-items:center;gap:10px;padding:10px 12px;border:2px solid var(--line);border-radius:14px;font-weight:900;font-size:14px}
+.sb-user > span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ---------- Avatar ---------- */
+.avatar{border-radius:50%;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;flex:none;background:var(--bg2)}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar.av-fb{background:var(--p1);color:#fff;font-weight:900}
+.avatar-edit{position:relative;flex:none}
+.avatar-cam{position:absolute;bottom:-2px;right:-2px;width:30px;height:30px;border-radius:50%;
+  background:var(--p1);color:#fff;border:3px solid var(--card);display:grid;place-items:center;cursor:pointer;transition:.15s}
+.avatar-cam:hover{background:var(--p2)}
+
+/* ---------- Rail (PC) ---------- */
+.rail-card{border:2px solid var(--line);border-radius:16px;padding:16px;background:var(--card)}
+.rail-card h4{font-weight:900;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+.rail-big{display:flex;align-items:center;gap:10px;font-weight:900;font-size:19px}
+.rail-sub{font-size:12.5px;color:var(--ink2);font-weight:700;margin-top:3px}
+.rail-row{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:900;font-size:15px;padding:5px 0}
+
+/* ---------- Semana ---------- */
+.week-row{display:flex;gap:8px}
+.wday{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.wday .wdot{flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--line);background:var(--bg2);color:var(--faint)}
+.wday .wdot.on{background:var(--p1);border-color:var(--p2);color:#fff}
+.wday .wlab{font-size:10.5px;font-weight:900;color:var(--faint);text-transform:uppercase;line-height:1;letter-spacing:.3px}
+
+/* ---------- Conteúdo ---------- */
+#app{max-width:640px;margin:0 auto;padding:22px 16px 120px;min-height:70dvh;width:100%}
+@media (min-width:1024px){ #app{padding-bottom:40px} }
+.view-enter{animation:vin .35s ease both}
+@keyframes vin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+h1.ptitle{font-weight:900;font-size:26px;letter-spacing:-.3px;margin-bottom:6px}
+.sub{color:var(--ink2);font-weight:700;font-size:15px;line-height:1.5}
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;transition:background .25s}
+.panel{padding:18px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;border-radius:8px;padding:4px 10px}
+
+/* ---------- Botões 3D ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-weight:900;font-size:14px;letter-spacing:.8px;text-transform:uppercase;
+  border-radius:14px;padding:13px 22px;transition:transform .06s,box-shadow .06s,filter .12s;user-select:none;
+}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(4px)}
+.btn.purple{background:var(--p1);color:#fff;box-shadow:0 4px 0 var(--p2)}
+.btn.purple:active{box-shadow:0 0 0 var(--p2)}
+.btn.amber{background:var(--y1);color:#6B5200;box-shadow:0 4px 0 var(--y2)}
+.btn.amber:active{box-shadow:0 0 0 var(--y2)}
+.btn.ghost{background:var(--card);border:2px solid var(--line);color:var(--selT);box-shadow:0 3px 0 var(--line)}
+.btn.ghost:active{transform:translateY(3px);box-shadow:0 0 0 var(--line)}
+.btn.small{padding:9px 16px;font-size:12px;border-radius:12px;box-shadow:0 3px 0 var(--p2)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;filter:none}
+.progress{height:16px;background:var(--line);border-radius:99px;overflow:hidden}
+.progress > i{display:block;height:100%;background:var(--p1);border-radius:99px;transition:width .6s ease}
+
+/* ---------- Navegação inferior (somente celular/tablet) ---------- */
+#nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:2px solid var(--line);
+  display:flex;justify-content:center;gap:4px;padding:7px 4px calc(7px + env(safe-area-inset-bottom));z-index:50;transition:background .25s}
+#nav button{width:60px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:6px 0;color:var(--faint);font-size:9px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;
+  border:2px solid transparent;transition:.15s}
+#nav button.on{background:var(--sel);border-color:var(--selB);color:var(--selT)}
+#nav button:not(.on):hover{color:var(--selT);background:var(--hover)}
+@media (min-width:1024px){ #nav{display:none!important} }
+
+/* ---------- Mascote ---------- */
+.mascote{width:150px;object-fit:contain;display:block}
+.m-bounce{animation:mb .6s cubic-bezier(.3,1.6,.4,1)}
+.m-shake{animation:ms .5s ease}
+@keyframes mb{0%,100%{transform:none}35%{transform:translateY(-16px) scale(1.04)}65%{transform:none}82%{transform:translateY(-6px)}}
+@keyframes ms{0%,100%{transform:none}20%,60%{transform:translateX(-8px) rotate(-3deg)}40%,80%{transform:translateX(8px) rotate(3deg)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.floaty{animation:floaty 4s ease-in-out infinite}
+
+/* Cena do mascote: foto + balão de fala */
+.boo-scene{position:relative;display:flex;flex-direction:column;align-items:center}
+.boo-scene .mascote{width:110px}
+.boo-scene.sm .mascote{width:62px}
+.boo-bubble{
+  position:relative;background:var(--card);border:2px solid var(--line);border-radius:14px;
+  padding:8px 13px;font-weight:800;font-size:13px;color:var(--ink);max-width:230px;text-align:center;
+  margin-bottom:16px;line-height:1.35;animation:bubf 3s ease-in-out infinite;
+}
+.boo-bubble::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);
+  border:8px solid transparent;border-top-color:var(--line)}
+.boo-bubble::before{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%) translateY(-3px);
+  border:6px solid transparent;border-top-color:var(--card)}
+.boo-scene.sm .boo-bubble{max-width:170px;font-size:12px;padding:7px 11px;margin-bottom:12px}
+@keyframes bubf{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+/* ---------- Home ---------- */
+.hero{display:flex;gap:18px;align-items:center;margin-bottom:14px}
+.hero-copy{flex:1}
+.hero h1{font-weight:900;font-size:clamp(22px,4.5vw,30px);letter-spacing:-.4px;line-height:1.15;margin:4px 0 8px}
+.quote{padding:10px 14px;border:2px dashed var(--line2);border-radius:12px;font-size:14px;color:var(--ink2);font-weight:700;display:inline-block}
+.hero-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.hero .boo-scene .mascote{width:130px}
+.hero .boo-bubble{max-width:160px;font-size:12px}
+.home-grid{display:grid;gap:12px;margin-top:12px}
+.panel-row{display:flex;align-items:center;gap:14px}
+.panel-row .ico{flex:none;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--sel);color:var(--selT)}
+.panel h3{font-weight:900;font-size:16.5px}
+.p-sub{font-size:13.5px;color:var(--ink2);font-weight:700;line-height:1.45}
+.panel-row .grow{flex:1}
+.progress-line{display:flex;align-items:center;gap:12px;margin-top:12px}
+.progress-line .progress{flex:1}
+.progress-line b{font-weight:900;font-size:14px;color:var(--ink2);min-width:38px;text-align:right}
+.meters{display:grid;gap:11px;margin-top:14px}
+.meter{display:grid;grid-template-columns:1fr auto;gap:3px 10px;font-size:13px}
+.meter .progress{grid-column:1/-1;height:12px}
+.meter b{color:var(--ink2);font-weight:800}
+.meter span{font-weight:900}
+
+/* ---------- Perfil — engrenagem integrada ao card ---------- */
+.prof-head{position:relative}
+.gear-btn{
+  position:absolute;top:14px;right:14px;
+  width:40px;height:40px;border-radius:12px;border:2px solid var(--line);
+  background:var(--card);display:grid;place-items:center;color:var(--ink2);transition:.15s;
+}
+.gear-btn:hover{color:var(--selT);border-color:var(--selB);background:var(--hover)}
+
+/* ---------- Etiqueta de dificuldade + banner da trilha ---------- */
+.diff-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;border-radius:6px;padding:2px 8px;color:#fff}
+.trail-banner{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:16px;color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.trail-banner.standalone{margin:12px 0 4px}
+.trail-banner .tb-ico{width:44px;height:44px;border-radius:13px;background:rgba(255,255,255,.22);display:grid;place-items:center;flex:none}
+.trail-banner .grow{flex:1;min-width:0}
+.trail-banner b{font-size:16px;font-weight:900;letter-spacing:-.2px;display:block}
+.trail-banner .p-sub{color:rgba(255,255,255,.92)}
+.trail-banner .progress{background:rgba(0,0,0,.28);margin-top:8px;height:12px}
+.trail-banner .progress i{background:#fff}
+
+/* ---------- Trilha (Aprender) ---------- */
+.path{position:relative;margin:14px auto 0}
+.path svg.trail-line{position:absolute;left:0;top:0;pointer-events:none}
+.path .trail-banner{position:absolute;left:0;right:0;z-index:1}
+.uhead{position:absolute;left:-16px;right:-16px;height:56px;border-radius:16px;color:#fff;
+  display:flex;align-items:center;justify-content:space-between;padding:0 18px;z-index:1}
+.uhead b{font-weight:900;font-size:15px;letter-spacing:.6px;text-transform:uppercase}
+.uhead small{font-weight:800;font-size:11px;opacity:.9;letter-spacing:.5px;text-transform:uppercase}
+.pnode{
+  position:absolute;width:70px;height:70px;border-radius:50%;z-index:2;
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  transition:transform .1s, box-shadow .1s;user-select:none;cursor:pointer;
+}
+.pnode .nic{display:flex;align-items:center;justify-content:center;width:28px;height:28px}
+.pnode .nic svg{display:block;transform:none}
+.pnode:hover{transform:translateY(-2px)}
+.pnode:active{transform:translateY(3px)}
+.pnode.done{background:var(--p1);box-shadow:0 6px 0 var(--p2)}
+.pnode.done:active{box-shadow:0 1px 0 var(--p2)}
+.pnode.legend{background:var(--y1);box-shadow:0 6px 0 var(--y2);color:#6B5200}
+.pnode.legend:active{box-shadow:0 1px 0 var(--y2)}
+.pnode.open{background:var(--y1);box-shadow:0 6px 0 var(--y2);color:#fff;animation:npulse 2s infinite}
+.pnode.open:active{box-shadow:0 1px 0 var(--y2)}
+.pnode.locked{background:var(--line);box-shadow:0 6px 0 var(--line2);color:var(--faint);cursor:default}
+.pnode.locked:hover{transform:none}
+@keyframes npulse{0%,100%{box-shadow:0 6px 0 var(--y2),0 0 0 0 rgba(255,200,0,.45)}50%{box-shadow:0 6px 0 var(--y2),0 0 0 12px rgba(255,200,0,0)}}
+.pnode::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);
+  background:var(--ink);color:var(--bg);font-size:12px;font-weight:800;padding:7px 12px;border-radius:10px;
+  white-space:nowrap;opacity:0;pointer-events:none;transition:.15s;z-index:5}
+.pnode:hover::after{opacity:1}
+.start-bub{position:absolute;transform:translateX(-50%);background:var(--card);border:2px solid var(--line);
+  border-radius:12px;padding:7px 14px;font-weight:900;font-size:12px;letter-spacing:1px;color:var(--selT);
+  z-index:3;animation:sb 1.4s ease-in-out infinite;white-space:nowrap}
+.start-bub::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);
+  border:7px solid transparent;border-top-color:var(--line)}
+@keyframes sb{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-7px)}}
+
+/* ---------- Lição ---------- */
+.lesson-shell{max-width:600px;margin:0 auto}
+.qtop{display:flex;align-items:center;gap:16px;margin-bottom:26px}
+.qtop .xbtn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--faint);transition:.15s;flex:none}
+.qtop .xbtn:hover{color:var(--badT);background:var(--badBg)}
+.qtop .qprog{flex:1}
+.qtop .qhp{display:flex;align-items:center;gap:5px;color:var(--hpill);font-weight:900;font-size:16px}
+.q-tag{font-size:11px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;color:var(--selT);margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.q-text{font-weight:900;font-size:clamp(19px,3vw,23px);line-height:1.3;margin-bottom:20px}
+.q-visual{background:var(--bg2);border:2px solid var(--line);border-radius:16px;padding:20px 14px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.q-visual .row{display:flex;gap:8px;justify-content:center}
+.riddle-box{background:var(--sel);border:2px solid var(--selB);border-radius:16px;padding:22px 18px;margin-bottom:20px;font-weight:900;font-size:19px;line-height:1.45;text-align:center;color:var(--selT)}
+.riddle-box::before{content:"ENIGMA";display:block;font-size:10px;letter-spacing:3px;color:var(--selT);margin-bottom:8px}
+.opts{display:grid;gap:11px}
+.opts.two{grid-template-columns:1fr 1fr}
+@media (max-width:520px){ .opts.two{grid-template-columns:1fr} }
+.opt{
+  display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;
+  background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;
+  padding:14px 16px;font-weight:800;font-size:16px;color:var(--ink);min-height:56px;transition:.12s;animation:vin .3s both;
+}
+.opt:hover{background:var(--hover);border-color:var(--selB);color:var(--selT)}
+.opt:active{transform:translateY(2px)}
+.opt.sel{background:var(--sel);border-color:var(--selB);color:var(--selT)}
+.opt.right{background:var(--accBg);border-color:var(--accB);color:var(--accT)}
+.opt.wrong{background:var(--badBg);border-color:var(--badB);color:var(--badT);animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.tf-row .opt{padding:22px 16px;font-size:17px;font-weight:900}
+.tf-row .opt .big{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none}
+.tf-row .opt[data-v="true"] .big{background:var(--accBg);color:var(--accT)}
+.tf-row .opt[data-v="false"] .big{background:var(--badBg);color:var(--badT)}
+.seq-line{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.seq-cell{width:52px;height:52px;border-radius:12px;background:var(--card);border:2px solid var(--line);border-bottom-width:4px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px}
+.seq-cell.q{background:var(--sel);border-color:var(--selB);color:var(--selT)}
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.match-col{display:grid;gap:10px;align-content:start}
+.mitem{background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:13px;font-weight:800;font-size:14px;text-align:center;transition:.12s;min-height:52px;display:flex;align-items:center;justify-content:center}
+.mitem:active{transform:translateY(2px)}
+.mitem.sel{border-color:var(--selB);background:var(--sel);color:var(--selT)}
+.mitem.paired{cursor:default}
+.mitem.dim{opacity:.35}
+.mitem .pairdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px}
+.match-hint{text-align:center;font-size:12px;color:var(--faint);font-weight:800;margin-top:12px}
+.order-slots{display:grid;gap:9px;margin:14px 0}
+.oslot{min-height:56px;border-radius:14px;border:2px dashed var(--line2);display:flex;align-items:center;padding:8px 12px;gap:10px;transition:.12s;font-weight:800;font-size:14.5px}
+.oslot.over{border-color:var(--y1);background:var(--goldBg)}
+.oslot.filled{border-style:solid;border-color:var(--selB);background:var(--sel)}
+.oslot .num{flex:none;width:24px;height:24px;border-radius:8px;background:var(--line);color:var(--ink2);display:grid;place-items:center;font-size:12px;font-weight:900}
+.order-bank{display:flex;flex-wrap:wrap;gap:9px;min-height:62px;padding:12px;border-radius:14px;border:2px solid var(--line);background:var(--bg2)}
+.ocard{background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:12px;padding:10px 15px;font-weight:800;font-size:14px;display:flex;align-items:center;gap:8px;user-select:none;touch-action:none;animation:vin .3s both;color:var(--ink)}
+.ocard.sel{border-color:var(--selB);background:var(--sel);color:var(--selT)}
+.ocard.dragging{opacity:.35}
+.ocard.ghost{position:fixed;z-index:99;pointer-events:none;transform:scale(1.05);opacity:.95}
+.drag-hint{text-align:center;font-size:12px;color:var(--faint);font-weight:800;margin-bottom:12px}
+.l-footer{margin-top:26px;display:flex;justify-content:flex-end}
+
+/* ---------- Barra de resultado ---------- */
+#sheet{position:fixed;inset-inline:0;bottom:0;z-index:60;transform:translateY(110%);transition:transform .35s cubic-bezier(.2,.9,.3,1.05)}
+#sheet.show{transform:none}
+#sheet .sheet-in{max-width:640px;margin:0 auto;padding:0 14px calc(14px + env(safe-area-inset-bottom))}
+.sheet-card{border-radius:18px;padding:20px 22px;color:#fff}
+.sheet-card.ok{background:var(--p1)}
+.sheet-card.bad{background:var(--r1)}
+.sheet-flex{display:flex;gap:16px;align-items:center}
+.sheet-flex .boo-scene .mascote{width:62px}
+.sheet-title{font-weight:900;font-size:22px}
+.sheet-body{font-size:14.5px;font-weight:700;line-height:1.5;opacity:.95;margin-top:4px}
+.sheet-hint{margin-top:10px;background:rgba(255,255,255,.18);border-radius:10px;padding:9px 12px;font-size:13px;font-weight:700;display:flex;gap:8px;align-items:flex-start}
+.sheet-btn{margin-top:14px;width:100%;background:#fff;color:#555;font-weight:900;font-size:15px;letter-spacing:.8px;text-transform:uppercase;padding:13px;border-radius:14px;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.sheet-btn:active{transform:translateY(4px);box-shadow:0 0 0 rgba(0,0,0,.18)}
+
+/* ---------- Desafios ---------- */
+.chal-card{padding:22px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.chal-card .cic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;margin-bottom:6px}
+.chal-card h3{font-weight:900;font-size:19px}
+.chal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+@media (max-width:640px){ .chal-grid{grid-template-columns:1fr} }
+.timer-bar{height:14px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0 24px}
+.timer-bar i{display:block;height:100%;background:var(--y1);border-radius:99px;transition:width .25s linear}
+.f-top{display:flex;justify-content:space-between;align-items:center;gap:14px;font-weight:900;font-size:15px;color:var(--ink2)}
+.f-top .fleft{display:flex;align-items:center;gap:12px}
+.f-top .xbtn{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:var(--faint);transition:.15s}
+.f-top .xbtn:hover{color:var(--badT);background:var(--badBg)}
+.f-top .sc{display:flex;align-items:center;gap:6px;color:var(--p1);font-weight:900;font-size:20px}
+.flash-score-big{font-weight:900;font-size:64px;letter-spacing:-2px;line-height:1;color:var(--p1)}
+
+/* ---------- Ranking ---------- */
+.lb{display:grid;gap:8px}
+.lb-row{display:flex;align-items:center;gap:13px;padding:11px 14px;border-radius:14px;background:var(--card);border:2px solid var(--line)}
+.lb-row .pos{width:30px;font-weight:900;font-size:15px;color:var(--faint);text-align:center}
+.lb-row .av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;font-size:15px;flex:none}
+.lb-row .nm{font-weight:800;font-size:15px}
+.lb-row .xp{margin-left:auto;font-weight:900;font-size:14px;color:var(--ink2);display:flex;align-items:center;gap:5px}
+.lb-row.me{border-color:var(--selB);background:var(--sel)}
+.lb-row.top1{border-color:var(--y1);background:var(--goldBg)}
+
+/* ---------- Perfil ---------- */
+.prof-head{display:flex;gap:18px;align-items:center;padding:20px;flex-wrap:wrap}
+.prof-head h2{font-weight:900;font-size:23px;display:flex;align-items:center;gap:10px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:14px}
+.stat-box{border:2px solid var(--line);border-radius:14px;padding:12px 14px}
+.stat-box .v{font-weight:900;font-size:21px}
+.stat-box .k{font-size:10.5px;color:var(--faint);font-weight:900;text-transform:uppercase;letter-spacing:.6px;margin-top:2px}
+.stat-box.yb{border-color:var(--y1);background:var(--goldBg)}.stat-box.yb .v{color:var(--goldT)}
+.stat-box.pb{border-color:var(--accB);background:var(--accBg)}.stat-box.pb .v{color:var(--accT)}
+.stat-box.bb{border-color:var(--selB);background:var(--sel)}.stat-box.bb .v{color:var(--selT)}
+.stat-box.rb{border-color:var(--badB);background:var(--badBg)}.stat-box.rb .v{color:var(--badT)}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:14px}
+.ach{border:2px solid var(--line);border-radius:14px;padding:13px;display:flex;gap:11px;align-items:center;background:var(--card)}
+.ach .aic{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--y1);color:#6B5200}
+.ach.locked{opacity:.45;filter:grayscale(1)}
+.ach.locked .aic{background:var(--line);color:var(--faint)}
+.ach b{font-size:13.5px;display:block}
+.ach span{font-size:11.5px;color:var(--faint);font-weight:700;line-height:1.35;display:block;margin-top:2px}
+.sec-title{font-weight:900;font-size:19px;margin:26px 0 10px}
+
+/* ---------- Escolha de tema ---------- */
+.theme-choose{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 4px}
+.theme-opt{border:2px solid var(--line);border-radius:14px;padding:13px;display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:900;font-size:13px;color:var(--ink2);transition:.15s}
+.theme-opt.on{border-color:var(--selB);background:var(--sel);color:var(--selT)}
+.theme-opt .sw{width:48px;height:32px;border-radius:8px;border:2px solid var(--line2)}
+.theme-opt .sw.lights{background:#fff}
+.theme-opt .sw.darks{background:#111}
+
+/* ---------- Configurações ---------- */
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:2px solid var(--line)}
+.set-row:last-of-type{border-bottom:none}
+.set-row .set-label{font-weight:900;font-size:15px}
+.switch{width:52px;height:30px;border-radius:99px;background:var(--line2);position:relative;transition:.2s;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.25);transition:.2s}
+.switch.on{background:var(--p1)}
+.switch.on::after{left:25px}
+
+/* ---------- Modal ---------- */
+.overlay{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.5);display:grid;place-items:center;padding:18px;animation:fadein .2s both}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.modal{background:var(--card);border-radius:18px;padding:26px;max-width:430px;width:100%;animation:mup .3s cubic-bezier(.3,1.4,.5,1) both;max-height:88dvh;overflow:auto;border-top:8px solid var(--p1);transition:background .25s}
+@keyframes mup{from{opacity:0;transform:translateY(24px) scale(.95)}to{opacity:1;transform:none}}
+.modal h2{font-weight:900;font-size:22px;letter-spacing:-.3px;margin-bottom:6px}
+.modal p{color:var(--ink2);font-weight:700;font-size:14.5px;line-height:1.55}
+.modal .btn{width:100%;margin-top:10px}
+.modal input[type=text]{width:100%;padding:13px 15px;border-radius:12px;border:2px solid var(--line);font-size:16px;font-weight:700;margin-top:16px;outline:none;transition:.15s;background:var(--bg2);color:var(--ink)}
+.modal input[type=text]:focus{border-color:var(--selB);background:var(--card)}
+.scene-center{display:flex;justify-content:center;margin-bottom:8px}
+.scene-center .boo-scene .mascote{width:120px}
+.reward-list{display:grid;gap:8px;margin:16px 0}
+.reward-list .r{display:flex;align-items:center;gap:10px;background:var(--bg2);border-radius:12px;padding:11px 14px;font-weight:800;font-size:14px}
+.reward-list .r b{margin-left:auto;font-weight:900;text-align:right}
+
+/* ---------- Resultado ---------- */
+.result-hero{text-align:center;padding:8px 0 4px}
+.stars-row{display:flex;gap:8px;justify-content:center;margin:12px 0 4px}
+.stars-row .st{width:48px;height:48px;color:var(--line);transform:scale(0)}
+.stars-row .st.on{color:var(--y1)}
+.stars-row .st:nth-child(1){animation:starin .5s .25s cubic-bezier(.3,1.8,.5,1) both}
+.stars-row .st:nth-child(2){animation:starin .5s .45s cubic-bezier(.3,1.8,.5,1) both}
+.stars-row .st:nth-child(3){animation:starin .5s .65s cubic-bezier(.3,1.8,.5,1) both}
+@keyframes starin{from{transform:scale(0) rotate(-40deg)}to{transform:scale(1) rotate(0)}}
+.res-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 20px}
+.res-stats .stat-box{text-align:center}
+
+/* ---------- Toasts / confete / xp ---------- */
+#toasts{position:fixed;top:72px;right:14px;z-index:80;display:grid;gap:8px;justify-items:end}
+@media (min-width:1024px){ #toasts{top:16px;right:352px} }
+.toast{display:flex;align-items:center;gap:9px;background:var(--ink);color:var(--bg);font-weight:800;font-size:13px;padding:10px 15px;border-radius:12px;max-width:320px;animation:tin .3s cubic-bezier(.3,1.5,.5,1) both}
+.toast.gold{background:var(--y1);color:#6B5200}
+.toast.out{animation:tout .3s both}
+@keyframes tin{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes tout{to{opacity:0;transform:translateX(30px)}}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:90}
+.float-xp{position:fixed;z-index:85;font-weight:900;color:var(--selT);font-size:16px;pointer-events:none;animation:fxp 1.1s ease-out both}
+@keyframes fxp{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-40px)}}
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+<div id="toasts"></div>
+<input type="file" id="avatarFile" accept="image/*" style="display:none" aria-hidden="true">
+<input type="file" id="importFile" accept=".json,application/json" style="display:none" aria-hidden="true">
+
+<div id="layout">
+  <aside id="sidebar" aria-label="Menu principal"></aside>
+  <div id="mainCol">
+    <header id="topbar"><div class="tb-in" id="tbIn"></div></header>
+    <main id="app"></main>
+  </div>
+  <aside id="rail" aria-label="Seu progresso"></aside>
+</div>
+<nav id="nav"></nav>
+<div id="sheet"></div>
+<div id="modal-root"></div>
+
+<script>
+"use strict";
+/* ================================================================
+   WAZYBOO v1.8 — trilha única sequencial, 33 fases sem repetição
+   Fases removidas por redundância:
+   · Padrões duplos (repetia o 1º padrão)          · Padrões do dia a dia (conteúdo fraco)
+   · Sequências de formas (repetia padrões visuais)· Saltos alternados (variação da regra)
+   · Agrupando ideias (o tipo "associação" foi     · Pistas simples (Quem é quem cobre)
+     preservado dentro de Comparações)             · Comparando (repetia Ordem de chegada)
+   Todos os demais bugs corrigidos na v1.7 continuam resolvidos.
+   ================================================================ */
+
+const NOME_APP = 'Wazyboo';
+const APP_VERSION = '1.8';
+
+const IMG = {
+  logo: 'logo.png',
+  mascote: 'mascote.png',
+};
+
+/* ================================================================
+   FOTOS DO WAZYBOO POR OCASIÃO
+   ================================================================ */
+const IMG_MASCOTE = {
+  normal:      'normal.png',
+  feliz:       'feliz.png',
+  triste:      'triste.png',
+  comemorando: 'comemorando.png',
+  pensando:    'pensando.png',
+  medalha:     'medalha.png',
+  coracoes:    'coracoes.png',
+  diario:      'comemorando.png',
+  relampago:   'feliz.png',
+  nivel:       'medalha.png',
+  conquista:   'medalha.png',
+  boasVindas:  'normal.png',
+};
+
+/* FALAS DO WAZYBOO — edite à vontade */
+const BOO_FALAS = {
+  normal:      ['Pronto para mais um desafio?','Erros são degraus da lógica!','Eu acredito em você!','Vamos treinar essa mente?','Que bom te ver por aqui!'],
+  feliz:       ['Boa! Eu sabia que você conseguia!','É exatamente isso!','Mandou muito bem!','Seu cérebro está brilhando!','Exato! Adoro quando acontece!'],
+  triste:      ['Quase! Bora de novo!','Sem stress, errar também ensina.','Eu estou aqui com você!','A próxima você acerta, aposto!','Respira fundo e tenta de novo!'],
+  comemorando: ['Concluímos juntos! Que vitória!','Você arrasou nessa lição!','Que mente incrível a sua!','Mais um degrau na trilha!','Eu comemorei cada resposta!'],
+  diario:      ['O desafio de hoje é seu!','Missão diária cumprida!','Amanhã tem mais, hein!','Rotina de gênio!'],
+  relampago:   ['Que velocidade! Até eu tonteiei!','Sua mente é um raio!','Rápido e certeiro!','Relâmpago? Você que é!'],
+  nivel:       ['Subiu de nível! Estou tão orgulhoso!','Olha só você evoluindo!','Novo nível desbloqueado!'],
+  conquista:   ['Conquista desbloqueada!','Guardei essa medalha para você!','Você mereceu cada uma!'],
+  coracoes:    ['Ops... precisamos de corações!','Eles voltam logo, prometo!','Uma pausa estratégica!'],
+  pensando:    ['Vou com você nessa!','Respire fundo e olhe com calma.','Ache o padrão — eu espero aqui!','Concentre-se, você consegue!'],
+  boasVindas:  ['Olá! Eu sou o Wazyboo!','Que bom te ver por aqui!','Bem-vindo à nossa trilha!'],
+};
+
+const MASCOTE_FALLBACK = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='52' r='40' fill='%23888'/%3E%3Ccircle cx='38' cy='46' r='6' fill='%23555'/%3E%3Ccircle cx='62' cy='46' r='6' fill='%23555'/%3E%3Cpath d='M38 64q12 10 24 0' stroke='%23555' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E";
+
+const booFoto = estado => IMG_MASCOTE[estado] || IMG.mascote || MASCOTE_FALLBACK;
+const booFala = estado => { const a = BOO_FALAS[estado] || BOO_FALAS.normal; return a[Math.floor(Math.random()*a.length)]; };
+function booScene(estado, cls = ''){
+  return `<div class="boo-scene ${cls}">
+    <div class="boo-bubble">${esc(booFala(estado))}</div>
+    <img class="mascote" src="${booFoto(estado)}" alt="Wazyboo" onerror="this.onerror=null;this.src='${MASCOTE_FALLBACK}'">
+  </div>`;
+}
+const mascotHTML = (cls = '') => `<img class="mascote ${cls}" src="${booFoto('normal')}" alt="Wazyboo" onerror="this.onerror=null;this.src='${MASCOTE_FALLBACK}'">`;
+function cheer(el){ const m = el && (el.matches('.mascote') ? el : el.querySelector('.mascote')); if(!m) return; m.classList.remove('m-bounce','m-shake'); void m.offsetWidth; m.classList.add('m-bounce'); }
+function scold(el){ const m = el && (el.matches('.mascote') ? el : el.querySelector('.mascote')); if(!m) return; m.classList.remove('m-bounce','m-shake'); void m.offsetWidth; m.classList.add('m-shake'); }
+
+const logoHTML = () => `<span class="logo-wrap">
+  <img class="logo-img" src="${IMG.logo}" alt="" onerror="this.style.display='none'">
+  <span class="logo-name">${NOME_APP}</span>
+</span>`;
+(function(){ const l = document.createElement('link'); l.rel = 'icon'; l.href = IMG.logo; document.head.appendChild(l); })();
+
+/* ---------- Armazenamento protegido (modo privado etc.) ---------- */
+const storeGet  = k => { try{ return localStorage.getItem(k); }catch(e){ return null; } };
+const storeSet  = (k,v) => { try{ localStorage.setItem(k,v); }catch(e){} };
+const storeDel  = k => { try{ localStorage.removeItem(k); }catch(e){} };
+const deepClone = o => (typeof structuredClone === 'function') ? structuredClone(o) : JSON.parse(JSON.stringify(o));
+
+/* ---------- Tema ---------- */
+const THEME_KEY = 'wazyboo_theme';
+const getTheme = () => storeGet(THEME_KEY) || 'light';
+document.documentElement.dataset.theme = getTheme();
+function setTheme(t){
+  document.documentElement.dataset.theme = t;
+  storeSet(THEME_KEY, t);
+  renderTop();
+}
+
+/* ---------- Utilitários ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const dkey = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+const todayKey = () => dkey(new Date());
+const yesterdayKey = () => dkey(new Date(Date.now() - 864e5));
+function seededRng(str){ let h = 2166136261; for (let i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return function(){ h ^= h << 13; h ^= h >>> 17; h ^= h << 5; return ((h >>> 0) % 100000) / 100000; }; }
+const pickSeed = (arr, rng) => arr[Math.floor(rng() * arr.length)];
+
+/* ---------- Ícones ---------- */
+const ICONS = {
+  home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',
+  book:'<path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19a2 2 0 0 0 2 2h13"/>',
+  zap:'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  trophy:'<path d="M8 21h8M12 17v4M7 4h10v6a5 5 0 0 1-10 0V4z"/><path d="M7 6H4a1 1 0 0 0-1 1c0 2 2 4 4 4M17 6h3a1 1 0 0 1 1 1c0 2-2 4-4 4"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-5 8-5s6.5 1 8 5"/>',
+  heart:'<path d="M12 20s-7-4.6-9.2-9A5.2 5.2 0 0 1 12 6.4 5.2 5.2 0 0 1 21.2 11C19 15.4 12 20 12 20z"/>',
+  flame:'<path d="M12 22c4 0 7-2.5 7-6.5 0-3-2-5-3.5-7C14 6 13 4 13 2c-3 2-4 5-4 7-1-.8-1.5-2-1.5-3C5.5 8 5 10.5 5 13.5 5 19.5 8 22 12 22z"/>',
+  coin:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>',
+  star:'<polygon points="12 2 15 8.5 22 9.3 17 14 18.3 21 12 17.6 5.7 21 7 14 2 9.3 9 8.5"/>',
+  check:'<path d="M4 12l5 5L20 7"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  bulb:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.7 1 1.5 1 2.5h6c0-1 .2-1.8 1-2.5A6 6 0 0 0 12 3z"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
+  lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  chev:'<path d="M9 6l6 6-6 6"/>',
+  sparkle:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3zM19 16l.9 2.1L22 19l-2.1.9L19 22l-.9-2.1L16 19l2.1-.9L19 16z"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
+  refresh:'<path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/>',
+  pencil:'<path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19l-4 1z"/>',
+  crown:'<path d="M3 17l2-9 5 4 2-6 2 6 5-4 2 9H3z"/><path d="M5 21h14"/>',
+  calendar:'<rect x="4" y="6" width="16" height="15" rx="2"/><path d="M8 3v5M16 3v5M4 11h16"/>',
+  play:'<polygon points="8 5 19 12 8 19 8 5"/>',
+  flag:'<path d="M5 21V4c4-2 8 2 14 0v10c-6 2-10-2-14 0"/>',
+  shapes:'<rect x="3.5" y="12.5" width="8.5" height="8.5" rx="2"/><circle cx="16.5" cy="8" r="5"/>',
+  medal:'<circle cx="12" cy="14" r="6"/><path d="M9 9L6 2M15 9l3-7"/>',
+  moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  camera:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+  trash:'<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  down:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
+  up:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>',
+  volume:'<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>',
+};
+const icon = (n, s = 20) => `<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||''}</svg>`;
+
+/* ---------- Formas dos exercícios ---------- */
+const COL = { t:'#8B5CF6', a:'#FFC800', c:'#FF4B4B', g:'#1CB0F6' };
+const SHAPES = {
+  circle: c => `<circle cx="20" cy="20" r="15" fill="${c}"/>`,
+  square: c => `<rect x="6" y="6" width="28" height="28" rx="7" fill="${c}"/>`,
+  triangle: c => `<polygon points="20,5 35,33 5,33" fill="${c}"/>`,
+  diamond: c => `<polygon points="20,3 35,20 20,37 5,20" fill="${c}"/>`,
+  star: c => `<path d="M20 3 L24.7 14.2 36.9 15 27.6 22.8 30.6 34.5 20 28 9.4 34.5 12.4 22.8 3.1 15 15.3 14.2 Z" fill="${c}"/>`,
+  hexagon: c => `<polygon points="20,3.5 34,11.7 34,28.3 20,36.5 6,28.3 6,11.7" fill="${c}"/>`,
+};
+function sh(shape, color, o = {}){ const s = o.w || 40; return `<svg class="sym" viewBox="0 0 40 40" width="${s}" height="${s}" style="transform:rotate(${o.rot||0}deg)">${SHAPES[shape](color)}</svg>`; }
+function dots(n, color = COL.t, s = 44){
+  let inner = ''; const pos = [[13,20],[27,20],[20,13],[20,27],[12,12],[28,28]];
+  for (let i = 0; i < n && i < 6; i++) inner += `<circle cx="${pos[i][0]}" cy="${pos[i][1]}" r="4.6" fill="${color}"/>`;
+  return `<svg class="sym" viewBox="0 0 40 40" width="${s}" height="${s}">${inner}</svg>`;
+}
+const seqHTML = cells => `<div class="seq-line">${cells.map(c => `<div class="seq-cell${c==='?'?' q':''}">${c==='?'?'?':c}</div>`).join('')}</div>`;
+
+/* ================================================================
+   DIFICULDADES — a trilha sobe por elas a cada fase
+   ================================================================ */
+const DIFFS = [
+  { n:1, name:'Iniciante',     col:'#1CB0F6', colD:'#1490CE', mult:1,   desc:'Para construir a base com calma' },
+  { n:2, name:'Intermediário', col:'#8B5CF6', colD:'#6D28D9', mult:1.5, desc:'Regras combinadas e enigmas leves' },
+  { n:3, name:'Avançado',      col:'#FF9600', colD:'#D57C00', mult:2,   desc:'Tabelas, silogismos e dedução pesada' },
+  { n:4, name:'Extremo',       col:'#FF4B4B', colD:'#E13C3C', mult:3,   desc:'Só para mentes afiadas. Boa sorte!' },
+];
+const diffOf = d => DIFFS.find(x => x.n === d) || DIFFS[0];
+
+/* ================================================================
+   CONTEÚDO — 33 lições, 165 exercícios · cada uma ensina algo novo
+   Iniciante 8 · Intermediário 7 · Avançado 9 · Extremo 9
+   ================================================================ */
+const LEVELS = [
+  { n:1, name:'Fundamentos', desc:'Padrões, sequências e classificações' },
+  { n:2, name:'Dedução',     desc:'Pistas, eliminação e ordenação' },
+  { n:3, name:'Lógica',      desc:'Proposições, operadores e tabelas' },
+  { n:4, name:'Desafios',    desc:'Enigmas de alto nível' },
+];
+const MODULES = [
+  { id:'pat', lv:1, title:'Padrões',       ico:'sparkle', col:'#8B5CF6', colD:'#6D28D9' },
+  { id:'seq', lv:1, title:'Sequências',    ico:'chev',    col:'#1CB0F6', colD:'#1490CE' },
+  { id:'cls', lv:1, title:'Classificação', ico:'shapes',  col:'#FF9600', colD:'#D57C00' },
+  { id:'ded', lv:2, title:'Eliminação',    ico:'target',  col:'#0E9888', colD:'#0B7568' },
+  { id:'ord', lv:2, title:'Ordenação',     ico:'flag',    col:'#FFC800', colD:'#DBA800' },
+  { id:'log', lv:3, title:'Proposições',   ico:'book',    col:'#3D7EA6', colD:'#2F6486' },
+  { id:'eni', lv:4, title:'Enigmas',       ico:'crown',   col:'#FF4B4B', colD:'#E13C3C' },
+];
+
+const LESSONS = [
+/* --- Iniciante (8 fases) --- */
+{ id:'pat1', mod:'pat', d:1, title:'O primeiro padrão', desc:'Descubra o que se repete',
+  ex:[
+  {t:'mc',cat:'Padrões',v:seqHTML([sh('circle',COL.t),sh('square',COL.a),sh('circle',COL.t),sh('square',COL.a),sh('circle',COL.t)]),q:'Qual figura continua o padrão?',o:[sh('circle',COL.t),sh('square',COL.a),sh('triangle',COL.c),sh('star',COL.g)],a:1,h:'Cubra as figuras e vá revelando uma a uma, acompanhando a alternância.',x:'O padrão alterna círculo roxo e quadrado amarelo. Como o último exibido é o círculo, o próximo é o quadrado.'},
+  {t:'mc',cat:'Padrões',v:seqHTML([sh('triangle',COL.t),sh('triangle',COL.t),sh('square',COL.a),sh('triangle',COL.t),sh('triangle',COL.t),sh('square',COL.a),sh('triangle',COL.t),sh('triangle',COL.t)]),q:'Qual figura vem depois?',o:[sh('circle',COL.t),sh('square',COL.a),sh('diamond',COL.g),sh('star',COL.c)],a:1,h:'Procure o grupo que se repete inteiro, não apenas figuras isoladas.',x:'O bloco "▲ ▲ ■" se repete. Depois de duas setas, fecha o grupo com um quadrado.'},
+  {t:'seq',cat:'Padrões',v:seqHTML(['1','3','5','7','?']),q:'Complete a sequência.',o:['8','9','10','11'],a:1,h:'Quanto você soma para ir de um número ao próximo?',x:'Cada passo soma 2: são os números ímpares. Depois do 7 vem o 9.'},
+  {t:'mc',cat:'Padrões',v:seqHTML([sh('circle',COL.t),sh('circle',COL.a),sh('circle',COL.t),sh('circle',COL.a),sh('circle',COL.t)]),q:'Qual é a próxima cor?',o:[sh('circle',COL.t),sh('circle',COL.a),sh('circle',COL.c),sh('circle',COL.g)],a:1,h:'Ignore a forma — aqui quem alterna é a cor.',x:'As cores alternam entre roxo e âmbar. Depois do roxo, vem o âmbar.'},
+  {t:'tf',cat:'Padrões',q:'No padrão ● ● ■ ● ● ■ ● ● , o próximo símbolo é ■.',a:true,h:'Divida a sequência em grupos de três.',x:'O bloco "● ● ■" se repete. O terceiro grupo começou com ● ●, então falta o ■. Verdadeiro!'},
+]},
+{ id:'pat3', mod:'pat', d:1, title:'Padrões escondidos', desc:'Regras menos óbvias e padrões duplos',
+  ex:[
+  {t:'mc',cat:'Padrões',v:`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;justify-items:center">${seqHTML([sh('circle',COL.t),sh('square',COL.a),sh('triangle',COL.c)]).replaceAll('seq-line','row')}<div></div>${seqHTML([sh('circle',COL.t),sh('square',COL.a),sh('triangle',COL.c)]).replaceAll('seq-line','row')}<div></div>${seqHTML([sh('circle',COL.t),sh('square',COL.a),'?']).replaceAll('seq-line','row')}</div>`,q:'Cada linha segue a mesma regra. O que falta?',o:[sh('circle',COL.t),sh('square',COL.a),sh('triangle',COL.c),sh('diamond',COL.g)],a:2,h:'Compare a primeira e a segunda linha, figura por figura.',x:'Todas as linhas seguem "● ■ ▲". Na terceira linha faltava o triângulo.'},
+  {t:'mc',cat:'Padrões',v:seqHTML([sh('circle',COL.t),sh('square',COL.a),sh('square',COL.a),sh('circle',COL.t),sh('square',COL.a),sh('square',COL.a),sh('circle',COL.t)]),q:'Qual figura continua o padrão?',o:[sh('circle',COL.t),sh('square',COL.a),sh('triangle',COL.c),sh('diamond',COL.g)],a:1,h:'O grupo repetido tem três figuras.',x:'O bloco "● ■ ■" se repete. Depois do círculo vêm dois quadrados — o próximo é o quadrado.'},
+  {t:'mc',cat:'Padrões',v:seqHTML([sh('triangle',COL.t,{rot:0}),sh('triangle',COL.t,{rot:90}),sh('triangle',COL.t,{rot:180})]),q:'A seta gira a cada passo. Como ela aponta em seguida?',o:[sh('triangle',COL.t,{rot:0}),sh('triangle',COL.t,{rot:90}),sh('triangle',COL.t,{rot:180}),sh('triangle',COL.t,{rot:270})],a:3,h:'Compare a direção de uma figura com a seguinte.',x:'A seta gira 90° no sentido horário a cada passo: cima → direita → baixo → esquerda.'},
+  {t:'mc',cat:'Padrões',v:seqHTML([dots(1),dots(2),dots(3)]),q:'A quantidade cresce seguindo uma regra. Quantos pontos vêm?',o:[dots(1,COL.a),dots(4,COL.a),dots(2,COL.a),dots(5,COL.a)],a:1,h:'Conte os pontos de cada quadro.',x:'Cada quadro tem um ponto a mais que o anterior: 1, 2, 3… e agora 4.'},
+  {t:'mc',cat:'Padrões',v:seqHTML([sh('circle',COL.t),sh('circle',COL.a),sh('square',COL.t),sh('square',COL.a),sh('triangle',COL.t)]),q:'Duas regras atuam juntas: forma e cor. O que vem depois?',o:[sh('triangle',COL.t),sh('triangle',COL.a),sh('circle',COL.a),sh('square',COL.t)],a:1,h:'Acompanhe a forma separadamente da cor.',x:'A forma avança círculo → quadrado → triângulo; a cor alterna a cada passo. Faltava um triângulo roxo.'},
+]},
+{ id:'seq1', mod:'seq', d:1, title:'Números que dançam', desc:'Sequências numéricas básicas',
+  ex:[
+  {t:'seq',cat:'Sequências',v:seqHTML(['3','6','9','12','?']),q:'Complete a sequência.',o:['13','14','15','16'],a:2,h:'Some sempre o mesmo valor.',x:'É a tabuada do 3: somamos 3 a cada passo. Depois do 12 vem o 15.'},
+  {t:'seq',cat:'Sequências',v:seqHTML(['20','18','16','14','?']),q:'Complete a sequência.',o:['10','11','12','13'],a:2,h:'Aqui os números diminuem, não aumentam.',x:'Cada passo subtrai 2. Depois do 14 vem o 12.'},
+  {t:'mc',cat:'Sequências',q:'Qual número continua:  1, 2, 4, 8, 16, …?',o:['18','24','32','20'],a:2,h:'Compare cada número com o anterior: some? multiplique?',x:'Cada termo é o dobro do anterior. 16 × 2 = 32.'},
+  {t:'seq',cat:'Sequências',v:seqHTML(['5','10','15','20','?']),q:'Complete a sequência.',o:['22','24','25','30'],a:2,h:'Observe a tabuada escondida.',x:'Somamos 5 a cada passo (múltiplos de 5). Depois do 20 vem o 25.'},
+  {t:'mc',cat:'Sequências',q:'Descubra o truque:  1, 1, 2, 3, 5, 8, …?',o:['11','12','13','14'],a:2,h:'Some os dois termos anteriores.',x:'É a sequência de Fibonacci: cada termo é a soma dos dois anteriores. 5 + 8 = 13.'},
+]},
+{ id:'cls1', mod:'cls', d:1, title:'O intruso', desc:'Quem não pertence ao grupo?',
+  ex:[
+  {t:'mc',cat:'Classificação',q:'Qual palavra NÃO pertence ao grupo?',o:['maçã','banana','carro','uva'],a:2,h:'Três palavras compartilham uma categoria óbvia.',x:'Maçã, banana e uva são frutas; carro é um veículo. Ele é o intruso.'},
+  {t:'mc',cat:'Classificação',q:'Há três círculos e um quadrado na linha acima. Qual figura não pertence ao grupo?',v:seqHTML([sh('circle',COL.t),sh('circle',COL.t),sh('square',COL.a),sh('circle',COL.t)]),o:['O círculo','O quadrado','Todos pertencem','Nenhum círculo'],a:1,h:'Classifique pela forma geométrica.',x:'O grupo é formado por círculos; o quadrado é o único diferente.'},
+  {t:'mc',cat:'Classificação',q:'Qual palavra NÃO pertence ao grupo?',o:['cachorro','gato','cadeira','cavalo'],a:2,h:'Pense em seres vivos versus objetos.',x:'Cachorro, gato e cavalo são animais; cadeira é um móvel.'},
+  {t:'mc',cat:'Classificação',q:'Qual número NÃO pertence ao grupo:  2, 4, 7, 10?',o:['2','4','7','10'],a:2,h:'Divida cada número por 2 e observe o resto.',x:'2, 4 e 10 são pares; 7 é ímpar — é o intruso.'},
+  {t:'mc',cat:'Classificação',q:'Qual palavra NÃO pertence ao grupo?',o:['garfo','faca','colher','martelo'],a:3,h:'Todos têm um uso em comum… menos um.',x:'Garfo, faca e colher são talheres; martelo é uma ferramenta.'},
+]},
+{ id:'cls2', mod:'cls', d:1, title:'Agrupando ideias', desc:'Relações, associações e parte–todo',
+  ex:[
+  {t:'match',cat:'Classificação',q:'Associe cada animal ao seu lugar.',pairs:[['Peixe','Vive na água'],['Pássaro','Voa no céu'],['Toupeira','Cava na terra']],h:'Comece pelo par mais óbvio para você.',x:'Cada animal tem o habitat que define sua relação com o mundo.'},
+  {t:'mc',cat:'Classificação',q:'Complete o grupo:  vermelho, azul, verde, ___',o:['mesa','amarelo','correr','quente'],a:1,h:'Qual categoria une as três primeiras palavras?',x:'São todas cores. "Amarelo" é a única opção que pertence ao grupo.'},
+  {t:'match',cat:'Classificação',q:'Associe cada forma ao número de lados.',pairs:[['Triângulo','3 lados'],['Quadrado','4 lados'],['Hexágono','6 lados']],h:'Conte os lados mentalmente.',x:'A classificação aqui é uma propriedade matemática: a quantidade de lados.'},
+  {t:'mc',cat:'Classificação',q:'"Dedo" está para "mão" assim como "dente" está para ___',o:['língua','boca','rosto','pente'],a:1,h:'Qual é a relação entre dedo e mão?',x:'Dedo é parte da mão; dente é parte da boca. É uma relação parte–todo.'},
+  {t:'tf',cat:'Classificação',q:'"Um triângulo é um polígono de três lados" é uma afirmação verdadeira.',a:true,h:'Classificação geométrica básica.',x:'Por definição, triângulo é o polígono de exatamente três lados.'},
+]},
+{ id:'ded2', mod:'ded', d:1, title:'Quem é quem', desc:'Cruze pistas para eliminar opções',
+  ex:[
+  {t:'mc',cat:'Dedução',q:'Há três caixas: vermelha, azul e verde. Uma delas guarda uma bola. A bola não está na vermelha nem na verde. Onde ela está?',o:['Na vermelha','Na azul','Na verde','Em nenhuma'],a:1,h:'Vá riscando as caixas impossíveis.',x:'Eliminamos vermelha e verde pelas pistas. Sobrou apenas a azul — a resposta por eliminação.'},
+  {t:'mc',cat:'Dedução',q:'Léo, Rui e Bia são piloto, médico e professor(a). Léo não é médico nem professor. Rui não é professor. O que Bia é?',o:['Médica','Professora','Piloto','Não dá para saber'],a:1,h:'Comece por quem tem mais pistas: Léo.',x:'Léo só pode ser piloto. Rui, sem ser professor, é o médico. Resta professora para Bia.'},
+  {t:'mc',cat:'Dedução',q:'Téo é mais velho que Nanda, que é mais velha que Vivi. Quem é o caçula?',o:['Téo','Nanda','Vivi','Empate'],a:2,h:'"Caçula" é o mais novo da fila.',x:'A ordem de idade é Téo > Nanda > Vivi. A caçula é Vivi.'},
+  {t:'mc',cat:'Dedução',q:'Rita sempre fala a verdade; Léo sempre mente. Rita diz: "Léo comeu o bolo." Léo diz: "Eu não comi o bolo!" Quem comeu?',o:['Rita','Léo','Ninguém','Os dois'],a:1,h:'O que acontece com qualquer frase dita por Léo?',x:'Léo mente sempre: a negação do que ele diz é a verdade. Ele comeu o bolo — e ainda negou.'},
+  {t:'mc',cat:'Dedução',q:'Numa gaveta escura há meias pretas e brancas misturadas. Quantas meias você precisa tirar para ter, com certeza, um par da mesma cor?',o:['2','3','4','5'],a:1,h:'Pense no pior cenário possível.',x:'Com 2 meias, podem ser cores diferentes. Com 3, só há duas cores — duas terão de repetir. São 3.'},
+]},
+{ id:'ord1', mod:'ord', d:1, title:'Ordem de chegada', desc:'Quem veio antes de quem?',
+  ex:[
+  {t:'order',cat:'Ordenação',q:'Léo chegou antes de Ana. Ana chegou antes de Bia. Coloque na ordem de chegada.',items:['Léo','Ana','Bia'],h:'Comece por quem não tem ninguém antes dele.',x:'"Antes" encadeia: Léo → Ana → Bia.'},
+  {t:'order',cat:'Ordenação',q:'Organize as partes do dia do mais cedo ao mais tarde.',items:['Manhã','Tarde','Noite'],h:'Pense no seu próprio dia.',x:'A sequência natural do dia é manhã, tarde e noite.'},
+  {t:'mc',cat:'Ordenação',q:'Em uma corrida, Bia terminou depois de Caio e antes de Ana. Quem venceu?',o:['Caio','Bia','Ana','Não dá para saber'],a:0,h:'Traduza cada frase para "chegou antes".',x:'Caio chegou antes de Bia, que chegou antes de Ana: Caio → Bia → Ana. Vencedor: Caio.'},
+  {t:'mc',cat:'Ordenação',q:'Gustavo é mais alto que Íris, e Íris é mais alta que Joel. Quem é o mais alto?',o:['Gustavo','Íris','Joel','Empatados'],a:0,h:'Quem está no topo da cadeia de comparações?',x:'A fila é Gustavo > Íris > Joel. O primeiro é o mais alto.'},
+  {t:'tf',cat:'Ordenação',q:'Se A chegou antes de B, então B chegou depois de A.',a:true,h:'Toda relação de ordem tem o lado reverso.',x:'"Antes" e "depois" são versões invertidas da mesma posição. Verdadeiro!'},
+]},
+{ id:'log1', mod:'log', d:1, title:'O que é uma proposição?', desc:'Frases com valor de verdade',
+  ex:[
+  {t:'tf',cat:'Lógica',q:'A frase "2 é um número par" é uma proposição, e ela é verdadeira.',a:true,h:'Proposição é uma frase que pode ser julgada como V ou F.',x:'É declarativa e tem valor de verdade — e de fato 2 é par. Verdadeira!'},
+  {t:'tf',cat:'Lógica',q:'"Todo triângulo tem quatro lados" é uma proposição falsa.',a:true,h:'Mesmo falsa, uma frase pode ser uma proposição.',x:'Ela afirma algo julgável (V ou F) — e o valor é F. Proposição falsa, mas proposição!'},
+  {t:'mc',cat:'Lógica',q:'Qual das frases abaixo é uma proposição?',o:['Que horas são?','Feche a porta!','7 é um número ímpar.','Que dia lindo!'],a:2,h:'Procure a frase declarativa com valor de verdade.',x:'Perguntas, ordens e exclamações não são proposições. Só "7 é ímpar" pode ser V ou F (e é V).'},
+  {t:'tf',cat:'Lógica',q:'"Que horas são?" é uma proposição falsa.',a:false,h:'Perguntas cabem em verdadeiro ou falso?',x:'Uma pergunta não afirma nada, então não é V nem F. Não é proposição — a afirmação é falsa.'},
+  {t:'mc',cat:'Lógica',q:'Quantas proposições há em: "Hoje é segunda." e "2 + 2 = 4"?',o:['0','1','2','3'],a:2,h:'Conte as frases declarativas julgáveis.',x:'As duas são afirmações com valor de verdade: são 2 proposições.'},
+]},
+{ id:'log2', mod:'log', d:1, title:'E, OU, NÃO', desc:'Os operadores que mudam tudo',
+  ex:[
+  {t:'tf',cat:'Lógica',q:'A afirmação "(3 > 2) E (5 > 4)" é verdadeira.',a:true,h:'O E exige as duas partes verdadeiras.',x:'3 > 2 é V e 5 > 4 é V. V E V = V. Verdadeira!'},
+  {t:'tf',cat:'Lógica',q:'A afirmação "(1 > 2) OU (3 > 2)" é falsa.',a:false,h:'O OU basta uma parte verdadeira.',x:'1 > 2 é F, mas 3 > 2 é V. F OU V = V. Logo, a afirmação do enunciado é falsa.'},
+  {t:'tf',cat:'Lógica',q:'A afirmação "NÃO (2 + 2 = 4)" é verdadeira.',a:false,h:'Aplique a negação ao valor interno.',x:'2 + 2 = 4 é verdadeiro; a negação de V é F. A afirmação é falsa.'},
+  {t:'mc',cat:'Lógica',q:'Se p é V e q é F, qual é o valor de "p E q"?',o:['Verdadeiro','Falso','Depende do dia','Não se pode calcular'],a:1,h:'Lembre da regra do E.',x:'O "E" só é V quando as duas são V. Como q é F, p E q = F.'},
+  {t:'mc',cat:'Lógica',q:'A expressão "p OU q" é falsa somente quando:',o:['as duas são verdadeiras','as duas são falsas','apenas p é verdadeira','nunca é falsa'],a:1,h:'Qual combinação não salva o OU?',x:'Basta uma verdadeira para o OU valer. Ele só afunda quando p e q são as duas falsas.'},
+]},
+
+/* --- Intermediário (7 fases) --- */
+{ id:'pat4', mod:'pat', d:2, title:'Regras que crescem', desc:'Padrões que aumentam a cada passo',
+  ex:[
+  {t:'mc',cat:'Padrões',v:seqHTML([dots(1),dots(3),dots(5)]),q:'A quantidade cresce sempre do mesmo jeito. Quantos pontos vêm?',o:[dots(6,COL.a),dots(7,COL.a),dots(8,COL.a),dots(9,COL.a)],a:1,h:'Compare cada quadro com o anterior: quanto aumenta?',x:'Cresce de 2 em 2: 1, 3, 5… e agora 7 (só os ímpares).'},
+  {t:'seq',cat:'Padrões',v:seqHTML(['1','2','4','7','11','?']),q:'Complete a sequência.',o:['15','16','17','18'],a:1,h:'Calcule os saltos entre termos vizinhos: +1, +2, +3…',x:'Os saltos crescem: +1, +2, +3, +4 e agora +5. 11 + 5 = 16.'},
+  {t:'mc',cat:'Padrões',q:'Figuras feitas de palitos: a 1ª usa 3, a 2ª usa 6, a 3ª usa 9. Quantos palitos tem a 5ª figura?',o:['12','14','15','18'],a:2,h:'Multiplique a posição da figura por 3.',x:'Cada figura usa 3 palitos a mais: 3, 6, 9, 12 e 15. A 5ª usa 15 palitos.'},
+  {t:'mc',cat:'Padrões',v:seqHTML(['1','3','6','10','?']),q:'Complete a sequência.',o:['12','13','14','15'],a:3,h:'Os saltos são +2, +3, +4… percebeu?',x:'São os números triangulares: somamos 2, depois 3, depois 4 e agora 5. 10 + 5 = 15.'},
+  {t:'tf',cat:'Padrões',q:'Na sequência 2, 4, 8, 16, cada termo é o dobro do anterior.',a:true,h:'Compare cada número com o anterior: soma ou multiplicação?',x:'2 × 2 = 4, 4 × 2 = 8, 8 × 2 = 16. É sempre o dobro. Verdadeiro!'},
+]},
+{ id:'seq3', mod:'seq', d:2, title:'A regra da sequência', desc:'Encontre a lei — inclusive as compostas',
+  ex:[
+  {t:'mc',cat:'Sequências',q:'Qual é a regra da sequência  2, 5, 8, 11?',o:['Somar 3','Somar 4','Multiplicar por 2','Alternar +2 e +3'],a:0,h:'Calcule a diferença entre termos vizinhos.',x:'De 2 → 5 → 8 → 11 somamos sempre 3. Regras se descobrem medindo os saltos.'},
+  {t:'seq',cat:'Sequências',v:seqHTML(['3','6','12','24','?']),q:'Complete a sequência.',o:['30','36','48','64'],a:2,h:'A regra aqui multiplica, não soma.',x:'Cada termo é o dobro do anterior: 24 × 2 = 48.'},
+  {t:'seq',cat:'Sequências',v:seqHTML(['1','4','2','5','3','?']),q:'Complete a sequência.',o:['5','6','7','8'],a:1,h:'Calcule os saltos: +3, −2, +3, −2…',x:'Os saltos alternam +3 e −2. Depois do 3, soma 3 de novo: 3 + 3 = 6.'},
+  {t:'mc',cat:'Sequências',q:'Qual é a regra da sequência  5, 10, 8, 16, 14, 28, …?',o:['Multiplicar por 2 e depois subtrair 2','Somar 5 sempre','Dividir por 2','Alternar +10 e −2'],a:0,h:'Teste cada regra candidata na sequência inteira.',x:'5 ×2 = 10, 10 −2 = 8, 8 ×2 = 16, 16 −2 = 14, 14 ×2 = 28. É "×2 e −2" alternados.'},
+  {t:'mc',cat:'Sequências',q:'Sequência famosa:  1, 4, 9, 16, 25, …  Qual vem depois?',o:['30','36','42','49'],a:1,h:'Quebre cada número em um produto: 1×1, 2×2, 3×3…',x:'São os quadrados perfeitos: 1², 2², 3², 4², 5² e agora 6² = 36.'},
+]},
+{ id:'cls3', mod:'cls', d:2, title:'Comparações', desc:'Maior, menor, parte–todo e associações',
+  ex:[
+  {t:'mc',cat:'Classificação',q:'Ana é mais alta que Bia. Bia é mais alta que Cris. Quem é a mais baixa?',o:['Ana','Bia','Cris','Não dá para saber'],a:2,h:'Organize as três em ordem de altura.',x:'Ana > Bia > Cris. A menor da fila é Cris.'},
+  {t:'mc',cat:'Classificação',q:'Se A > B e B > C, então:',o:['A > C','A < C','A = C','É impossível comparar'],a:0,h:'Essa é a propriedade de transição da desigualdade.',x:'Se A supera B e B supera C, A supera C. É a transitividade.'},
+  {t:'match',cat:'Classificação',q:'Associe cada parte ao seu todo.',pairs:[['Dedo','Mão'],['Dente','Boca'],['Página','Livro']],h:'Pense na relação parte–todo.',x:'Dedo é parte da mão; dente é parte da boca; página é parte do livro. A relação parte–todo serve para tudo isso.'},
+  {t:'mc',cat:'Classificação',q:'O melão pesa mais que a laranja; a laranja pesa mais que a uva. O mais leve é:',o:['o melão','a laranja','a uva','todos pesam igual'],a:2,h:'Monte a fila do mais pesado ao mais leve.',x:'Melão > laranja > uva. O último da fila é o mais leve: a uva.'},
+  {t:'tf',cat:'Classificação',q:'Se Pedro corre mais rápido que Lucas, então Lucas corre mais devagar que Pedro.',a:true,h:'Pense nos dois pontos de vista da mesma corrida.',x:'"Mais rápido" e "mais devagar" são dois lados da mesma comparação. Verdadeiro!'},
+]},
+{ id:'ded3', mod:'ded', d:2, title:'Eliminando possibilidades', desc:'Pistas combinadas fecham o cerco',
+  ex:[
+  {t:'mc',cat:'Dedução',q:'O código é um número de 1 a 9. Não é par, não é 9 e é maior que 5. Qual é o código?',o:['5','6','7','8'],a:2,h:'Risque os pares, depois o 9, depois os ≤ 5.',x:'Saem os pares (2,4,6,8), o 9 e os menores ou iguais a 5. Só sobra o 7.'},
+  {t:'mc',cat:'Dedução',q:'Hoje não é segunda, não é quarta e não é quinta. Qual dia NÃO pode ser hoje?',o:['Terça','Sexta','Quarta','Domingo'],a:2,h:'A pergunta pede um dia proibido pelas pistas.',x:'Quarta foi explicitamente descartada. As outras três continuam possíveis.'},
+  {t:'mc',cat:'Dedução',q:'A bola sorteada (de 1 a 10) é maior que 7, é par e é múltipla de 5. Qual é a bola?',o:['6','8','10','9'],a:2,h:'Aplique uma pista de cada vez.',x:'Maior que 7: 8, 9, 10. Par: 8 e 10. Múltipla de 5: sobra o 10.'},
+  {t:'tf',cat:'Dedução',q:'"Quando você elimina todas as outras possibilidades, o que sobra, por mais improvável, é a resposta." Esse princípio descreve o raciocínio por eliminação.',a:true,h:'É a famosa máxima do detetive.',x:'Exatamente: eliminar o impossível deixa o possível — mesmo que pareça improvável. Verdadeiro!'},
+  {t:'mc',cat:'Dedução',q:'Cinco portas numeradas de 1 a 5. O prêmio não está numa porta par, nem na 1, nem na 5. Em qual porta ele está?',o:['Porta 2','Porta 3','Porta 4','Em nenhuma'],a:1,h:'Elimine as pares e depois 1 e 5.',x:'Pares fora (2 e 4), depois 1 e 5. Restou apenas a porta 3.'},
+]},
+{ id:'ord3', mod:'ord', d:2, title:'Encaixando verdades', desc:'Ordem + pistas combinadas',
+  ex:[
+  {t:'mc',cat:'Ordenação',q:'Três planetas em fila. Marte não é o primeiro nem o último. Vênus é o primeiro. Qual está no meio?',o:['Vênus','Marte','Terra','Não dá para saber'],a:1,h:'Comece pela posição que já está fixada.',x:'Vênus é 1º; Marte, sem poder ser 1º ou 3º, sobra no meio; Terra fica em 3º.'},
+  {t:'order',cat:'Ordenação',q:'Organize os passos da receita de bolo.',items:['Misturar os ingredientes','Assar a massa','Decorar o bolo'],h:'O que precisa existir antes de decorar?',x:'Mistura → forno → decoração. Sequências de processo também são ordem lógica.'},
+  {t:'mc',cat:'Ordenação',q:'Na estante, o livro A está à esquerda de B, e B está à esquerda de C. Qual livro está à direita dos outros?',o:['A','B','C','Nenhum'],a:2,h:'Desenhe a fila: A, B, C.',x:'A → B → C da esquerda para a direita. O C é o mais à direita.'},
+  {t:'tf',cat:'Ordenação',q:'Se segunda vem antes de terça, então terça vem imediatamente depois de segunda.',a:true,h:'Pense na estrutura da semana.',x:'Na sequência dos dias da semana, terça é a sucessora direta de segunda. Verdadeiro!'},
+  {t:'mc',cat:'Ordenação',q:'Lia corre antes do nascer do sol; Mia corre depois. Quem corre primeiro?',o:['Lia','Mia','As duas juntas','Não dá para saber'],a:0,h:'"Antes do nascer do sol" vem antes de tudo.',x:'A ordem é: Lia (antes do sol) → nascer do sol → Mia. Lia corre primeiro.'},
+]},
+{ id:'log3', mod:'log', d:2, title:'Se… então', desc:'O condicional e seus truques',
+  ex:[
+  {t:'mc',cat:'Lógica',q:'"Se está chovendo, então levo guarda-chuva." Está chovendo. Logo:',o:['levo guarda-chuva','não levo guarda-chuva','talvez leve','nada posso concluir'],a:0,h:'A condição do "se" aconteceu — aplique a promessa.',x:'É o modus ponens: confirmando a condição, a consequência se cumpre.'},
+  {t:'mc',cat:'Lógica',q:'"Se um número é divisível por 4, então é par." 8 é divisível por 4. Logo:',o:['8 é par','8 é ímpar','8 não é número','8 é divisível por 3'],a:0,h:'Confirme a condição e siga a regra.',x:'A condição vale para o 8, então a conclusão vale: 8 é par.'},
+  {t:'mc',cat:'Lógica',q:'"Se chove, a rua fica molhada." A rua NÃO está molhada. Logo:',o:['choveu','não choveu','vai chover','nada posso concluir'],a:1,h:'Se tivesse chovido, como estaria a rua?',x:'É o modus tollens: negar a consequência força negar a condição. Não choveu.'},
+  {t:'tf',cat:'Lógica',q:'"Se p então q" é falso apenas quando p é verdadeiro e q é falso.',a:true,h:'Pense na única quebra de promessa possível.',x:'A promessa só falha se a condição ocorreu e a consequência não. É a única linha F da tabela-verdade.'},
+  {t:'mc',cat:'Lógica',q:'"Se você tirar 10, ganha o prêmio." Você tirou 10, mas NÃO ganhou o prêmio. O que concluímos?',o:['A promessa se cumpriu','A promessa era falsa','A nota estava errada','Nada podemos concluir'],a:1,h:'A condição foi cumprida. E a consequência?',x:'Com a condição realizada, o condicional obrigava o prêmio. Sem prêmio, a promessa era falsa.'},
+]},
+{ id:'eni1', mod:'eni', d:2, title:'Enigmas clássicos', desc:'Pense fora da caixa',
+  ex:[
+  {t:'riddle',cat:'Enigmas',q:'O pai de João tem cinco filhos: Nana, Nene, Nini, Nono e…?',o:['Nunu','João','Júnior','Nana'],a:1,h:'Releia a primeira frase com muita atenção.',x:'A resposta estava no enunciado: um dos cinco filhos é o próprio João!'},
+  {t:'riddle',cat:'Enigmas',q:'Quanto mais você tira de mim, maior eu fico. O que sou?',o:['A sombra','O buraco','O bolo','O silêncio'],a:1,h:'Pense em algo cujo tamanho é definido por ausência.',x:'Quanto mais terra você remove, maior fica o buraco.'},
+  {t:'riddle',cat:'Enigmas',q:'Se você me tem, quer me contar; mas se me conta, deixo de existir. O que sou?',o:['A notícia','O segredo','A piada','A moeda'],a:1,h:'O que desaparece no exato momento em que é dividido?',x:'Contar um segredo deixa de guardá-lo: ele existe apenas enquanto é mantido.'},
+  {t:'mc',cat:'Enigmas',q:'Há 5 passarinhos em uma árvore. Um caçador atira e acerta um. Quantos sobram na árvore?',o:['4','1','0','5'],a:2,h:'O barulho do tiro assusta os outros…',x:'O tiro espanta os outros quatro. Na árvore não sobra nenhum voando — a resposta clássica é 0.'},
+  {t:'riddle',cat:'Enigmas',q:'O que sobe quando a chuva desce?',o:['A temperatura','O guarda-chuva','O rio','O sol'],a:1,h:'Pense no gesto que todo mundo faz quando começa a chover.',x:'Quando a chuva desce, o guarda-chuva sobe!'},
+]},
+
+/* --- Avançado (9 fases) --- */
+{ id:'seq5', mod:'seq', d:3, title:'Sequências de campeões', desc:'Onde a maioria tropeça',
+  ex:[
+  {t:'mc',cat:'Sequências',q:'Qual continua:  1, 3, 7, 15, 31, …?',o:['47','55','63','71'],a:2,h:'Cada termo é o dobro do anterior… e mais alguma coisa.',x:'A regra é "×2 e +1": 31 × 2 + 1 = 63. Confira: 15 × 2 + 1 = 31 ✓'},
+  {t:'seq',cat:'Sequências',v:seqHTML(['64','32','16','8','?']),q:'Complete a sequência.',o:['2','4','6','8'],a:1,h:'Aqui dividimos, não subtraímos.',x:'Cada termo é a metade do anterior: 8 ÷ 2 = 4.'},
+  {t:'mc',cat:'Sequências',q:'Qual NÃO segue a regra do grupo:  3, 5, 7, 9, 11?',o:['3','5','7','9'],a:3,h:'Todos são números primos… menos um.',x:'3, 5, 7 e 11 são primos. O 9 = 3 × 3 não é primo — é o intruso.'},
+  {t:'mc',cat:'Sequências',q:'Qual continua:  2, 3, 5, 8, 13, 21, …?',o:['29','32','34','36'],a:2,h:'Some os dois termos anteriores e confira.',x:'2+3=5, 3+5=8, 5+8=13, 8+13=21 e 13+21=34. É Fibonacci começando em 2.'},
+  {t:'seq',cat:'Sequências',v:seqHTML(['81','27','9','3','?']),q:'Complete a sequência.',o:['0','1','2','3'],a:1,h:'Cada termo é dividido por um número constante.',x:'Dividimos por 3 a cada passo: 3 ÷ 3 = 1.'},
+]},
+{ id:'cls4', mod:'cls', d:3, title:'O intruso numérico', desc:'Classificando números',
+  ex:[
+  {t:'mc',cat:'Classificação',q:'Qual número NÃO pertence ao grupo:  4, 9, 16, 20, 25?',o:['4','9','20','25'],a:2,h:'Todos são resultado de um número multiplicado por ele mesmo… menos um.',x:'4=2², 9=3², 16=4², 25=5² são quadrados perfeitos. 20 não é — é o intruso.'},
+  {t:'mc',cat:'Classificação',q:'Qual número NÃO pertence ao grupo:  10, 20, 33, 40?',o:['10','20','33','40'],a:2,h:'Todos terminam em 0… menos um.',x:'10, 20 e 40 são múltiplos de 10. O 33 não é — é o intruso.'},
+  {t:'mc',cat:'Classificação',q:'Qual palavra NÃO pertence ao grupo?',o:['Azul','Vermelho','Sete','Verde'],a:2,h:'Três são cores. Qual é a exceção?',x:'Azul, vermelho e verde são cores; "sete" é um número.'},
+  {t:'mc',cat:'Classificação',q:'Qual palavra NÃO pertence ao grupo?',o:['professora','médica','engenheira','colher'],a:3,h:'Três são profissões.',x:'Professora, médica e engenheira são profissões; colher é um objeto.'},
+  {t:'tf',cat:'Classificação',q:'Em 2, 5, 10, 17, 26, todos os números são "um quadrado mais 1" (1²+1, 2²+1, …).',a:true,h:'Teste: 1+1, 4+1, 9+1, 16+1, 25+1…',x:'Exato: 1²+1=2, 2²+1=5, 3²+1=10, 4²+1=17, 5²+1=26. Verdadeiro!'},
+]},
+{ id:'ded4', mod:'ded', d:3, title:'Verdadeiros e mentirosos', desc:'Quem fala a verdade aqui?',
+  ex:[
+  {t:'mc',cat:'Dedução',q:'Nina declara: "Eu sou mentirosa." O que a lógica conclui sobre essa frase?',o:['Nina mente sempre','A frase cria um paradoxo','Nina fala a verdade','Nina é sincera'],a:1,h:'Se ela fala a verdade, vira mentirosa; se mente, estaria falando a verdade…',x:'Não dá para encaixar: se for verdade, ela mente; se for mentira, ela fala a verdade. É o clássico paradoxo do mentiroso.'},
+  {t:'mc',cat:'Dedução',q:'Numa ilha, sinceros sempre falam a verdade e mentirosos sempre mentem. Bia diz: "Eu sou sincera." O que sabemos sobre Bia?',o:['Somente sincera','Somente mentirosa','Sincera ou mentirosa — ambos diriam isso','Nem uma nem outra'],a:2,h:'O que um mentiroso diria sobre si mesmo?',x:'Um sincero diria "sou sincera" (verdade). Um mentiroso também diria (mentira). A frase não separa os dois casos.'},
+  {t:'mc',cat:'Dedução',q:'Téo diz: "Hoje é segunda." Rui diz: "Téo mente." Sabendo que hoje É segunda, quem fala a verdade?',o:['Somente Téo','Somente Rui','Os dois','Nenhum'],a:0,h:'Confira a frase de cada um contra o fato: é segunda.',x:'Téo disse a verdade (é segunda). Rui mentiu ao dizer que Téo mente. Só Téo fala a verdade.'},
+  {t:'mc',cat:'Dedução',q:'Num saco há bolas vermelhas e azuis, e existem 5 vermelhas. Tirando de olhos fechados, quantas bolas para ter CERTEZA de levar pelo menos uma azul?',o:['4','5','6','7'],a:2,h:'Pense no pior caso: e se saírem todas as vermelhas primeiro?',x:'No pior caso, saem as 5 vermelhas seguidas. A 6ª bola, então, tem de ser azul. São 6.'},
+  {t:'tf',cat:'Dedução',q:'Um relógio parado marcando 12:00 mostra a hora certa duas vezes por dia.',a:true,h:'Quantas vezes o dia passa pelo 12:00?',x:'O dia passa pelo 12:00 (e pela 0:00, que aparece como 12) duas vezes — e nessas duas o relógio parado acerta. Verdadeiro!'},
+]},
+{ id:'ord4', mod:'ord', d:3, title:'Ordem dupla', desc:'Cadeias de posição e processo',
+  ex:[
+  {t:'order',cat:'Ordenação',q:'Coloque os números em ordem DECRESCENTE (do maior ao menor).',items:['15','8','2'],h:'Decrescente é o contrário de crescente.',x:'15 > 8 > 2.'},
+  {t:'mc',cat:'Ordenação',q:'Corrida: Ana chegou antes de Bia, e Caio chegou depois de Bia. A ordem do 1º ao 3º é:',o:['Ana, Bia, Caio','Bia, Ana, Caio','Caio, Bia, Ana','Ana, Caio, Bia'],a:0,h:'Monte a fila usando "chegou antes".',x:'Ana → Bia → Caio. Cada uma chegou antes da seguinte.'},
+  {t:'order',cat:'Ordenação',q:'Organize as fases da vida de uma planta.',items:['Semente','Broto','Flor'],h:'O que precisa vir primeiro para existir o resto?',x:'Semente → broto → flor. É a ordem natural do crescimento.'},
+  {t:'mc',cat:'Ordenação',q:'Na fila do cinema, Rafa está logo à frente de Nina, e Nina logo à frente de Omar. Quem está no meio?',o:['Rafa','Nina','Omar','Não dá para saber'],a:1,h:'Desenhe a fila: quem está entre os outros dois?',x:'A fila é Rafa → Nina → Omar. No meio dela está Nina.'},
+  {t:'tf',cat:'Ordenação',q:'Se Dezembro vem depois de Novembro, então Novembro vem antes de Dezembro.',a:true,h:'"Antes" e "depois" são lados opostos da mesma comparação.',x:'Exato — inverter a frase não muda o fato. Verdadeiro!'},
+]},
+{ id:'log4', mod:'log', d:3, title:'Tabelas-verdade', desc:'Calcule os valores linha por linha',
+  ex:[
+  {t:'mc',cat:'Lógica',q:'p é V e q é V. Qual é o valor de "p OU q"?',o:['Verdadeiro','Falso','Indefinido','Depende de p'],a:0,h:'O OU basta uma parte verdadeira.',x:'V OU V = V. Com as duas verdadeiras, o OU não tem como ser falso.'},
+  {t:'mc',cat:'Lógica',q:'p é F e q é V. Qual é o valor de "p E q"?',o:['Verdadeiro','Falso','Indefinido','Depende de q'],a:1,h:'O E exige as duas partes verdadeiras.',x:'Basta uma ser F para o E afundar: F E V = F.'},
+  {t:'mc',cat:'Lógica',q:'Se p é F, qual é o valor de "NÃO p"?',o:['Verdadeiro','Falso','Indefinido','Depende do dia'],a:0,h:'A negação inverte o valor.',x:'NÃO inverte: se p é F, NÃO p é V.'},
+  {t:'mc',cat:'Lógica',q:'Se "p OU q" é FALSO, o que sabemos sobre p e q?',o:['as duas são verdadeiras','p é V e q é F','as duas são falsas','p é F e q é V'],a:2,h:'Procure na tabela do OU a única linha falsa.',x:'O OU só é falso em uma linha da tabela: quando p e q são as duas falsas.'},
+  {t:'tf',cat:'Lógica',q:'A tabela-verdade do operador "E" tem apenas uma linha verdadeira.',a:true,h:'Quantas combinações de V/F existem para duas variáveis?',x:'Existem 4 combinações (V-V, V-F, F-V, F-F) e só V-V dá verdadeiro. Verdadeiro!'},
+]},
+{ id:'log5', mod:'log', d:3, title:'Negações', desc:'Inverter frases sem mudar o sentido errado',
+  ex:[
+  {t:'mc',cat:'Lógica',q:'A negação de "Todos os gatos são pretos" é:',o:['Nenhum gato é preto','Todos os gatos são brancos','Pelo menos um gato não é preto','Alguns gatos são pretos'],a:2,h:'Para negar "todos", basta encontrar UM caso contrário.',x:'"Todos" cai com um único contraexemplo. A negação é "pelo menos um gato não é preto".'},
+  {t:'mc',cat:'Lógica',q:'A negação de "Hoje chove OU venta" é:',o:['Não chove E não venta','Não chove OU não venta','Chove E não venta','Hoje não faz nada'],a:0,h:'O oposto de "isto ou aquilo" é "nem isto nem aquilo".',x:'Para derrubar um OU, as duas partes têm de cair: não chove E não venta. (Lei de De Morgan)'},
+  {t:'mc',cat:'Lógica',q:'A negação de "Se estudo, então passo" é:',o:['Não estudo e passo','Estudo E não passo','Se não estudo, não passo','Estudo ou passo'],a:1,h:'O condicional só falha de um jeito: condição ok e consequência falha.',x:'A única linha falsa de "se…então" é condição V e consequência F: estudo e não passo.'},
+  {t:'tf',cat:'Lógica',q:'A negação de "Nenhum aluno faltou" é "Pelo menos um aluno faltou".',a:true,h:'"Nenhum" e "pelo menos um" são extremos opostos.',x:'Basta um aluno faltando para "nenhum faltou" ser falso. Verdadeiro!'},
+  {t:'mc',cat:'Lógica',q:'Dupla negação: "Não é verdade que João não estudou" significa:',o:['João não estudou','João estudou','Talvez João tenha estudado','João foi mal na prova'],a:1,h:'Negação de negação volta ao positivo.',x:'NÃO(NÃO estudou) = estudou. Duas negações se cancelam.'},
+]},
+{ id:'log7', mod:'log', d:3, title:'Silogismos', desc:'A arte de encadear verdades',
+  ex:[
+  {t:'mc',cat:'Lógica',q:'Todos os gatos são felinos. Todos os felinos são mamíferos. Logo, todo gato é:',o:['réptil','ave','mamífero','anfíbio'],a:2,h:'Encadeie as duas regras: gatos → felinos → ?',x:'Se todos os gatos estão dentro do grupo dos felinos, e todos os felinos dentro dos mamíferos, os gatos também estão dentro dos mamíferos. É o encadeamento clássico do silogismo.'},
+  {t:'mc',cat:'Lógica',q:'Todos os pintores são artistas. Carlos é artista. Logo:',o:['Carlos é pintor','Carlos pode ou não ser pintor','Carlos não é pintor','Todos os artistas são pintores'],a:1,h:'"Todo A é B" permite inverter para "todo B é A"? Pense em artistas que não pintam.',x:'Todo pintor é artista, mas existem artistas que não pintam (músicos, atores…). Carlos pode ser pintor — ou não. Inverter uma universal é o erro mais comum da lógica.'},
+  {t:'mc',cat:'Lógica',q:'Todo cientista estudou muito. Maria não é cientista. Logo:',o:['Maria não estudou muito','Maria estudou muito','Nada podemos concluir sobre o estudo de Maria','Maria é cientista'],a:2,h:'Quem mais estudou muito, além dos cientistas?',x:'Negar o antecedente não conclui nada: médicos, professores e engenheiros também estudam muito. Maria pode ter estudado muito sem ser cientista.'},
+  {t:'tf',cat:'Lógica',q:'Se todas as premissas de um silogismo são verdadeiras e sua forma é válida, a conclusão é necessariamente verdadeira.',a:true,h:'É exatamente o que "validade" significa na lógica.',x:'Verdadeiro: validade garante que a conclusão decorre das premissas; se as premissas são verdadeiras, a conclusão não pode ser falsa.'},
+  {t:'mc',cat:'Lógica',q:'"Alguns atletas correm rápido. Rafael corre rápido. Logo, Rafael é atleta." Qual é o erro?',o:['Nada, o raciocínio é válido','"Alguns" não garante que todo quem corre rápido é atleta','Atletas não correm rápido','O erro está em "correm rápido"'],a:1,h:'"Alguns atletas" deixa de fora muitos outros corredores rápidos.',x:'O quantificador "alguns" não permite generalizar. Corredores rápidos podem ser lebres, guepardos ou pessoas comuns. Rafael pode ser atleta — mas não é garantido.'},
+]},
+{ id:'eni2', mod:'eni', d:3, title:'Enigmas de lógica', desc:'Matemática disfarçada de charada',
+  ex:[
+  {t:'riddle',cat:'Enigmas',q:'A soma das idades de Ana e Bia é 18. Ana tem o dobro da idade de Bia. Quantos anos tem Bia?',o:['4','6','9','12'],a:1,h:'Chame a idade de Bia de B e monte a equação.',x:'B + 2B = 18 → 3B = 18 → B = 6. Ana tem 12 e Bia tem 6.'},
+  {t:'riddle',cat:'Enigmas',q:'Em uma corrida, você ultrapassa o segundo colocado. Em qual posição você fica?',o:['Primeiro','Segundo','Terceiro','Último'],a:1,h:'Você não ultrapassou o primeiro…',x:'Ao ultrapassar o 2º, você assume o lugar dele: segundo — não primeiro!'},
+  {t:'riddle',cat:'Enigmas',q:'Um tijolo pesa 1 kg mais meio tijolo. Quanto pesa um tijolo inteiro?',o:['1 kg','1,5 kg','2 kg','3 kg'],a:2,h:'Chame o peso do tijolo de T e traduza a frase.',x:'T = 1 + T/2 → T/2 = 1 → T = 2 kg.'},
+  {t:'mc',cat:'Enigmas',q:'Todos os Blors são Trins, e todo Trin é azul. Logo, todo Blor é:',o:['azul','quadrado','vermelho','invisível'],a:0,h:'Encadeie as duas regras.',x:'É um silogismo: Blor → Trin → azul. Todo Blor é azul, sem exceção.'},
+  {t:'mc',cat:'Enigmas',q:'Você tem duas moedas que somam R$ 0,60 — e uma delas NÃO é de R$ 0,50. Quais são as moedas?',o:['R$ 0,50 e R$ 0,10','R$ 0,30 e R$ 0,30','R$ 0,25 e R$ 0,35','Seis de R$ 0,10'],a:0,h:'O enunciado fala de UMA moeda específica…',x:'A pegadinha: uma moeda não é de 0,50 — a OUTRA é. As moedas são 0,50 e 0,10.'},
+]},
+{ id:'eni3', mod:'eni', d:3, title:'Enigmas finais', desc:'O teste definitivo da sua lógica',
+  ex:[
+  {t:'riddle',cat:'Enigmas',q:'Tenho cidades, mas não tenho casas; tenho montanhas, mas não tenho árvores. O que sou?',o:['O mapa','O desenho','O sonho','O livro'],a:0,h:'Onde existem cidades e montanhas juntas, sem ser na vida real?',x:'No mapa! Ele representa cidades e montanhas sem ter nenhuma de verdade.'},
+  {t:'riddle',cat:'Enigmas',q:'Um fazendeiro tem 17 ovelhas. Todas menos 9 fogem. Quantas sobram?',o:['8','9','17','0'],a:1,h:'Leia "todas menos 9" letra por letra.',x:'Se todas menos 9 fogem, justamente 9 ficam. A frase já deu a resposta!'},
+  {t:'riddle',cat:'Enigmas',q:'Falo todas as línguas do mundo, mas só repito o que ouço. O que sou?',o:['O tradutor','O eco','O rádio','O professor'],a:1,h:'Ele responde sempre com as suas próprias palavras…',x:'O eco! Ele "fala" qualquer língua — repetindo o que você disse.'},
+  {t:'mc',cat:'Enigmas',q:'Entre 8 bolas idênticas, uma é mais pesada. Usando uma balança de dois pratos, o mínimo de pesagens para achá-la com certeza é:',o:['1','2','3','4'],a:1,h:'Divida as bolas em grupos iguais e compare os grupos.',x:'1ª pesagem: 3 contra 3 (deixando 2 de fora) — descobre o grupo pesado. 2ª: 1 contra 1. São 2 pesagens.'},
+  {t:'riddle',cat:'Enigmas',q:'Quanto mais seca eu fico, mais molhada fica a mão de quem me usa. O que sou?',o:['A esponja','A toalha','A nuvem','O gelo'],a:1,h:'Ela seca alguém e, ao mesmo tempo, fica encharcada.',x:'A toalha! Quanto mais ela seca você, mais molhada ela fica.'},
+]},
+
+/* --- Extremo (9 fases) --- */
+{ id:'pat6', mod:'pat', d:4, title:'Padrões de mestre', desc:'Padrões que exigem enxergar além',
+  ex:[
+  {t:'tf',cat:'Padrões',q:'Na sequência O, T, T, F, F, S, S, E, cada letra é a inicial de um número por extenso em inglês (One, Two, Three, Four…).',a:true,h:'Leia as letras em voz alta como iniciais.',x:'O=One, T=Two, T=Three, F=Four, F=Five, S=Six, S=Seven, E=Eight. Verdadeiro!'},
+  {t:'mc',cat:'Padrões',q:'Continuando a mesma lógica — O, T, T, F, F, S, S, E, … — qual letra vem em seguida?',o:['N','T','E','O'],a:0,h:'Qual número vem depois do 8? Qual a inicial dele em inglês?',x:'Depois de Eight (8) vem Nine (9), que começa com N.'},
+  {t:'mc',cat:'Padrões',q:'Quantos quadrados existem no total (de todos os tamanhos) em uma grade 3×3?',o:['9','10','13','14'],a:3,h:'Não conte só os quadradinhos: existem quadrados maiores formados por eles.',x:'Nove 1×1, quatro 2×2 e um 3×3. Total: 9 + 4 + 1 = 14.'},
+  {t:'mc',cat:'Padrões',q:'Se A=1, B=2, C=3…, quanto vale a soma da palavra BOO?',o:['31','32','41','42'],a:1,h:'B=2, O=15. Some tudo.',x:'B=2, O=15, O=15 → 2 + 15 + 15 = 32.'},
+  {t:'tf',cat:'Padrões',q:'Em uma grade 4×4, existem exatamente 30 quadrados de todos os tamanhos.',a:true,h:'Generalize o raciocínio da 3×3: 16 + 9 + 4 + 1.',x:'Dezesseis 1×1, nove 2×2, quatro 3×3 e um 4×4: 16 + 9 + 4 + 1 = 30. Verdadeiro!'},
+]},
+{ id:'seq6', mod:'seq', d:4, title:'Sequências brutais', desc:'O fim da linha para sequências',
+  ex:[
+  {t:'mc',cat:'Sequências',q:'Qual continua:  2, 3, 5, 9, 17, 33, …?',o:['49','57','65','66'],a:2,h:'Cada termo é o dobro do anterior… com um pequeno ajuste.',x:'A regra é "×2 e −1": 33 × 2 − 1 = 65. Confira: 17 × 2 − 1 = 33 ✓'},
+  {t:'mc',cat:'Sequências',q:'Qual continua:  3, 4, 6, 8, 12, 14, 18, 20, …?',o:['21','22','23','24'],a:3,h:'Some 1 a uma sequência famosa e veja o que aparece.',x:'Cada termo é (número primo + 1): 2+1=3, 3+1=4, 5+1=6, 7+1=8, 11+1=12, 13+1=14, 17+1=18, 19+1=20, 23+1=24.'},
+  {t:'seq',cat:'Sequências',v:seqHTML(['1','2','6','24','120','?']),q:'Complete a sequência.',o:['240','360','600','720'],a:3,h:'Compare cada termo com a posição dele na sequência.',x:'É o fatorial: 1!=1, 2!=2, 3!=6, 4!=24, 5!=120 e agora 6! = 720.'},
+  {t:'mc',cat:'Sequências',q:'Qual continua:  1, 2, 3, 6, 7, 14, 15, …?',o:['16','30','31','29'],a:1,h:'Os saltos alternam entre duas operações.',x:'Os saltos alternam +1 e ×2: 15 × 2 = 30. Confira: 3×2=6, 6+1=7, 7×2=14, 14+1=15.'},
+  {t:'riddle',cat:'Sequências',q:'Desvende:  1, 11, 21, 1211, 111221, …  Qual vem depois?',o:['222111','312211','122113','111222'],a:1,h:'Leia cada termo em voz alta, descrevendo o que você vê.',x:'É a sequência "look-and-say": 111221 se lê "três 1s, dois 2s, um 1" → 312211.'},
+]},
+{ id:'seq7', mod:'seq', d:4, title:'Sequências ocultas', desc:'Padrões que se escondem bem',
+  ex:[
+  {t:'mc',cat:'Sequências',q:'Collatz:  7, 22, 11, 34, 17, …  Qual continua?',o:['51','52','34','44'],a:1,h:'A regra alterna: número par divide por 2; número ímpar multiplica por 3 e soma 1.',x:'17 é ímpar: 17 × 3 + 1 = 52. É a famosa conjectura de Collatz — todo número testado até hoje acaba caindo no ciclo 4 → 2 → 1.'},
+  {t:'mc',cat:'Sequências',q:'Quadrados espelhados:  1, 4, 9, 61, 52, …  Qual continua?',o:['63','36','76','46'],a:0,h:'Eleve cada posição ao quadrado… e leia o resultado de trás para frente.',x:'1²=1, 2²=4, 3²=9, 4²=16 invertido = 61, 5²=25 invertido = 52. O próximo é 6²=36 invertido = 63.'},
+  {t:'seq',cat:'Sequências',v:seqHTML(['2','3','5','7','11','13','?']),q:'Complete a sequência.',o:['15','16','17','19'],a:2,h:'Nenhum desses números pode ser dividido por outro além de 1 e ele mesmo.',x:'São os números primos. Depois do 13 vem o 17 (14, 15 e 16 têm divisores além de 1 e deles mesmos).'},
+  {t:'mc',cat:'Sequências',q:'A sequência enganosa:  1, 2, 4, 8, 16, 31, …  Por que o próximo NÃO é 32?',o:['Porque 16 não é par','Porque a dobra simples quebra: é a sequência das regiões máximas de um círculo','Porque houve erro de cálculo','Porque 31 é primo'],a:1,h:'Coloque pontos na borda de um círculo e ligue todos os pares. Conte as regiões.',x:'É o problema do círculo de Moser: o número máximo de regiões com n pontos ligados dois a dois é 1, 2, 4, 8, 16, 31… Com 6 pontos, os cruzamentos internos fazem a "dobra" quebrar — o próximo é 57.'},
+  {t:'tf',cat:'Sequências',q:'Na conjectura de Collatz, todo número inteiro positivo testado até hoje eventualmente chega ao ciclo 4 → 2 → 1.',a:true,h:'Ela ainda não foi provada — mas nenhuma exceção foi encontrada.',x:'Verdadeiro. Verificaram computacionalmente até números gigantescos, e todos caem no ciclo 4→2→1. A prova geral, porém, segue em aberto — é um dos problemas famosos da matemática.'},
+]},
+{ id:'cls5', mod:'cls', d:4, title:'O último intruso', desc:'Intrusos com critérios escondidos',
+  ex:[
+  {t:'mc',cat:'Classificação',q:'Qual letra NÃO pertence ao grupo:  A, E, H, I, F?',o:['A','H','F','I'],a:2,h:'Imagine um espelho ao lado de cada letra. Quais têm simetria?',x:'A tem simetria vertical; E, horizontal; H e I, nos dois eixos. O F é a única letra do grupo sem nenhum eixo de simetria.'},
+  {t:'mc',cat:'Classificação',q:'Qual número NÃO pertence:  121, 144, 169, 196, 200?',o:['121','169','196','200'],a:3,h:'Tente extrair a raiz quadrada de cada um.',x:'11²=121, 12²=144, 13²=169, 14²=196 — quadrados perfeitos consecutivos. 200 não é quadrado perfeito (14²=196 e 15²=225).'},
+  {t:'mc',cat:'Classificação',q:'Duplo critério — qual NÃO pertence a  30, 33, 39, 45, 47?',o:['30','39','45','47'],a:3,h:'DOIS critérios apontam para o mesmo intruso. Some os algarismos de cada número… e teste a divisão por 3.',x:'30, 33, 39 e 45 são múltiplos de 3 (a soma dos algarismos é divisível por 3). O 47 falha nos dois testes — e ainda é o único primo do grupo.'},
+  {t:'mc',cat:'Classificação',q:'Qual palavra NÃO pertence:  SOL, LUA, MAR, MÁGICA?',o:['SOL','MAR','MÁGICA','LUA'],a:2,h:'Conte as letras. Depois pense no que SOL, LUA e MAR têm em comum.',x:'SOL, LUA e MAR têm 3 letras — MÁGICA tem 6. De bônus: os três primeiros são elementos da natureza. Dois critérios, mesmo intruso.'},
+  {t:'tf',cat:'Classificação',q:'Em um enigma de intruso bem construído, exatamente UM elemento quebra a regra do grupo. Se dois quebrarem, o enigma é inválido.',a:true,h:'Pense no que torna a resposta única e justa.',x:'Verdadeiro. A elegância do "ache o intruso" está na regra única do grupo e na exceção única. Dois intrusos tornam a resposta ambígua.'},
+]},
+{ id:'ded5', mod:'ded', d:4, title:'A matriz do detetive', desc:'Dedução com quatro pistas cruzadas',
+  ex:[
+  {t:'mc',cat:'Dedução',q:'Ana, Bia, Caio e Duda exercem, cada um, uma profissão: arquiteta, dentista, engenheira e professor. Bia é a professora. Ana não é dentista nem engenheira. Quem é o dentista?',o:['Ana','Bia','Caio','Duda'],a:3,h:'Comece fixando Bia. Depois, onde Ana pode estar?',x:'Bia é professora. Ana, sem poder ser dentista nem engenheira, é a arquiteta. Caio e Duda sobram com dentista e engenheira — e a pista seguinte define Caio, logo o dentista é Duda.'},
+  {t:'mc',cat:'Dedução',q:'No mesmo enigma: Ana é arquiteta, Bia é professora, e Caio NÃO é o dentista. Quem é a engenheira?',o:['Ana','Caio','Duda','Bia'],a:1,h:'Sobram duas pessoas para duas profissões. Use a negação.',x:'Restaram Caio e Duda para dentista e engenheira. Como Caio não é dentista, ele é a engenheira — e Duda é o dentista.'},
+  {t:'mc',cat:'Dedução',q:'Quatro casas em fila (1 a 4): verde, amarela, azul e branca. A verde não é a 1 nem a 4. A amarela é a 2. A branca não é a 1. De que cor é a casa 1?',o:['Verde','Amarela','Azul','Branca'],a:2,h:'Monte a fila eliminando posição por posição.',x:'Verde é a 3 (não pode ser 1 nem 4). Amarela é a 2. Branca, sem poder ser a 1, é a 4. Sobra a azul para a casa 1.'},
+  {t:'mc',cat:'Dedução',q:'Quatro corredores: Pib chegou logo antes de Quim e logo depois de Rui. Saulo chegou em último. Quem venceu a corrida?',o:['Pib','Quim','Rui','Saulo'],a:2,h:'Encadeie "logo antes/logo depois" e prenda Saulo no fim.',x:'A sequência é Rui → Pib → Quim → Saulo. O vencedor é Rui.'},
+  {t:'tf',cat:'Dedução',q:'Em uma fila de 4 pessoas com alturas todas diferentes, saber que A > B, B > C e C > D é suficiente para determinar a ordem completa.',a:true,h:'Três comparações encadeadas para quatro pessoas.',x:'A > B > C > D é a única ordem possível com essas pistas. Verdadeiro!'},
+]},
+{ id:'ded6', mod:'ded', d:4, title:'Dedução final', desc:'Os enigmas que fecham qualquer detetive',
+  ex:[
+  {t:'mc',cat:'Dedução',q:'Três caixas: "maçãs", "laranjas" e "mistas". TODAS as etiquetas estão ERRADAS. Você pode puxar UMA fruta, sem olhar, de uma caixa. Qual escolher para descobrir tudo?',o:['"maçãs"','"laranjas"','"mistas"','Qualquer uma serve'],a:2,h:'Se TODAS as etiquetas estão erradas, a caixa "mistas" não pode conter mistura. O que sobra para ela?',x:'A caixa "mistas", com etiqueta errada, contém ou só maçãs ou só laranjas. A fruta que sair revela o conteúdo dela — e, por eliminação, as outras duas caixas se resolvem, pois as etiquetas delas também estão erradas.'},
+  {t:'tf',cat:'Dedução',q:'No enigma das caixas, puxar uma fruta da caixa "mistas" é suficiente para rotular as três corretamente.',a:true,h:'Uma dedução em cascata fecha as outras duas.',x:'Verdadeiro: descoberto o conteúdo real da caixa "mistas", restam dois conteúdos e duas caixas — e, como as etiquetas estão erradas, cada caixa só pode ter o conteúdo que NÃO está na própria etiqueta. Sobra uma única combinação.'},
+  {t:'mc',cat:'Dedução',q:'Ana, Bia, Caio, Duda e Eva formam uma fila. Duda é o 1º. Bia está exatamente no meio. Caio está imediatamente à direita de Bia. Ana não é a 1ª nem a 5ª. Quem é o 5º?',o:['Ana','Caio','Eva','Duda'],a:2,h:'Fixe Duda (1º) e Bia (3º). Caio fica na 4ª. Onde Ana pode estar?',x:'Duda=1º, Bia=3º, Caio=4º. Ana não pode ser 1ª nem 5ª, então fica na 2ª. Sobra a 5ª posição para Eva.'},
+  {t:'mc',cat:'Dedução',q:'Existe um número de 1 a 100 que é múltiplo de 3 E de 4, mas NÃO é múltiplo de 6?',o:['Sim, o 12','Sim, o 24','Não existe tal número','Existem vários'],a:2,h:'Ser múltiplo de 3 e de 4, ao mesmo tempo, significa ser múltiplo de quê?',x:'Múltiplo de 3 e de 4 = múltiplo de 12. E todo múltiplo de 12 (12, 24, 36…) é automaticamente múltiplo de 6. As pistas se contradizem: nenhuma resposta existe.'},
+  {t:'mc',cat:'Dedução',q:'Enigma do chapéu: três pessoas em fila, 3 chapéus pretos e 2 brancos. A última vê os dois à frente e NÃO sabe responder. A do meio vê um e TAMBÉM não sabe. A da frente, sem ver ninguém, responde com certeza. Que chapéu ela tem?',o:['Branco, por sorte','Preto, por dedução','Branco, por eliminação','É impossível saber'],a:1,h:'Por que a última NÃO soube? Por que a do meio também não soube, sabendo do silêncio da última?',x:'Se a última visse dois brancos, saberia que a própria é preta — o silêncio dela mostra que os dois primeiros não são ambos brancos. A do meio, sabendo disso, só ficaria sem saber se visse BRANCO na frente (se visse preto, a própria seria preta). Como ela também calou, o da frente deduz: meu chapéu é preto.'},
+]},
+{ id:'log6', mod:'log', d:4, title:'Bicondicional', desc:'Se e somente se — a lógica dos espelhos',
+  ex:[
+  {t:'mc',cat:'Lógica',q:'A expressão "p ↔ q" (p se e somente se q) é verdadeira quando:',o:['p e q têm o MESMO valor','p é verdadeira','q é falsa','nunca é verdadeira'],a:0,h:'Pense em espelho: os dois lados precisam combinar.',x:'O bicondicional exige igualdade: V↔V e F↔F são verdadeiros; os pares mistos são falsos.'},
+  {t:'mc',cat:'Lógica',q:'p é V e q é F. Qual é o valor de "p ↔ q"?',o:['Verdadeiro','Falso','Indefinido','Depende de p'],a:1,h:'Os valores batem?',x:'V e F têm valores opostos, então p ↔ q = F.'},
+  {t:'mc',cat:'Lógica',q:'A regra era: "Você passa SE E SOMENTE SE tirar nota ≥ 7." Você tirou 9 e NÃO passou. O que concluímos?',o:['A nota 9 não é suficiente','A regra era falsa','Você reprovou por falta','Nada podemos concluir'],a:1,h:'O bicondicional trabalha nos dois sentidos: nota ≥ 7 deveria GARANTIR a aprovação.',x:'Com a condição realizada (9 ≥ 7) e a consequência negada (não passou), o "se e somente se" foi quebrado. A regra era falsa.'},
+  {t:'mc',cat:'Lógica',q:'A negação de "p ↔ q" é:',o:['p e q com valores OPOSTOS','p e q com o mesmo valor','não p e não q','sempre falsa'],a:0,h:'O oposto de "iguais" é "diferentes".',x:'Negar o bicondicional dá o OU exclusivo: exatamente um dos dois é verdadeiro — valores opostos.'},
+  {t:'tf',cat:'Lógica',q:'"p ↔ q" é equivalente a "(p → q) E (q → p)".',a:true,h:'"Se e somente se" junta dois condicionais.',x:'Exato: o bicondicional é a conjunção dos dois sentidos do condicional. Verdadeiro!'},
+]},
+{ id:'log8', mod:'log', d:4, title:'Paradoxos', desc:'Frases que a lógica não consegue engolir',
+  ex:[
+  {t:'mc',cat:'Lógica',q:'O barbeiro da vila barbeia todos e somente os que não se barbeiam. Quem barbeia o barbeiro?',o:['Ele mesmo','Outro barbeiro','A vila inteira','Ninguém — a regra gera um paradoxo'],a:3,h:'Se ele se barbeia, quebra a regra. Se não se barbeia, a regra o obriga a se barbear.',x:'É o paradoxo do barbeiro: se ele se barbeia, entra no grupo de quem NÃO deve ser barbeado por ele; se não se barbeia, a regra obriga a se barbear. A regra é logicamente impossível — nenhum barbeiro assim pode existir.'},
+  {t:'mc',cat:'Lógica',q:'"Esta frase é falsa." O que a lógica conclui sobre ela?',o:['É só uma frase falsa comum','Cria um ciclo sem valor de verdade definido','É sempre verdadeira','Só é falsa em alguns dias'],a:1,h:'Assuma que ela é verdadeira e leia de novo. Agora assuma que é falsa.',x:'Se for verdadeira, o que ela afirma (ser falsa) deve valer — contradiz. Se for falsa, então "ser falsa" é falso, ou seja, é verdadeira — contradiz de novo. É o paradoxo do mentiroso: nenhum valor se sustenta.'},
+  {t:'mc',cat:'Lógica',q:'Professor anuncia: "A prova será uma surpresa na próxima semana." Os alunos eliminam dia por dia ("não pode ser sexta, saberiam na quinta…") e concluem que a prova é impossível. A prova cai na TERÇA e surpreende a todos. Onde o raciocínio falhou?',o:['Na primeira etapa','No fim da cadeia — a última dedução pressupunha saber demais','Na segunda-feira','O professor mentiu'],a:1,h:'A cadeia de eliminações parte do fim. Para eliminar a sexta, os alunos precisariam CHEGAR na quinta sem prova — e aí já teriam adivinhado demais.',x:'É o paradoxo da prova surpresa: a eliminação da sexta assume que os alunos saberiam na quinta que a prova cairia na sexta. Voltando a cadeia, cada etapa fica mais frágil, até a conclusão "a prova é impossível" — que era exatamente o erro que permitiu a surpresa.'},
+  {t:'tf',cat:'Lógica',q:'Uma afirmação é paradoxal quando leva à contradição tanto se assumida verdadeira quanto se assumida falsa.',a:true,h:'É a definição formal de paradoxo lógico.',x:'Verdadeiro. Nos dois caminhos surge contradição — como no mentiroso e no barbeiro. Por isso paradoxos não são simplesmente "falsos": são afirmações que não conseguem ter valor de verdade.'},
+  {t:'mc',cat:'Lógica',q:'"Toda regra tem exceção." Sobre essa frase, a lógica diz que:',o:['É uma regra sem exceção','Se for verdadeira, ela mesma cria uma exceção — e entra em conflito consigo mesma','É uma lei da matemática','Só vale em jogos'],a:1,h:'A frase é, ela mesma, uma regra. Ela tem exceção?',x:'Se "toda regra tem exceção" for verdadeira, ela também tem uma exceção — ou seja, existe pelo menos uma regra SEM exceção, contradizendo a frase. Autoreferência perigosa: a frase não consegue se sustentar sem se contradizer.'},
+]},
+{ id:'eni4', mod:'eni', d:4, title:'Enigmas lendários', desc:'Os enigmas mais cruéis do Wazyboo',
+  ex:[
+  {t:'mc',cat:'Enigmas',q:'Há 3 interruptores fora de uma sala e 1 lâmpada dentro. Só UMA ida à sala é permitida. Qual o mínimo de visitas para descobrir qual interruptor controla a lâmpada?',o:['1','2','3','É impossível'],a:0,h:'Luz não é a única pista que uma lâmpada oferece… ela também esquenta.',x:'Ligue o 1º e espere alguns minutos; desligue-o; ligue o 2º e entre. Acesa = 2º. Apagada e QUENTE = 1º. Apagada e fria = 3º. Uma única visita!'},
+  {t:'mc',cat:'Enigmas',q:'Duas portas: uma leva à liberdade, outra ao perigo. Um guarda sempre mente, o outro sempre fala a verdade — você não sabe quem é quem e só pode fazer UMA pergunta. O que fazer?',o:['Perguntar a qualquer um: "Qual porta o OUTRO diria ser a segura?" e escolher a OPOSTA','Perguntar "Qual porta é a segura?" e confiar','Perguntar "Você é mentiroso?"','É impossível com uma pergunta só'],a:0,h:'O truque é usar o outro guarda como espelho invertido.',x:'Os dois, respondendo sobre o outro, apontam a porta ERRADA: o sincero repete a mentira do mentiroso; o mentiroso mente sobre a verdade do sincero. Escolha a oposta!'},
+  {t:'mc',cat:'Enigmas',q:'Há 25 cavalos e uma pista que corre 5 por vez, sem cronômetro — só a ordem de chegada. Qual o mínimo de corridas para GARANTIR os 3 mais rápidos?',o:['5','6','7','8'],a:2,h:'Corra 5 grupos primeiro. Depois compare os vencedores. Quem mais ainda pode ser top 3?',x:'5 corridas de grupos + 1 corrida dos 5 vencedores + 1 final com os candidatos restantes (2º e 3º do grupo do campeão, 1º e 2º do segundo colocado, 1º do terceiro) = 7 corridas.'},
+  {t:'riddle',cat:'Enigmas',q:'Tenho 88 teclas, mas não abro nenhuma porta. O que sou?',o:['O piano','O mapa','O relógio','O teclado'],a:0,h:'Pense em música, não em casas.',x:'O piano tem 88 teclas — e nenhuma porta para abrir!'},
+  {t:'riddle',cat:'Enigmas',q:'O pai do pai do pai de Pedro é o seu…',o:['Bisavô','Avô','Tio-avô','Trisavô'],a:0,h:'Vá subindo geração por geração.',x:'Pai do pai = avô. Pai do avô = bisavô. Pedro é bisneto dele.'},
+]},
+];
+
+/* ---------- Conquistas (marcos recalibrados para 33 fases) ---------- */
+const doneCount = () => Object.keys(S.progress).length;
+const ACHIEVEMENTS = [
+  { id:'first',   name:'Primeiro passo', desc:'Complete sua primeira lição', ico:'flag',   cond:()=>doneCount()>=1 },
+  { id:'perfect', name:'Mente afiada',   desc:'Termine uma lição sem errar',  ico:'target', cond:()=>S.flags.perfect },
+  { id:'xp250',   name:'Estudioso',      desc:'Acumule 250 XP',               ico:'zap',    cond:()=>S.xp>=250 },
+  { id:'xp1000',  name:'Sabedoria Boo',  desc:'Acumule 1.000 XP',             ico:'crown',  cond:()=>S.xp>=1000 },
+  { id:'streak3', name:'Aquecendo',      desc:'3 dias seguidos estudando',    ico:'flame',  cond:()=>S.bestStreak>=3 },
+  { id:'streak7', name:'Imparável',      desc:'7 dias seguidos estudando',    ico:'flame',  cond:()=>S.bestStreak>=7 },
+  { id:'coins',   name:'Cofrinho',       desc:'Acumule 150 moedas no total',  ico:'coin',   cond:()=>S.coinsTotal>=150 },
+  { id:'daily1',  name:'Desafiante',     desc:'Complete um desafio diário',   ico:'calendar',cond:()=>S.dailyDone>=1 },
+  { id:'daily5',  name:'Ritual diário',  desc:'Complete 5 desafios diários',  ico:'calendar',cond:()=>S.dailyDone>=5 },
+  { id:'flash12', name:'Relâmpago',      desc:'12 acertos num Contra o Relógio',ico:'zap', cond:()=>S.flashBest>=12 },
+  { id:'goal1',   name:'Na meta',        desc:'Bata sua meta diária de XP',   ico:'target', cond:()=>Object.keys(S.goalDays).length>=1 },
+  { id:'hard2',   name:'Subiu de nível', desc:'Chegue à dificuldade Intermediária (fase 9)',ico:'zap', cond:()=>doneCount()>=8 },
+  { id:'hard3',   name:'Nível avançado', desc:'Chegue à dificuldade Avançada (fase 16)',ico:'target', cond:()=>doneCount()>=15 },
+  { id:'hard4',   name:'Modo Extremo',   desc:'Chegue à dificuldade Extrema (fase 25)', ico:'crown',  cond:()=>doneCount()>=24 },
+  { id:'final',   name:'Lenda do Wazyboo', desc:'Conclua todas as lições',     ico:'medal',  cond:()=>doneCount()>=LESSONS.length },
+];
+
+const QUOTES = [
+  'A lógica é o alfabeto do pensamento.',
+  'Todo grande problema já foi um pequeno padrão.',
+  'Errar rápido é o caminho mais curto para acertar bem.',
+  'Pensar bem é um hábito — e hábitos se treinam.',
+  'Sua mente é como um músculo: cresce com desafio.',
+  'Um enigma por dia afasta a preguiça mental.',
+];
+
+/* ================================================================
+   ESTADO
+   ================================================================ */
+const GOAL = 50;
+const DEFAULT_STATE = {
+  name:'', avatar:'', xp:0, coins:0, coinsTotal:0, hearts:5, heartsAt:Date.now(),
+  streak:0, bestStreak:0, lastDay:'', dailyDate:'', dailyDone:0, flashBest:0,
+  achievements:[], progress:{}, stats:{}, flags:{ perfect:false }, view:'home',
+  dayLog:{}, dailyXPLog:{}, goalDays:{}, startedAt:Date.now(),
+  settings:{ sound:true, fx:true },
+};
+let S;
+const KEY = 'wazyboo_save_v1';
+function save(){ storeSet(KEY, JSON.stringify(S)); }
+function load(){
+  try{
+    const raw = storeGet(KEY);
+    S = raw ? Object.assign(deepClone(DEFAULT_STATE), JSON.parse(raw)) : deepClone(DEFAULT_STATE);
+  }catch(e){ S = deepClone(DEFAULT_STATE); }
+  S.settings = Object.assign({ sound:true, fx:true }, S.settings || {});
+  S.flags = Object.assign({ perfect:false }, S.flags || {});
+  delete S.diff;
+  if (typeof S.hearts !== 'number' || isNaN(S.hearts)) S.hearts = HEART_MAX;
+  if (typeof S.heartsAt !== 'number' || isNaN(S.heartsAt)) S.heartsAt = Date.now();
+}
+const HEART_MAX = 5, HEART_MS = 5*60*1000;
+function regenHearts(){
+  if (S.hearts >= HEART_MAX){ S.heartsAt = Date.now(); return; }
+  const gained = Math.floor((Date.now() - S.heartsAt) / HEART_MS);
+  if (gained > 0){
+    S.hearts = Math.min(HEART_MAX, S.hearts + gained);
+    S.heartsAt = S.hearts >= HEART_MAX ? Date.now() : S.heartsAt + gained * HEART_MS;
+    save();
+  }
+}
+function touchStreak(){
+  const t = todayKey();
+  S.dayLog[t] = true;
+  if (S.lastDay === t) return;
+  S.streak = (S.lastDay === yesterdayKey()) ? S.streak + 1 : 1;
+  S.bestStreak = Math.max(S.bestStreak, S.streak);
+  S.lastDay = t;
+  save();
+}
+const todayXP = () => S.dailyXPLog[todayKey()] || 0;
+
+/* ---------- Progresso — trilha única sequencial ---------- */
+function lessonState(lesson){
+  if (S.progress[lesson.id]) return 'done';
+  const i = LESSONS.indexOf(lesson);
+  if (i === 0) return 'open';
+  return S.progress[LESSONS[i-1].id] ? 'open' : 'locked';
+}
+const nextLesson = () => LESSONS.find(l => lessonState(l) === 'open') || null;
+const xpForLevel = l => 120 + (l-1)*90;
+function levelInfo(xp){
+  let l = 1, rest = xp;
+  while (rest >= xpForLevel(l)){ rest -= xpForLevel(l); l++; }
+  return { level:l, rest, need:xpForLevel(l) };
+}
+function currentDiff(){
+  const nl = nextLesson();
+  return diffOf(nl ? nl.d : LESSONS[LESSONS.length-1].d);
+}
+function weekHTML(size = 36){
+  const names = ['dom','seg','ter','qua','qui','sex','sáb'];
+  let out = '';
+  for (let i = 6; i >= 0; i--){
+    const d = new Date(Date.now() - i*864e5);
+    const on = !!S.dayLog[dkey(d)];
+    out += `<div class="wday">
+      <span class="wdot ${on ? 'on' : ''}" style="width:${size}px;height:${size}px">${on ? icon('check', size > 36 ? 17 : 14) : ''}</span>
+      <span class="wlab">${names[d.getDay()]}</span>
+    </div>`;
+  }
+  return `<div class="week-row">${out}</div>`;
+}
+
+/* ---------- Foto de perfil ---------- */
+const avatarHTML = (size) => S.avatar
+  ? `<span class="avatar" style="width:${size}px;height:${size}px"><img src="${S.avatar}" alt="Sua foto de perfil"></span>`
+  : `<span class="avatar av-fb" style="width:${size}px;height:${size}px;font-size:${Math.round(size*0.42)}px">${esc((S.name||'W')[0].toUpperCase())}</span>`;
+function setAvatarFromFile(file){
+  if (!file) return;
+  if (!file.type.startsWith('image/')){ toast('Escolha um arquivo de imagem', 'x'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const SZ = 160;
+      const c = document.createElement('canvas');
+      c.width = SZ; c.height = SZ;
+      const g = c.getContext('2d');
+      const s = Math.min(img.width, img.height);
+      g.drawImage(img, (img.width-s)/2, (img.height-s)/2, s, s, 0, 0, SZ, SZ);
+      S.avatar = c.toDataURL('image/jpeg', 0.85);
+      save(); render();
+      toast('Foto de perfil atualizada!', 'check', true);
+    };
+    img.onerror = () => toast('Não consegui ler essa imagem', 'x');
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ================================================================
+   EFEITOS SONOROS — arquivos na MESMA PASTA do index.html
+   ================================================================ */
+const SOUND_FILES = {
+  ok:   'correto.mp3',
+  bad:  'incorreto.mp3',
+  win:  'correto.mp3',
+  coin: 'correto.mp3',
+};
+const SOUNDS = {};
+Object.keys(SOUND_FILES).forEach(k => {
+  try{ SOUNDS[k] = new Audio(SOUND_FILES[k]); SOUNDS[k].preload = 'auto'; }catch(e){}
+});
+function playSound(type){
+  if (!S.settings || !S.settings.sound) return;
+  const a = SOUNDS[type];
+  if (!a) return;
+  try{ a.currentTime = 0; a.play().catch(() => {}); }catch(e){}
+}
+
+/* ================================================================
+   FEEDBACK
+   ================================================================ */
+function toast(msg, ico = 'sparkle', gold = false){
+  const t = document.createElement('div');
+  t.className = 'toast' + (gold ? ' gold' : '');
+  t.innerHTML = icon(ico, 18) + `<span>${msg}</span>`;
+  $('#toasts').appendChild(t);
+  setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 350); }, 2600);
+}
+const cv = $('#confetti'), cx2 = cv.getContext('2d');
+let parts = [], confRAF = null;
+function sizeCv(){ cv.width = innerWidth; cv.height = innerHeight; }
+addEventListener('resize', sizeCv); sizeCv();
+function confetti(n = 90){
+  if (!S.settings || !S.settings.fx) return;
+  const cols = ['#8B5CF6','#A78BFA','#FFC800','#FF4B4B','#1CB0F6'];
+  for (let i = 0; i < n; i++) parts.push({
+    x: innerWidth*(0.2+Math.random()*0.6), y: -12-Math.random()*60,
+    vx: (Math.random()-0.5)*4, vy: 2+Math.random()*3.5, rot: Math.random()*Math.PI,
+    vr: (Math.random()-0.5)*0.25, s: 5+Math.random()*6, c: cols[Math.floor(Math.random()*cols.length)],
+    rect: Math.random() > .4,
+  });
+  if (!confRAF) confLoop();
+}
+function confLoop(){
+  cx2.clearRect(0,0,cv.width,cv.height);
+  parts = parts.filter(p => p.y < innerHeight + 30);
+  parts.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.vy += 0.06; p.rot += p.vr;
+    cx2.save(); cx2.translate(p.x,p.y); cx2.rotate(p.rot); cx2.fillStyle = p.c;
+    if (p.rect) cx2.fillRect(-p.s/2,-p.s/3,p.s,p.s*0.66);
+    else { cx2.beginPath(); cx2.arc(0,0,p.s/2,0,7); cx2.fill(); }
+    cx2.restore();
+  });
+  confRAF = parts.length ? requestAnimationFrame(confLoop) : null;
+}
+function floatXP(text){
+  const anchor = document.querySelector('.pill.xp');
+  const r = anchor && anchor.getBoundingClientRect();
+  const visible = r && r.width > 0;
+  const el = document.createElement('div');
+  el.className = 'float-xp'; el.textContent = text;
+  el.style.left = visible ? r.left + 'px' : Math.max(10, innerWidth/2 - 30) + 'px';
+  el.style.top = visible ? (r.bottom + 8) + 'px' : '110px';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1150);
+}
+function openModal(html, dismissable = true){
+  const root = $('#modal-root');
+  root.innerHTML = `<div class="overlay"><div class="modal">${html}</div></div>`;
+  const ov = root.querySelector('.overlay');
+  if (dismissable) ov.addEventListener('click', e => { if (e.target === ov) closeModal(); });
+  return root.querySelector('.modal');
+}
+const closeModal = () => { $('#modal-root').innerHTML = ''; };
+
+/* ================================================================
+   GAMIFICAÇÃO
+   ================================================================ */
+function addXP(n){
+  const before = levelInfo(S.xp).level;
+  S.xp += n;
+  touchStreak();
+  const t = todayKey();
+  const prevXP = S.dailyXPLog[t] || 0;
+  S.dailyXPLog[t] = prevXP + n;
+  if (prevXP < GOAL && S.dailyXPLog[t] >= GOAL && !S.goalDays[t]){
+    S.goalDays[t] = true;
+    setTimeout(() => { toast('Meta diária concluída! ' + GOAL + ' XP batidos', 'target', true); confetti(70); }, 400);
+  }
+  floatXP('+' + n + ' XP');
+  const after = levelInfo(S.xp).level;
+  save(); renderTop();
+  if (after > before){ levelUpModal(after); playSound('win'); }
+}
+function addCoins(n, silent){
+  S.coins += n; S.coinsTotal += n;
+  if (!silent){ toast(`+${n} moedas`, 'coin', true); playSound('coin'); }
+  save(); renderTop();
+}
+function checkAchievements(){
+  ACHIEVEMENTS.forEach(a => {
+    if (!S.achievements.includes(a.id) && a.cond()){
+      S.achievements.push(a.id); save();
+      playSound('win');
+      const m = openModal(`
+        <div class="scene-center">${booScene('medalha')}</div>
+        <div style="text-align:center">
+          <h2>Conquista desbloqueada!</h2>
+          <p><b>${a.name}</b> — ${a.desc}</p>
+          <button class="btn purple" id="achOk">Continuar</button>
+        </div>`);
+      m.querySelector('#achOk').onclick = closeModal;
+      confetti(70);
+    }
+  });
+}
+function levelUpModal(lvl){
+  const m = openModal(`
+    <div class="scene-center">${booScene('nivel')}</div>
+    <h2 style="text-align:center">Nível ${lvl}!</h2>
+    <p style="text-align:center">O Wazyboo está orgulhoso. Sua mente está evoluindo — novos desafios esperam.</p>
+    <button class="btn purple" id="lvOk">Continuar evoluindo</button>`, false);
+  m.querySelector('#lvOk').onclick = () => { closeModal(); confetti(110); };
+  confetti(130);
+}
+
+/* ================================================================
+   MOTOR DE EXERCÍCIOS
+   ================================================================ */
+let run = null, flashTimer = null;
+function stopFlashTimer(){ if (flashTimer){ clearInterval(flashTimer); flashTimer = null; } }
+const okTitles = ['Boa!','É isso!','Mandou bem!','Exato!','Perfeito!'];
+const badTitles = ['Quase!','Não foi dessa vez','Boa tentativa!'];
+const lvMult = lv => 8 + lv*2;
+function exerciseXP(){
+  const lv = run.lesson.mod ? (MODULES.find(m=>m.id===run.lesson.mod)||{lv:1}).lv : 2;
+  const mult = diffOf(run.lesson.d || 1).mult;
+  return Math.round(lvMult(lv) * mult);
+}
+
+function makePracticeLesson(cat){
+  const pool = LESSONS.filter(l => S.progress[l.id] || lessonState(l) !== 'locked')
+    .flatMap(l => l.ex.filter(e => e.cat === cat));
+  const finalPool = pool.length >= 5 ? pool : LESSONS.flatMap(l => l.ex.filter(e => e.cat === cat));
+  return { id:'practice', mod:null, d:2, title:'Prática focada — ' + cat, desc:'Reforço inteligente', ex:shuffle(finalPool).slice(0,5), pseudo:true };
+}
+function makeDailyLesson(){
+  const rng = seededRng('wz-' + todayKey());
+  const pool = LESSONS.flatMap(l => l.ex);
+  const chosen = []; const used = new Set();
+  while (chosen.length < 6 && used.size < pool.length){
+    const e = pickSeed(pool, rng);
+    if (!used.has(e)){ used.add(e); chosen.push(e); }
+  }
+  return { id:'daily', mod:null, d:2, title:'Desafio diário', desc:'6 questões sorteadas para hoje', ex:chosen, pseudo:true };
+}
+function startRun(lesson, mode){
+  run = { mode, lesson, idx:0, hits:0, misses:0, xp:0, wrongNow:false, answered:false };
+  S.view = 'lesson'; render();
+}
+function quitRun(){ stopFlashTimer(); run = null; S.view = 'learn'; render(); }
+
+function renderRunScreen(){
+  const app = $('#app');
+  const total = run.lesson.ex.length;
+  const useHearts = run.mode === 'lesson' || run.mode === 'daily';
+  app.innerHTML = `
+  <div class="lesson-shell view-enter">
+    <div class="qtop">
+      <button class="xbtn" id="lquit" aria-label="Sair da lição">${icon('x',22)}</button>
+      <div class="qprog progress"><i style="width:${run.idx/total*100}%"></i></div>
+      ${useHearts ? `<span class="qhp">${icon('heart',18)} ${S.hearts}</span>` : ''}
+    </div>
+    <div id="qzone"></div>
+  </div>`;
+  $('#lquit').onclick = () => {
+    const m = openModal(`
+      <h2>Sair da lição?</h2><p>Seu progresso nesta lição será perdido. O Wazyboo vai sentir sua falta!</p>
+      <button class="btn purple" id="stay">Continuar aqui</button>
+      <button class="btn ghost" id="leave">Sair mesmo assim</button>`);
+    m.querySelector('#stay').onclick = closeModal;
+    m.querySelector('#leave').onclick = () => { closeModal(); quitRun(); toast('Lição abandonada — sem perda de XP!', 'flag'); };
+  };
+  renderQuestion();
+}
+
+let exState = null;
+function renderQuestion(){
+  run.answered = false; run.wrongNow = false;
+  const ex = run.lesson.ex[run.idx];
+  const zone = $('#qzone');
+  const df = diffOf(run.lesson.d || 1);
+  const tag = `<div class="q-tag">${esc(ex.cat || run.lesson.title)} <span class="diff-tag" style="background:${df.col}">${df.name}</span></div>`;
+  const qtxt = `<div class="q-text">${ex.q}</div>`;
+  let body = '';
+  exState = {};
+
+  if (ex.t === 'mc' || ex.t === 'riddle' || ex.t === 'seq'){
+    const opts = ex.o.map((o, i) => `<button class="opt" data-i="${i}" style="animation-delay:${i*50}ms">${o}</button>`).join('');
+    body = `${ex.t==='riddle' ? `<div class="riddle-box">${ex.q}</div>` : ex.v ? `<div class="q-visual">${ex.v}</div>${qtxt}` : qtxt}
+      <div class="opts ${ex.o.every(o => String(o).length < 12) ? 'two' : ''}">${opts}</div>`;
+    zone.innerHTML = `<div class="q-card">${tag}${body}</div><div class="l-footer"><button class="btn purple" id="btnCheck" disabled>Verificar</button></div>`;
+    zone.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      if (run.answered) return;
+      zone.querySelectorAll('.opt').forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel'); exState.pick = +b.dataset.i;
+      $('#btnCheck').disabled = false;
+    });
+  }
+  else if (ex.t === 'tf'){
+    body = `<div class="q-text">${ex.q}</div>
+      <div class="opts two tf-row">
+        <button class="opt" data-v="true"><span class="big">${icon('check',22)}</span> Verdadeiro</button>
+        <button class="opt" data-v="false"><span class="big">${icon('x',22)}</span> Falso</button>
+      </div>`;
+    zone.innerHTML = `<div class="q-card">${tag}${body}</div><div class="l-footer"><button class="btn purple" id="btnCheck" disabled>Verificar</button></div>`;
+    zone.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      if (run.answered) return;
+      zone.querySelectorAll('.opt').forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel'); exState.pick = b.dataset.v === 'true';
+      $('#btnCheck').disabled = false;
+    });
+  }
+  else if (ex.t === 'match'){
+    const right = shuffle(ex.pairs.map((p, i) => ({ txt:p[1], src:i })));
+    const PAIRCOLS = ['#8B5CF6','#FFC800','#FF4B4B'];
+    exState.pairs = {}; exState.sel = null; exState.cols = PAIRCOLS;
+    zone.innerHTML = `<div class="q-card">${tag}${qtxt}
+      <div class="match-wrap">
+        <div class="match-col" id="mL">${ex.pairs.map((p,i)=>`<button class="mitem" data-l="${i}">${p[0]}</button>`).join('')}</div>
+        <div class="match-col" id="mR">${right.map(r=>`<button class="mitem" data-r="${r.src}">${r.txt}</button>`).join('')}</div>
+      </div>
+      <div class="match-hint">Toque em um item da esquerda e depois no seu par da direita</div>
+    </div><div class="l-footer"><button class="btn purple" id="btnCheck" disabled>Verificar</button></div>`;
+    const paint = () => {
+      zone.querySelectorAll('#mL .mitem').forEach(b => {
+        const l = +b.dataset.l;
+        b.classList.toggle('sel', exState.sel === l);
+        b.classList.toggle('paired', exState.pairs[l] != null);
+        b.innerHTML = exState.pairs[l] != null
+          ? `<span><span class="pairdot" style="background:${exState.cols[Object.keys(exState.pairs).indexOf(String(l))%3]}"></span>${ex.pairs[l][0]}</span>`
+          : ex.pairs[l][0];
+      });
+      zone.querySelectorAll('#mR .mitem').forEach(b => b.classList.toggle('dim', Object.values(exState.pairs).includes(+b.dataset.r)));
+      $('#btnCheck').disabled = Object.keys(exState.pairs).length < ex.pairs.length;
+    };
+    zone.querySelectorAll('#mL .mitem').forEach(b => b.onclick = () => {
+      const l = +b.dataset.l;
+      if (exState.pairs[l] != null){ delete exState.pairs[l]; exState.sel = null; paint(); return; }
+      exState.sel = (exState.sel === l) ? null : l; paint();
+    });
+    zone.querySelectorAll('#mR .mitem').forEach(b => b.onclick = () => {
+      const r = +b.dataset.r;
+      if (Object.values(exState.pairs).includes(r) || exState.sel == null) return;
+      exState.pairs[exState.sel] = r; exState.sel = null; paint();
+    });
+    paint();
+  }
+  else if (ex.t === 'order'){
+    const items = ex.items.map((txt, i) => ({ txt, id:i }));
+    exState.bank = shuffle(items); exState.slots = Array(items.length).fill(null); exState.selCard = null;
+    zone.innerHTML = `<div class="q-card">${tag}${qtxt}
+      <div class="drag-hint">Arraste os cartões — ou toque para selecionar e toque no espaço</div>
+      <div class="order-slots" id="oSlots">${items.map((_,i)=>`<div class="oslot" data-s="${i}"><span class="num">${i+1}</span><span class="ph" style="color:var(--faint)">solte aqui</span></div>`).join('')}</div>
+      <div class="order-bank" id="oBank"></div>
+    </div><div class="l-footer"><button class="btn purple" id="btnCheck" disabled>Verificar</button></div>`;
+    const slotEl = s => zone.querySelector(`.oslot[data-s="${s}"]`);
+    function paintOrder(){
+      const bank = $('#oBank');
+      bank.innerHTML = '';
+      exState.bank.forEach(c => {
+        const d = document.createElement('button');
+        d.className = 'ocard' + (exState.selCard === ('b'+c.id) ? ' sel' : '');
+        d.dataset.k = 'b'+c.id; d.innerHTML = c.txt;
+        bank.appendChild(d);
+      });
+      exState.slots.forEach((c, i) => {
+        const el = slotEl(i);
+        el.classList.toggle('filled', !!c);
+        el.innerHTML = `<span class="num">${i+1}</span>` + (c ? `<span class="ocard" data-k="s${c.id}" style="border:none;padding:0;background:none">${c.txt}</span>` : `<span class="ph" style="color:var(--faint)">solte aqui</span>`);
+      });
+      $('#btnCheck').disabled = exState.bank.length > 0;
+      bindDrag();
+    }
+    function findCard(k){
+      if (k[0] === 'b'){ const id = +k.slice(1); const c = exState.bank.find(x => x.id === id); return c ? { c, from:'bank' } : null; }
+      const id = +k.slice(1); const s = exState.slots.findIndex(x => x && x.id === id);
+      return s >= 0 ? { c: exState.slots[s], from:'slot', s } : null;
+    }
+    function place(card, from, slotIdx){
+      if (from === 'slot') exState.slots[from.s] = null;
+      else exState.bank = exState.bank.filter(x => x.id !== card.id);
+      const occupant = exState.slots[slotIdx];
+      exState.slots[slotIdx] = card;
+      if (occupant) exState.bank.push(occupant);
+      exState.selCard = null; paintOrder();
+    }
+    function tapLogic(k){
+      const found = findCard(k); if (!found) return;
+      if (exState.selCard === k){ exState.selCard = null; paintOrder(); return; }
+      if (found.from === 'bank' && exState.selCard && exState.selCard[0] === 's'){
+        const inSlot = findCard(exState.selCard);
+        exState.slots[inSlot.s] = null;
+        exState.bank.push(inSlot.c);
+        exState.selCard = k; paintOrder(); return;
+      }
+      exState.selCard = k; paintOrder();
+    }
+    function bindDrag(){
+      zone.querySelectorAll('.ocard').forEach(d => {
+        let moved = false;
+        d.onclick = () => {
+          if (moved){ moved = false; return; }
+          if (!run.answered) tapLogic(d.dataset.k);
+        };
+        d.onpointerdown = e => {
+          if (run.answered) return;
+          e.preventDefault();
+          moved = false;
+          const startX = e.clientX, startY = e.clientY;
+          const found = findCard(d.dataset.k); if (!found) return;
+          const ghost = d.cloneNode(true); ghost.classList.add('ghost');
+          document.body.appendChild(ghost);
+          d.classList.add('dragging');
+          const move = ev => {
+            if (Math.abs(ev.clientX - startX) + Math.abs(ev.clientY - startY) > 8) moved = true;
+            ghost.style.left = (ev.clientX - 30) + 'px'; ghost.style.top = (ev.clientY - 24) + 'px';
+            zone.querySelectorAll('.oslot').forEach(s => s.classList.remove('over'));
+            const el = document.elementFromPoint(ev.clientX, ev.clientY);
+            const slot = el && el.closest && el.closest('.oslot');
+            if (slot) slot.classList.add('over');
+          };
+          move(e);
+          const up = ev => {
+            document.removeEventListener('pointermove', move);
+            document.removeEventListener('pointerup', up);
+            ghost.remove(); d.classList.remove('dragging');
+            zone.querySelectorAll('.oslot').forEach(s => s.classList.remove('over'));
+            const el = document.elementFromPoint(ev.clientX, ev.clientY);
+            const slot = el && el.closest && el.closest('.oslot');
+            if (slot){
+              const si = +slot.dataset.s;
+              const cur = exState.slots[si];
+              if (cur){ exState.slots[si] = null; exState.bank.push(cur); }
+              place(found.c, found.from, si);
+            } else paintOrder();
+          };
+          document.addEventListener('pointermove', move);
+          document.addEventListener('pointerup', up);
+        };
+      });
+      zone.querySelectorAll('.oslot').forEach(s => s.onclick = () => {
+        if (run.answered) return;
+        const si = +s.dataset.s;
+        if (exState.selCard){
+          const found = findCard(exState.selCard);
+          if (found) place(found.c, found.from, si);
+        } else if (exState.slots[si]){
+          exState.bank.push(exState.slots[si]); exState.slots[si] = null; paintOrder();
+        }
+      });
+    }
+    paintOrder();
+  }
+  $('#btnCheck').onclick = checkAnswer;
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function checkAnswer(){
+  if (run.answered) return;
+  const ex = run.lesson.ex[run.idx];
+  let ok = false;
+  if (ex.t === 'mc' || ex.t === 'riddle' || ex.t === 'seq') ok = exState.pick === ex.a;
+  else if (ex.t === 'tf') ok = exState.pick === ex.a;
+  else if (ex.t === 'match') ok = ex.pairs.every((p, i) => exState.pairs[i] === i);
+  else if (ex.t === 'order') ok = exState.slots.every((c, i) => c && c.id === i);
+  run.answered = true; run.wrongNow = !ok;
+
+  const cat = ex.cat || 'Geral';
+  S.stats[cat] = S.stats[cat] || { c:0, t:0 };
+  S.stats[cat].t++;
+
+  const zone = $('#qzone');
+  if (ok){
+    run.hits++; S.stats[cat].c++;
+    const xp = exerciseXP(); run.xp += xp;
+    if (ex.t === 'tf'){
+      zone.querySelectorAll('.tf-row .opt').forEach(b => {
+        if ((b.dataset.v === 'true') === ex.a) b.classList.add('right');
+      });
+    } else {
+      zone.querySelectorAll('.opt').forEach(b => { if (b.dataset.i !== undefined && +b.dataset.i === ex.a) b.classList.add('right'); });
+    }
+    addXP(xp);
+  } else {
+    run.misses++;
+    if (run.mode === 'lesson' || run.mode === 'daily'){
+      const wasFull = S.hearts === HEART_MAX;
+      S.hearts = Math.max(0, S.hearts - 1);
+      if (wasFull) S.heartsAt = Date.now();
+    }
+  }
+  save(); renderTop();
+
+  if (run.mode === 'flash'){ if (ok) playSound('ok'); else playSound('bad'); return; }
+  showFeedback(ok, ex);
+}
+
+function showFeedback(ok, ex){
+  playSound(ok ? 'ok' : 'bad');
+  const sheet = $('#sheet');
+  const title = ok ? okTitles[Math.floor(Math.random()*okTitles.length)] : badTitles[Math.floor(Math.random()*badTitles.length)];
+  const hintHTML = (!ok && ex.h) ? `<div class="sheet-hint">${icon('bulb',17)}<span><b>Dica:</b> ${ex.h}</span></div>` : '';
+  sheet.innerHTML = `<div class="sheet-in"><div class="sheet-card ${ok ? 'ok' : 'bad'}">
+    <div class="sheet-flex">
+      ${booScene(ok ? 'feliz' : 'triste', 'sm')}
+      <div style="flex:1">
+        <div class="sheet-title">${title}${ok ? ` &nbsp;+${exerciseXP()} XP` : ''}</div>
+        <div class="sheet-body">${ex.x}</div>
+        ${hintHTML}
+        <button class="sheet-btn" id="sheetNext">${run.idx === run.lesson.ex.length-1 ? 'Finalizar' : 'Continuar'}</button>
+      </div>
+    </div>
+  </div></div>`;
+  const wrap = sheet.querySelector('.sheet-flex');
+  if (ok){ cheer(wrap); confetti(36); } else scold(wrap);
+  sheet.classList.add('show');
+  $('#sheetNext').onclick = nextStep;
+}
+const hideSheet = () => $('#sheet').classList.remove('show');
+
+function nextStep(){
+  hideSheet();
+  if (run.wrongNow && S.hearts <= 0 && (run.mode === 'lesson' || run.mode === 'daily')){
+    const m = openModal(`
+      <div class="scene-center">${booScene('coracoes')}</div>
+      <h2 style="text-align:center">Seus corações acabaram!</h2>
+      <p style="text-align:center" id="nhText">Encha de novo por ${HEART_MAX*10} moedas — ou espere, eles se regeneram com o tempo (1 a cada 5 min).</p>
+      <button class="btn amber" id="refill">Encher corações · ${HEART_MAX*10} ${icon('coin',15)}</button>
+      <button class="btn ghost" id="giveup">Sair da lição</button>`, false);
+    m.querySelector('#refill').onclick = () => {
+      if (S.coins >= HEART_MAX*10){
+        S.coins -= HEART_MAX*10; S.hearts = HEART_MAX; S.heartsAt = Date.now();
+        save(); renderTop(); closeModal(); render();
+        toast('Corações cheios!', 'heart', true);
+      } else { closeModal(); toast('Moedas insuficientes — jogue o Contra o Relógio para ganhar!', 'coin'); quitRun(); }
+    };
+    m.querySelector('#giveup').onclick = () => {
+      closeModal();
+      run = null;
+      stopFlashTimer();
+      S.view = 'learn';
+      save();
+      render();
+      toast('Volte quando os corações voltarem!', 'heart');
+    };
+    return;
+  }
+  run.idx++;
+  if (run.idx >= run.lesson.ex.length) finishRun();
+  else renderRunScreen();
+}
+
+function finishRun(){
+  const acc = Math.round(run.hits / run.lesson.ex.length * 100);
+  const stars = run.misses === 0 ? 3 : (run.misses <= 1 ? 2 : 1);
+  let extraRows = [];
+  stopFlashTimer();
+  playSound('win');
+
+  if (run.mode === 'lesson' && !run.lesson.pseudo){
+    const prev = S.progress[run.lesson.id];
+    const firstTime = !prev;
+    S.progress[run.lesson.id] = { stars: Math.max(prev ? prev.stars : 0, stars), best: Math.max(prev ? prev.best : 0, acc) };
+    const coins = firstTime ? 15 : 5;
+    addCoins(coins, true);
+    extraRows.push(['coin', 'Moedas', '+' + coins]);
+    if (run.misses === 0) S.flags.perfect = true;
+  }
+  if (run.mode === 'daily'){
+    S.dailyDate = todayKey(); S.dailyDone++;
+    addCoins(40, true);
+    extraRows.push(['coin', 'Bônus diário', '+40']);
+  }
+  if (run.mode === 'practice' && run.misses === 0) S.flags.perfect = true;
+  touchStreak(); save(); checkAchievements(); renderTop();
+
+  const titles = { lesson:'Lição completa!', daily:'Desafio diário concluído!', practice:'Prática concluída!' };
+  const scene = run.mode === 'daily' ? 'diario' : 'comemorando';
+  const df = diffOf(run.lesson.d || 1);
+  const nxt = nextLesson();
+  const ndf = nxt ? diffOf(nxt.d) : null;
+  let upBanner = '';
+  if (ndf && ndf.n > df.n && run.mode === 'lesson' && !S.flags['diffSeen' + ndf.n]){
+    S.flags['diffSeen' + ndf.n] = true;
+    save();
+    upBanner = `<div class="reward-list"><div class="r">${icon('crown',18)} Nova dificuldade desbloqueada: <b style="color:${ndf.col}">${ndf.name}</b> — XP ×${ndf.mult}!</div></div>`;
+  }
+  const app = $('#app');
+  app.innerHTML = `
+  <div class="lesson-shell view-enter">
+    <div class="result-hero">
+      <div class="scene-center" style="margin-bottom:2px">${booScene(scene)}</div>
+      <h1 class="ptitle" style="margin-top:4px">${titles[run.mode] || 'Concluído!'}</h1>
+      <p class="sub">${esc(run.lesson.title)} <span class="diff-tag" style="background:${df.col}">${df.name}</span> · ${acc}% de acerto</p>
+      <div class="stars-row">${[1,2,3].map(i => `<span class="st ${i <= stars ? 'on' : ''}">${icon('star',44)}</span>`).join('')}</div>
+    </div>
+    <div class="res-stats">
+      <div class="stat-box pb"><div class="v">+${run.xp}</div><div class="k">XP total</div></div>
+      <div class="stat-box pb"><div class="v">${run.hits}</div><div class="k">Acertos</div></div>
+      <div class="stat-box rb"><div class="v">${run.misses}</div><div class="k">Erros</div></div>
+    </div>
+    ${upBanner}
+    ${extraRows.length ? `<div class="reward-list">${extraRows.map(r => `<div class="r">${icon(r[0],18)} ${r[1]} <b>${r[2]}</b></div>`).join('')}</div>` : ''}
+    <div style="display:grid; gap:10px; max-width:380px; margin:0 auto">
+      <button class="btn purple" id="resGo">${icon('check',18)} Continuar</button>
+      ${run.mode === 'lesson' ? '<button class="btn ghost" id="resAgain">' + icon('refresh',16) + ' Repetir lição</button>' : ''}
+    </div>
+  </div>`;
+  confetti(140);
+  app.querySelector('#resGo').onclick = () => { const was = run; run = null; S.view = was.mode === 'lesson' ? 'learn' : 'home'; render(); };
+  const ag = app.querySelector('#resAgain');
+  if (ag) ag.onclick = () => startRun(LESSONS.find(l => l.id === run.lesson.id), 'lesson');
+}
+
+/* ================================================================
+   CONTRA O RELÓGIO
+   ================================================================ */
+function genFlashQ(){
+  const kinds = ['add','sub','double','fib','alt'];
+  const kind = kinds[Math.floor(Math.random()*kinds.length)];
+  let seq = [], ans, rule = '';
+  const r = n => Math.floor(Math.random()*n);
+  if (kind === 'add'){ const s = 2+r(8), k = 2+r(6); for(let i=0;i<5;i++) seq.push(s+i*k); ans = s+5*k; rule = 'some '+k; }
+  else if (kind === 'sub'){ const s = 30+r(40), k = 2+r(6); for(let i=0;i<5;i++) seq.push(s-i*k); ans = s-5*k; rule = 'subtraia '+k; }
+  else if (kind === 'double'){ const s = 1+r(4); for(let i=0;i<5;i++) seq.push(s*Math.pow(2,i)); ans = s*32; rule = 'dobrou'; }
+  else if (kind === 'fib'){ const a = r(3), b = a+1+r(3); seq = [a,b]; for(let i=2;i<6;i++) seq.push(seq[i-1]+seq[i-2]); ans = seq.pop(); rule = 'somou os dois anteriores'; }
+  else { const s = r(5), k = 1+r(4); seq = [s, s+k, s+k, s+2*k, s+2*k]; ans = s+3*k; rule = 'repetiu e somou '+k; }
+  const opts = new Set([ans]);
+  while (opts.size < 4){ const d = ans + (Math.random()>.5?1:-1)*(1+Math.floor(Math.random()*4)); if (d > 0) opts.add(d); }
+  const arr = shuffle([...opts]);
+  return { o:arr.map(String), a:arr.indexOf(ans), v:seqHTML([...seq.map(String),'?']), q:'Qual número continua a sequência?' };
+}
+function startFlash(){
+  run = { mode:'flash', lesson:{ id:'flash', title:'Contra o Relógio', d:2, pseudo:true, ex:[] }, idx:0, hits:0, misses:0, xp:0, flashScore:0, flashLeft:60 };
+  S.view = 'flash'; render();
+  const app = $('#app');
+  app.innerHTML = `
+  <div class="lesson-shell view-enter">
+    <div class="f-top">
+      <div class="fleft">
+        <button class="xbtn" id="fquit" aria-label="Sair do Contra o Relógio">${icon('x',20)}</button>
+        <span>Contra o Relógio · 60s</span>
+      </div>
+      <span class="sc">${icon('zap',20)} <span id="flashScore">0</span></span>
+    </div>
+    <div class="timer-bar"><i id="flashBar" style="width:100%"></i></div>
+    <div id="qzone"></div>
+  </div>`;
+  $('#fquit').onclick = () => {
+    if (run.flashScore > 0){ endFlash(); }
+    else { stopFlashTimer(); run = null; S.view = 'challenges'; save(); render(); toast('Relâmpago encerrado', 'clock'); }
+  };
+  const paintTimer = () => {
+    const bar = $('#flashBar'); if (!bar) return;
+    bar.style.width = (run.flashLeft/60*100) + '%';
+    bar.style.background = run.flashLeft < 15 ? 'var(--r1)' : 'var(--y1)';
+  };
+  const nextQ = () => {
+    const q = genFlashQ();
+    run.answered = false;
+    const zone = $('#qzone');
+    if (!zone) return;
+    zone.innerHTML = `<div class="q-card"><div class="q-visual" style="margin-bottom:16px">${q.v}</div>
+      <div class="opts two">${q.o.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join('')}</div></div>`;
+    zone.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      if (run.answered) return;
+      run.answered = true;
+      const okRun = +b.dataset.i === q.a;
+      b.classList.add(okRun ? 'right' : 'wrong');
+      if (!okRun) zone.querySelector(`.opt[data-i="${q.a}"]`).classList.add('right');
+      S.stats['Revisão'] = S.stats['Revisão'] || { c:0, t:0 };
+      S.stats['Revisão'].t++;
+      if (okRun){
+        run.flashScore++; run.hits++;
+        S.stats['Revisão'].c++;
+        addXP(8);
+        const sc = $('#flashScore'); if (sc) sc.textContent = run.flashScore;
+      } else run.misses++;
+      save();
+      setTimeout(() => { if (run && run.mode === 'flash') nextQ(); }, 430);
+    });
+  };
+  nextQ(); paintTimer();
+  stopFlashTimer();
+  flashTimer = setInterval(() => {
+    if (!run || run.mode !== 'flash'){ stopFlashTimer(); return; }
+    run.flashLeft -= 0.25; paintTimer();
+    if (run.flashLeft <= 0) endFlash();
+  }, 250);
+}
+function endFlash(){
+  stopFlashTimer();
+  if (!run || run.mode !== 'flash') return;
+  const score = run.flashScore;
+  const isRecord = score > S.flashBest;
+  if (isRecord) S.flashBest = score;
+  const coins = score * 2;
+  S.coins += coins; S.coinsTotal += coins;
+  run = null;
+  S.view = 'challenges';
+  touchStreak(); save(); checkAchievements(); renderTop();
+  if (score > 0) playSound('win');
+  const app = $('#app');
+  app.innerHTML = `
+  <div class="lesson-shell view-enter">
+    <div class="result-hero">
+      <div class="scene-center">${booScene('relampago')}</div>
+      <div class="flash-score-big" style="margin-top:2px">${score}</div>
+      <p class="sub">acertos em 60 segundos ${isRecord ? '· <b style="color:var(--selT)">novo recorde!</b>' : '· recorde: ' + S.flashBest}</p>
+    </div>
+    <div style="display:grid; gap:10px; max-width:380px; margin:16px auto 0">
+      <div class="reward-list" style="margin:0"><div class="r">${icon('coin',18)} Moedas ganhas <b>+${coins}</b></div></div>
+      <button class="btn purple" id="flAgain">${icon('refresh',16)} Jogar de novo</button>
+      <button class="btn ghost" id="flBack">Voltar aos desafios</button>
+    </div>
+  </div>`;
+  if (score > 0) confetti(120);
+  app.querySelector('#flAgain').onclick = startFlash;
+  app.querySelector('#flBack').onclick = () => render();
+}
+
+/* ================================================================
+   CONFIGURAÇÕES
+   ================================================================ */
+function exportSave(){
+  const blob = new Blob([JSON.stringify(S, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `wazyboo-backup-${todayKey()}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Backup exportado!', 'down');
+}
+function importSave(){
+  $('#importFile').click();
+}
+function resetProgress(){
+  const m = openModal(`
+    <h2>Redefinir tudo?</h2>
+    <p>Isso apaga XP, moedas, corações, conquistas, lições concluídas, sequência e sua foto de perfil. <b>Não dá para desfazer!</b></p>
+    <button class="btn ghost" id="rstNo">Cancelar</button>
+    <button class="btn ghost" id="rstYes" style="color:var(--badT);border-color:var(--badB)">${icon('trash',15)} Sim, apagar tudo</button>`, false);
+  m.querySelector('#rstNo').onclick = closeModal;
+  m.querySelector('#rstYes').onclick = () => {
+    storeDel(KEY);
+    storeDel(KEY + '_onb');
+    storeDel(THEME_KEY);
+    location.reload();
+  };
+}
+function openSettings(){
+  const m = openModal(`
+    <h2>Configurações</h2>
+    <div class="set-row"><span class="set-label">Tema</span></div>
+    <div id="setTheme">${themeChooseHTML()}</div>
+    <div class="set-row">
+      <div>
+        <div class="set-label">Efeitos sonoros</div>
+        <div class="p-sub">Sons de acerto, erro e vitória</div>
+      </div>
+      <button class="switch ${S.settings.sound ? 'on' : ''}" id="swSound" aria-label="Efeitos sonoros"></button>
+    </div>
+    <div class="set-row">
+      <div>
+        <div class="set-label">Confete e comemorações</div>
+        <div class="p-sub">Animações ao conquistar objetivos</div>
+      </div>
+      <button class="switch ${S.settings.fx ? 'on' : ''}" id="swFx" aria-label="Confete"></button>
+    </div>
+    <div class="set-row" style="flex-direction:column;align-items:stretch;gap:8px;border-bottom:none">
+      <div>
+        <div class="set-label">Backup do progresso</div>
+        <div class="p-sub">Seus dados ficam neste navegador. Exporte um arquivo para guardar ou levar para outro dispositivo.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="btn ghost small" id="stExport">${icon('down',14)} Exportar</button>
+        <button class="btn ghost small" id="stImport">${icon('up',14)} Importar</button>
+      </div>
+    </div>
+    <div style="border-top:2px solid var(--line);margin-top:6px;padding-top:14px">
+      <button class="btn ghost small" id="stReset" style="width:100%;color:var(--badT);border-color:var(--badB);box-shadow:0 3px 0 var(--badB)">${icon('trash',14)} Redefinir progresso</button>
+    </div>
+    <p class="p-sub" style="text-align:center;margin-top:16px">${NOME_APP} · versão ${APP_VERSION}</p>
+  `);
+  bindThemeChoose('#setTheme');
+  m.querySelector('#swSound').onclick = e => {
+    S.settings.sound = !S.settings.sound; save();
+    e.currentTarget.classList.toggle('on', S.settings.sound);
+    toast(S.settings.sound ? 'Sons ativados' : 'Sons desativados', 'volume');
+    if (S.settings.sound) playSound('ok');
+  };
+  m.querySelector('#swFx').onclick = e => {
+    S.settings.fx = !S.settings.fx; save();
+    e.currentTarget.classList.toggle('on', S.settings.fx);
+    if (S.settings.fx) confetti(50);
+    toast(S.settings.fx ? 'Comemorações ativadas' : 'Comemorações desativadas', 'sparkle');
+  };
+  m.querySelector('#stExport').onclick = () => { closeModal(); exportSave(); };
+  m.querySelector('#stImport').onclick = () => { closeModal(); importSave(); };
+  m.querySelector('#stReset').onclick = () => { resetProgress(); };
+}
+
+/* ================================================================
+   CHROME — topbar (celular) + sidebar e rail (PC)
+   ================================================================ */
+const NAV_ITEMS = [['home','Início','home'],['learn','Aprender','book'],['challenges','Desafios','zap'],['ranking','Ranking','trophy'],['profile','Perfil','user']];
+function renderTop(){
+  const li = levelInfo(S.xp);
+  const dark = getTheme() === 'dark';
+  const txp = todayXP();
+
+  const tb = $('#tbIn');
+  if (tb){
+    tb.innerHTML = `
+      ${logoHTML()}
+      <div class="tb-stats">
+        <span class="pill fire" title="Sequência de dias">${icon('flame',19)} ${S.streak}</span>
+        <span class="pill hpill" title="Corações">${icon('heart',19)} ${S.hearts}</span>
+        <span class="pill coin" title="Moedas">${icon('coin',19)} ${S.coins}</span>
+        <span class="pill xp" title="XP total">${icon('zap',19)} ${S.xp}</span>
+        <span class="pill" style="color:var(--selT)" title="Nível">Nv ${li.level}</span>
+        <button class="theme-btn" id="tTheme" title="Trocar tema (branco/preto)">${icon(dark ? 'sun' : 'moon', 18)}</button>
+      </div>`;
+    const tbBtn = $('#tTheme');
+    if (tbBtn) tbBtn.onclick = () => setTheme(dark ? 'light' : 'dark');
+  }
+
+  const sb = $('#sidebar');
+  if (sb){
+    sb.innerHTML = `
+      <div class="sb-logo">${logoHTML()}</div>
+      ${NAV_ITEMS.map(([v, lbl, ic]) =>
+        `<button class="snav ${S.view === v ? 'on' : ''}" data-v="${v}">${icon(ic,22)} ${lbl}</button>`).join('')}
+      <div class="sb-foot">
+        <button class="snav" id="sbTheme">${icon(dark ? 'sun' : 'moon',20)} Tema: ${dark ? 'preto' : 'branco'}</button>
+        <div class="sb-user">${avatarHTML(34)}<span>${esc(S.name || 'Explorador')}</span></div>
+      </div>`;
+    sb.querySelectorAll('.snav[data-v]').forEach(b => b.onclick = () => go(b.dataset.v));
+    $('#sbTheme').onclick = () => setTheme(dark ? 'light' : 'dark');
+  }
+
+  const rl = $('#rail');
+  if (rl){
+    const goalPct = Math.min(100, Math.round(txp / GOAL * 100));
+    const cd = currentDiff();
+    const doneAll = doneCount();
+    rl.innerHTML = `
+      <div class="rail-card">
+        <h4>Meta diária</h4>
+        <div class="rail-big">${icon('target',20)} <span id="railXp">${txp}/${GOAL} XP</span></div>
+        <div class="progress" style="margin-top:10px;height:12px"><i style="width:${goalPct}%"></i></div>
+        <div class="rail-sub">${goalPct >= 100 ? 'Meta batida hoje. Excelente!' : 'Faltam ' + (GOAL - txp) + ' XP para completar o dia'}</div>
+      </div>
+      <div class="rail-card">
+        <h4>Sua fase</h4>
+        <div class="rail-big" style="color:${cd.col}">${icon('zap',20)} ${cd.name}</div>
+        <div class="rail-sub">Fase ${Math.min(doneAll+1, LESSONS.length)} de ${LESSONS.length} · XP ×${cd.mult} por acerto</div>
+        <div class="progress" style="margin-top:8px;height:12px"><i style="width:${Math.round(doneAll/LESSONS.length*100)}%;background:${cd.col}"></i></div>
+      </div>
+      <div class="rail-card">
+        <h4>Sua sequência</h4>
+        <div class="rail-big" style="color:var(--fire)">${icon('flame',20)} ${S.streak} dia${S.streak === 1 ? '' : 's'}</div>
+        <div style="margin-top:12px">${weekHTML(32)}</div>
+      </div>
+      <div class="rail-card">
+        <h4>Status</h4>
+        <div class="rail-row"><span style="display:flex;gap:8px;align-items:center;color:var(--hpill)">${icon('heart',18)} Corações</span><span>${S.hearts}/${HEART_MAX}</span></div>
+        <div class="rail-row"><span style="display:flex;gap:8px;align-items:center;color:var(--coin)">${icon('coin',18)} Moedas</span><span>${S.coins}</span></div>
+        <div class="rail-row"><span style="display:flex;gap:8px;align-items:center;color:var(--selT)">${icon('zap',18)} XP total</span><span>${S.xp}</span></div>
+        <div class="rail-sub" style="margin-top:8px">${doneAll}/${LESSONS.length} lições · Nível ${li.level} · ${li.rest}/${li.need} XP p/ próximo</div>
+        <div class="progress" style="margin-top:8px;height:12px"><i style="width:${Math.round(li.rest/li.need*100)}%;background:var(--y1)"></i></div>
+      </div>
+      ${S.dailyDate !== todayKey() ? `<button class="btn amber" id="railDaily" style="width:100%">${icon('calendar',17)} Desafio diário</button>` : ''}
+    `;
+    const rd = $('#railDaily');
+    if (rd) rd.onclick = startDaily;
+  }
+}
+function renderNav(){
+  $('#nav').innerHTML = NAV_ITEMS.map(([v, lbl, ic]) =>
+    `<button data-v="${v}" class="${S.view === v || (S.view === 'flash' && v === 'challenges') ? 'on' : ''}" aria-label="${lbl}">${icon(ic,22)}<span>${lbl}</span></button>`).join('');
+  $('#nav').querySelectorAll('button').forEach(b => b.onclick = () => go(b.dataset.v));
+}
+const themeChooseHTML = () => `
+  <div class="theme-choose">
+    <button class="theme-opt ${getTheme() === 'light' ? 'on' : ''}" data-th="light"><span class="sw lights"></span> Branco</button>
+    <button class="theme-opt ${getTheme() === 'dark' ? 'on' : ''}" data-th="dark"><span class="sw darks"></span> Preto</button>
+  </div>`;
+function bindThemeChoose(rootSel){
+  document.querySelectorAll(rootSel + ' .theme-opt').forEach(b => b.onclick = () => {
+    setTheme(b.dataset.th);
+    document.querySelectorAll(rootSel + ' .theme-opt').forEach(x => x.classList.toggle('on', x.dataset.th === b.dataset.th));
+    toast(b.dataset.th === 'dark' ? 'Tema preto ativado' : 'Tema branco ativado', b.dataset.th === 'dark' ? 'moon' : 'sun');
+  });
+}
+
+/* ---------- HOME ---------- */
+const catAcc = cat => { const s = S.stats[cat]; return s && s.t > 0 ? s.c / s.t : null; };
+function adaptiveAdvice(){
+  const cats = Object.keys(S.stats).filter(c => S.stats[c].t >= 4);
+  if (!cats.length) return { type:'start', text:'A trilha começa fácil e vai dificultando a cada fase. O primeiro passo te espera!', cat:null };
+  const ranked = cats.map(c => ({ c, acc: S.stats[c].c / S.stats[c].t })).sort((a, b) => b.acc - a.acc);
+  const best = ranked[0], worst = ranked[ranked.length-1];
+  if (best.acc >= 0.8 && best.c !== worst.c)
+    return { type:'good', text:`Você está indo muito bem em ${best.c.toLowerCase()} — ${Math.round(best.acc*100)}% de acerto! Continue avançando na trilha.`, cat:null };
+  if (worst.acc < 0.7)
+    return { type:'train', text:`Que tal praticar um pouco mais de ${worst.c.toLowerCase()}? Seu acerto está em ${Math.round(worst.acc*100)}% — tenho 5 questões perfeitas para você.`, cat:worst.c };
+  return { type:'ok', text:'Seu desempenho está equilibrado. Siga firme — a trilha fica cada vez mais desafiadora!', cat:null };
+}
+function viewHome(){
+  const li = levelInfo(S.xp);
+  const nl = nextLesson();
+  const doneTotal = doneCount(), allTotal = LESSONS.length;
+  const pct = Math.round(doneTotal / allTotal * 100);
+  const dailyDoneToday = S.dailyDate === todayKey();
+  const adv = adaptiveAdvice();
+  const quote = QUOTES[Math.floor(Date.now()/864e5) % QUOTES.length];
+  const xpPct = Math.round(li.rest / li.need * 100);
+  const txp = todayXP(), goalPct = Math.min(100, Math.round(txp / GOAL * 100));
+  const cd = currentDiff();
+  const meters = MODULES.slice(0,4).map(m => {
+    const cat = { pat:'Padrões', seq:'Sequências', cls:'Classificação' }[m.id];
+    const a = cat ? catAcc(cat) : null;
+    return `<div class="meter"><b>${m.title}</b><span>${a == null ? '—' : Math.round(a*100) + '%'}</span><div class="progress"><i style="width:${a == null ? 0 : Math.round(a*100)}%; background:${m.col}"></i></div></div>`;
+  }).join('');
+  return `
+  <div class="view-enter">
+    <div class="hero">
+      <div class="hero-copy">
+        <div class="chip" style="background:var(--sel);color:var(--selT)">Olá${S.name ? ', ' + esc(S.name) : ''}!</div>
+        <h1>Treine seu raciocínio 5 minutos por dia.</h1>
+        <div class="quote">“${quote}”</div>
+        <div class="hero-actions">
+          ${nl ? `<button class="btn purple" id="hStart">${icon('play',16)} ${doneTotal > 0 ? 'Continuar' : 'Começar'}</button>` : `<button class="btn amber" id="hAll">${icon('crown',16)} Revisar tudo</button>`}
+        </div>
+      </div>
+      <div style="text-align:center">${booScene('normal')}</div>
+    </div>
+    <div class="home-grid">
+      <div class="card panel">
+        <div class="panel-row">
+          <div class="ico" style="background:${cd.col};color:#fff">${icon('zap',24)}</div>
+          <div class="grow">
+            <h3>Trilha: ${cd.name}</h3>
+            <div class="p-sub">${cd.desc} · Fase ${Math.min(doneTotal+1, allTotal)} de ${allTotal} · XP ×${cd.mult} por acerto</div>
+          </div>
+        </div>
+      </div>
+      <div class="card panel">
+        <div class="panel-row">
+          <div class="ico">${icon('calendar',24)}</div>
+          <div class="grow">
+            <h3>Desafio diário</h3>
+            <div class="p-sub">${dailyDoneToday ? 'Você já completou o desafio de hoje. Volte amanhã!' : '6 questões sorteadas só para hoje · 40 moedas de bônus'}</div>
+          </div>
+          ${dailyDoneToday ? `<span class="chip" style="background:var(--accBg);color:var(--accT)">${icon('check',13)} Feito</span>` : `<button class="btn amber small" id="hDaily">Jogar</button>`}
+        </div>
+      </div>
+      <div class="card panel">
+        <div class="panel-row">
+          <div class="ico">${icon(adv.type === 'train' ? 'bulb' : adv.type === 'good' ? 'sparkle' : 'target',24)}</div>
+          <div class="grow">
+            <h3>${adv.type === 'train' ? 'Recomendação' : adv.type === 'good' ? 'Ponto forte!' : 'Sua trilha'}</h3>
+            <div class="p-sub">${adv.text}</div>
+          </div>
+          ${adv.type === 'train' ? `<button class="btn purple small" id="hPractice">Praticar</button>` : ''}
+        </div>
+      </div>
+      <div class="card panel">
+        <h3 style="margin-bottom:4px">Progresso geral</h3>
+        <div class="p-sub">${doneTotal} de ${allTotal} lições · Nível ${li.level} · faltam ${li.need - li.rest} XP</div>
+        <div class="progress-line"><div class="progress"><i style="width:${pct}%"></i></div><b>${pct}%</b></div>
+        <div class="progress-line"><div class="progress"><i style="width:${xpPct}%; background:var(--y1)"></i></div><b>${xpPct}%</b></div>
+        <div class="p-sub" style="margin-top:14px"><b>Meta diária:</b> ${txp}/${GOAL} XP ${goalPct >= 100 ? '· batida!' : ''}</div>
+        <div class="progress-line"><div class="progress"><i style="width:${goalPct}%; background:var(--p3)"></i></div><b>${goalPct}%</b></div>
+      </div>
+      <div class="card panel">
+        <h3 style="margin-bottom:4px">Seus domínios</h3>
+        <div class="meters">${meters}</div>
+        <button class="btn ghost small" id="hProfile" style="margin-top:14px">${icon('user',14)} Ver perfil completo</button>
+      </div>
+    </div>
+  </div>`;
+}
+function bindHome(){
+  const nl = nextLesson();
+  const st = $('#hStart'); if (st) st.onclick = () => {
+    if (S.hearts <= 0){ noHeartsModal(); return; }
+    openLessonOverview(nl);
+  };
+  const al = $('#hAll'); if (al) al.onclick = () => go('learn');
+  const dl = $('#hDaily'); if (dl) dl.onclick = startDaily;
+  const pr = $('#hPractice'); if (pr) pr.onclick = () => { const adv = adaptiveAdvice(); if (adv.cat) startRun(makePracticeLesson(adv.cat), 'practice'); };
+  const pf = $('#hProfile'); if (pf) pf.onclick = () => go('profile');
+}
+function startDaily(){
+  if (S.hearts <= 0){ noHeartsModal(); return; }
+  startRun(makeDailyLesson(), 'daily');
+}
+function noHeartsModal(){
+  const mins = Math.max(1, Math.ceil((S.heartsAt + HEART_MS - Date.now()) / 60000));
+  const m = openModal(`
+    <div class="scene-center">${booScene('coracoes')}</div>
+    <h2 style="text-align:center">Sem corações!</h2>
+    <p style="text-align:center" id="nhText">Você precisa de pelo menos 1 coração para jogar. O próximo coração volta em <b>~${mins} min</b> — ou encha todos agora.</p>
+    <button class="btn amber" id="nhFill">Encher corações · ${HEART_MAX*10} ${icon('coin',15)}</button>
+    <button class="btn ghost" id="nhClose">Volto mais tarde</button>`, false);
+  m.querySelector('#nhClose').onclick = closeModal;
+  m.querySelector('#nhFill').onclick = () => {
+    if (S.coins >= HEART_MAX*10){
+      S.coins -= HEART_MAX*10; S.hearts = HEART_MAX; S.heartsAt = Date.now();
+      save(); renderTop(); closeModal(); render();
+      toast('Corações cheios!', 'heart', true);
+    } else {
+      closeModal();
+      toast('Moedas insuficientes — jogue o Contra o Relógio para ganhar!', 'coin');
+    }
+  };
+}
+function openLessonOverview(lesson){
+  const mod = MODULES.find(m => m.id === lesson.mod);
+  const df = diffOf(lesson.d || 1);
+  const m = openModal(`
+    <div class="scene-center">${booScene('pensando')}</div>
+    <h2 style="text-align:center">${esc(lesson.title)}</h2>
+    <p style="text-align:center">${mod ? esc(mod.title) + ' · ' : ''}${lesson.ex.length} exercícios · <b style="color:${df.col}">${df.name}</b></p>
+    <div class="reward-list">
+      <div class="r">${icon('zap',18)} XP por acerto <b>+${lvMult(mod ? mod.lv : 1)*df.mult} (×${df.mult})</b></div>
+      <div class="r">${icon('heart',18)} Custa <b>1 coração por erro</b></div>
+    </div>
+    <button class="btn purple" id="ovGo">${icon('play',16)} Começar lição</button>
+    <button class="btn ghost" id="ovNo">Depois</button>`);
+  m.querySelector('#ovNo').onclick = closeModal;
+  m.querySelector('#ovGo').onclick = () => {
+    closeModal();
+    if (S.hearts <= 0){ noHeartsModal(); return; }
+    startRun(lesson, 'lesson');
+  };
+}
+
+/* ---------- APRENDER — trilha única, sem repetição ---------- */
+function viewLearn(){
+  const wide = window.matchMedia('(min-width:1024px)').matches;
+  const PW = wide ? 480 : 340;
+  const OFF = wide ? [0,-60,-100,-60,0,60,100,60] : [0,-50,-85,-50,0,50,85,50];
+  const STEP = 116, HEADH = 56, HEADGAP = 36, BANH = 90, PAD = 70, C = PW / 2;
+  const doneTotal = doneCount();
+  const cd = currentDiff();
+  let y = PAD, rowsHtml = '', pts = [];
+  const headsDone = new Set();
+  let lastD = 0;
+  LESSONS.forEach((l, i) => {
+    if (l.d !== lastD){
+      lastD = l.d;
+      const df = diffOf(l.d);
+      rowsHtml += `<div class="trail-banner" style="top:${y}px;background:linear-gradient(135deg, ${df.col}, ${df.colD})">
+        <div class="tb-ico">${icon(df.n === 4 ? 'crown' : 'zap',22)}</div>
+        <div class="grow"><b>Dificuldade ${df.name}</b>
+        <div class="p-sub">${df.desc} · XP ×${df.mult} por acerto</div></div>
+      </div>`;
+      y += BANH;
+    }
+    const mod = MODULES.find(m => m.id === l.mod);
+    if (!headsDone.has(mod.id)){
+      headsDone.add(mod.id);
+      const L = LEVELS.find(v => v.n === mod.lv);
+      rowsHtml += `<div class="uhead" style="top:${y}px;background:${mod.col};box-shadow:0 5px 0 ${mod.colD}">
+        <b>${mod.title}</b><small>Nv ${mod.lv} · ${L.name}</small></div>`;
+      y += HEADH + HEADGAP;
+    }
+    const st = lessonState(l);
+    const x = C + OFF[i % OFF.length];
+    pts.push({ x, y: y + 35, st });
+    const ic = st === 'locked' ? 'lock' : st === 'done' ? (S.progress[l.id].stars >= 3 ? 'crown' : 'check') : 'star';
+    rowsHtml += `<button class="pnode ${st}${st==='done' && S.progress[l.id].stars >= 3 ? ' legend' : ''}"
+      data-l="${l.id}" style="left:${x-35}px;top:${y}px"
+      data-tip="Fase ${i+1} · ${esc(mod.title)} · ${esc(l.title)}"><span class="nic">${icon(ic,26)}</span></button>`;
+    y += STEP;
+  });
+  let d = '';
+  pts.forEach((p, k) => {
+    if (k === 0){ d = `M ${p.x} ${p.y}`; return; }
+    const my = (pts[k-1].y + p.y) / 2;
+    d += ` C ${pts[k-1].x} ${my}, ${p.x} ${my}, ${p.x} ${p.y}`;
+  });
+  const curIdx = pts.findIndex(p => p.st === 'open');
+  const bub = curIdx >= 0 ? `<div class="start-bub" style="left:${pts[curIdx].x}px;top:${pts[curIdx].y - 70}px">FASE ${curIdx+1}</div>` : '';
+  const pctAll = Math.round(doneTotal / LESSONS.length * 100);
+  return `<div class="view-enter">
+    <h1 class="ptitle">${S.name ? 'Vamos, ' + esc(S.name) + '!' : 'Vamos aprender!'}</h1>
+    <p class="sub">${LESSONS.length} fases únicas, do fácil ao extremo — cada uma ensina algo novo e libera a próxima.</p>
+    <div class="trail-banner standalone" style="background:linear-gradient(135deg, ${cd.col}, ${cd.colD})">
+      <div class="tb-ico">${icon('zap',22)}</div>
+      <div class="grow">
+        <b>Agora: dificuldade ${cd.name}</b>
+        <div class="p-sub">${cd.desc} · ${doneTotal} de ${LESSONS.length} fases concluídas (${pctAll}%) · XP ×${cd.mult}</div>
+        <div class="progress"><i style="width:${pctAll}%"></i></div>
+      </div>
+    </div>
+    <div class="path" style="height:${y}px;width:${PW}px">
+      <svg class="trail-line" width="${PW}" height="${y}" viewBox="0 0 ${PW} ${y}" fill="none">
+        <path d="${d}" stroke="var(--line)" stroke-width="13" stroke-linecap="round"/>
+      </svg>
+      ${rowsHtml}${bub}
+    </div></div>`;
+}
+function bindLearn(){
+  document.querySelectorAll('.pnode[data-l]').forEach(b => b.onclick = () => {
+    const lesson = LESSONS.find(l => l.id === b.dataset.l);
+    if (lesson && lessonState(lesson) !== 'locked') openLessonOverview(lesson);
+  });
+}
+
+/* ---------- DESAFIOS ---------- */
+function viewChallenges(){
+  const dailyDoneToday = S.dailyDate === todayKey();
+  return `
+  <div class="view-enter">
+    <h1 class="ptitle">Desafios</h1>
+    <p class="sub">Modos rápidos para afiar a mente fora da trilha.</p>
+    <div class="chal-grid">
+      <div class="card chal-card">
+        <div class="cic" style="background:var(--goldBg);color:var(--goldT)">${icon('calendar',26)}</div>
+        <h3>Desafio diário</h3>
+        <p class="p-sub" style="margin-bottom:14px">6 questões sorteadas de todo o universo Wazyboo. Uma tentativa por dia — bônus de 40 moedas.</p>
+        <button class="btn amber" id="cDaily" ${dailyDoneToday ? 'disabled' : ''}>${dailyDoneToday ? 'Volte amanhã' : icon('play',15) + ' Jogar'}</button>
+      </div>
+      <div class="card chal-card">
+        <div class="cic" style="background:var(--badBg);color:var(--badT)">${icon('clock',26)}</div>
+        <h3>Contra o Relógio</h3>
+        <p class="p-sub" style="margin-bottom:14px">60 segundos de sequências infinitas. Cada acerto vale +8 XP e 2 moedas. Recorde: <b>${S.flashBest}</b></p>
+        <button class="btn purple" id="cFlash">${icon('zap',15)} Começar</button>
+      </div>
+      <div class="card chal-card" style="grid-column:1/-1">
+        <div class="cic" style="background:var(--sel);color:var(--selT)">${icon('crown',26)}</div>
+        <h3>O fim da trilha</h3>
+        <p class="p-sub" style="margin-bottom:14px">As últimas fases escondem os desafios mais duros do app: sequências ocultas, paradoxos e enigmas lendários — vale XP ×3. Chegue lá.</p>
+        <button class="btn ghost" id="cLearn">Ver trilha</button>
+      </div>
+    </div>
+  </div>`;
+}
+function bindChallenges(){
+  const d = $('#cDaily'); if (d) d.onclick = startDaily;
+  $('#cFlash').onclick = startFlash;
+  $('#cLearn').onclick = () => go('learn');
+}
+
+/* ---------- RANKING ---------- */
+const BOTS = [
+  { n:'Marina L.', xp:2450 }, { n:'dudulogic', xp:1980 }, { n:'Sofia.Q', xp:1640 },
+  { n:'Pedroão', xp:1320 }, { n:'nina_thinks', xp:980 }, { n:'Rafael M.', xp:760 },
+  { n:'clarabeats', xp:540 }, { n:'Tiago_V', xp:410 }, { n:'Osmar', xp:260 },
+];
+const BOTCOLS = ['#8B5CF6','#FF9600','#FF4B4B','#0E9888','#3D7EA6','#DBA800','#2E6E63','#8A4B3B','#4A6B7A'];
+function viewRanking(){
+  const li = levelInfo(S.xp);
+  const rows = [...BOTS.map((b, i) => ({ ...b, me:false, col:BOTCOLS[i%BOTCOLS.length] })),
+    { n:S.name || 'Você', xp:S.xp, me:true, col:'#8B5CF6' }].sort((a, b) => b.xp - a.xp);
+  const league = li.level >= 10 ? { n:'Diamante', c:'#7CC7D9' } : li.level >= 6 ? { n:'Ouro', c:'#FFC800' } : li.level >= 3 ? { n:'Prata', c:'#A9B4B2' } : { n:'Bronze', c:'#E0A26E' };
+  const myPos = rows.findIndex(r => r.me) + 1;
+  return `
+  <div class="view-enter">
+    <h1 class="ptitle">Ranking semanal</h1>
+    <p class="sub">A posição sobe com o XP total. Fases mais difíceis rendem XP mais rápido.</p>
+    <div class="card panel" style="margin-top:16px;display:flex;align-items:center;gap:14px">
+      <div style="width:52px;height:52px;border-radius:50%;background:${league.c};display:grid;place-items:center;color:#3C3C3C;flex:none">${icon(league.n === 'Ouro' ? 'crown' : 'medal',26)}</div>
+      <div><div style="font-weight:900;font-size:17px">Liga ${league.n}</div>
+      <div class="p-sub">Você está em ${myPos}º com ${S.xp} XP — nível ${li.level}</div></div>
+    </div>
+    <div class="lb" style="margin-top:12px">
+      ${rows.map((r, i) => `
+      <div class="lb-row ${r.me ? 'me' : ''} ${i === 0 ? 'top1' : ''}">
+        <span class="pos">${i+1}º</span>
+        ${r.me ? avatarHTML(38) : `<span class="av" style="background:${r.col}">${esc((r.n[0]||'?').toUpperCase())}</span>`}
+        <span class="nm">${esc(r.n)}${r.me ? ' <span class="chip" style="background:var(--p1);color:#fff;font-size:9px;padding:2px 7px">você</span>' : ''}</span>
+        <span class="xp">${icon('zap',14)} ${r.xp}</span>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+/* ---------- PERFIL ---------- */
+function viewProfile(){
+  const li = levelInfo(S.xp);
+  const cats = ['Padrões','Sequências','Classificação','Dedução','Ordenação','Lógica','Enigmas','Revisão']
+    .filter(c => S.stats[c] && S.stats[c].t > 0);
+  const totalHits = cats.reduce((s, c) => s + S.stats[c].c, 0);
+  const totalAns = cats.reduce((s, c) => s + S.stats[c].t, 0);
+  const acc = totalAns ? Math.round(totalHits/totalAns*100) : 0;
+  const doneByDiff = DIFFS.map(dd => {
+    const pool = LESSONS.filter(l => l.d === dd.n);
+    return { ...dd, done: pool.filter(l => S.progress[l.id]).length, total: pool.length };
+  });
+  return `
+  <div class="view-enter">
+    <div class="card prof-head">
+      <button class="gear-btn" id="pSettings" title="Configurações" aria-label="Configurações">${icon('gear',20)}</button>
+      <div class="avatar-edit">
+        ${avatarHTML(96)}
+        <button class="avatar-cam" id="pAvatar" title="Trocar foto de perfil">${icon('camera',14)}</button>
+      </div>
+      <div style="flex:1;min-width:200px">
+        <h2>${esc(S.name || 'Explorador')}
+          <button id="pEdit" style="width:32px;height:32px;border-radius:9px;border:2px solid var(--line);display:grid;place-items:center;color:var(--faint)" aria-label="Editar nome">${icon('pencil',14)}</button>
+        </h2>
+        <p class="sub">Nível ${li.level} · ${li.rest}/${li.need} XP para o próximo</p>
+        <div class="progress-line"><div class="progress"><i style="width:${Math.round(li.rest/li.need*100)}%; background:var(--y1)"></i></div><b>${Math.round(li.rest/li.need*100)}%</b></div>
+      </div>
+    </div>
+    <div class="card panel">
+      <h3 style="margin-bottom:2px">Estatísticas</h3>
+      <div class="stat-grid">
+        <div class="stat-box bb"><div class="v">${S.xp}</div><div class="k">XP total</div></div>
+        <div class="stat-box rb"><div class="v">${S.streak}</div><div class="k">Sequência atual</div></div>
+        <div class="stat-box yb"><div class="v">${S.bestStreak}</div><div class="k">Maior sequência</div></div>
+        <div class="stat-box"><div class="v">${doneCount()}/${LESSONS.length}</div><div class="k">Lições</div></div>
+        <div class="stat-box pb"><div class="v">${acc}%</div><div class="k">Precisão geral</div></div>
+        <div class="stat-box"><div class="v">${todayXP()}/${GOAL}</div><div class="k">Meta de hoje</div></div>
+      </div>
+    </div>
+    <h2 class="sec-title">Progresso por dificuldade</h2>
+    <div class="card panel">
+      ${doneByDiff.map(dd => `<div class="meter"><b style="color:${dd.col}">${dd.name}</b><span>${dd.done}/${dd.total}</span><div class="progress"><i style="width:${Math.round(dd.done/dd.total*100)}%; background:${dd.col}"></i></div></div>`).join('')}
+    </div>
+    <h2 class="sec-title">Últimos 7 dias</h2>
+    <div class="card panel">
+      ${weekHTML(42)}
+      <div class="p-sub" style="margin-top:12px">Cada círculo roxo é um dia em que você treinou. Mantenha a fileira cheia!</div>
+    </div>
+    <h2 class="sec-title">Progresso por categoria</h2>
+    <div class="card panel">
+      ${cats.length ? cats.map(c => {
+        const st = S.stats[c], pct = Math.round(st.c/st.t*100);
+        return `<div class="meter"><b>${c}</b><span>${pct}%</span><div class="progress"><i style="width:${pct}%"></i></div></div>`;
+      }).join('') : '<p class="sub">Responda alguns exercícios para ver seus domínios aqui.</p>'}
+    </div>
+    <h2 class="sec-title">Conquistas (${S.achievements.length}/${ACHIEVEMENTS.length})</h2>
+    <div class="ach-grid">
+      ${ACHIEVEMENTS.map(a => {
+        const has = S.achievements.includes(a.id);
+        return `<div class="ach ${has ? '' : 'locked'}"><div class="aic">${icon(a.ico,20)}</div><div><b>${a.name}</b><span>${a.desc}</span></div></div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+function bindProfile(){
+  $('#pSettings').onclick = openSettings;
+  $('#pAvatar').onclick = () => $('#avatarFile').click();
+  $('#pEdit').onclick = () => {
+    const m = openModal(`
+      <h2>Seu perfil</h2>
+      <div class="scene-center">
+        <div class="avatar-edit">
+          ${avatarHTML(84)}
+          <button class="avatar-cam" id="mAvatar" title="Trocar foto de perfil">${icon('camera',13)}</button>
+        </div>
+      </div>
+      <button class="btn ghost" id="mPick">${icon('camera',15)} ${S.avatar ? 'Trocar foto' : 'Adicionar foto'}</button>
+      ${S.avatar ? `<button class="btn ghost" id="mDel">${icon('trash',15)} Remover foto</button>` : ''}
+      <p style="margin-top:18px">Como você quer aparecer no ranking?</p>
+      <input type="text" id="nameIn" maxlength="24" value="${esc(S.name)}" placeholder="Seu nome">
+      <button class="btn purple" id="nameOk">Salvar</button>`);
+    const inp = m.querySelector('#nameIn');
+    const pick = () => $('#avatarFile').click();
+    m.querySelector('#mAvatar').onclick = pick;
+    m.querySelector('#mPick').onclick = pick;
+    const del = m.querySelector('#mDel');
+    if (del) del.onclick = () => {
+      S.avatar = ''; save(); closeModal(); render();
+      toast('Foto removida', 'trash');
+    };
+    const saveName = () => {
+      S.name = inp.value.trim().slice(0,24) || 'Explorador';
+      save(); closeModal(); render();
+      toast('Perfil atualizado!', 'check');
+    };
+    m.querySelector('#nameOk').onclick = saveName;
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') saveName(); });
+  };
+}
+
+/* ================================================================
+   ROTEADOR SPA
+   ================================================================ */
+function go(view){
+  if ((S.view === 'lesson' || S.view === 'flash') && view !== S.view){
+    stopFlashTimer();
+    run = null;
+  }
+  S.view = view; save(); render();
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+function render(){
+  const app = $('#app');
+  hideSheet();
+  if (S.view !== 'flash'){
+    switch (S.view){
+      case 'learn':      app.innerHTML = viewLearn(); bindLearn(); break;
+      case 'challenges': app.innerHTML = viewChallenges(); bindChallenges(); break;
+      case 'ranking':    app.innerHTML = viewRanking(); break;
+      case 'profile':    app.innerHTML = viewProfile(); bindProfile(); break;
+      case 'lesson':
+        if (run){ renderRunScreen(); }
+        else { S.view = 'learn'; app.innerHTML = viewLearn(); bindLearn(); }
+        break;
+      default:           app.innerHTML = viewHome(); bindHome();
+    }
+  }
+  renderNav();
+  renderTop();
+}
+let lastW = innerWidth;
+addEventListener('resize', () => {
+  if (Math.abs(innerWidth - lastW) > 80){
+    lastW = innerWidth;
+    if (S.view === 'learn' || S.view === 'home') render();
+  }
+});
+
+/* ================================================================
+   INICIALIZAÇÃO
+   ================================================================ */
+load();
+regenHearts();
+ $('#avatarFile').addEventListener('change', e => {
+  setAvatarFromFile(e.target.files[0]);
+  e.target.value = '';
+});
+ $('#importFile').addEventListener('change', e => {
+  const f = e.target.files[0];
+  e.target.value = '';
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try{
+      const data = JSON.parse(ev.target.result);
+      if (typeof data.xp !== 'number' || typeof data.progress !== 'object') throw new Error('inválido');
+      S = Object.assign(deepClone(DEFAULT_STATE), data);
+      S.settings = Object.assign({ sound:true, fx:true }, S.settings || {});
+      S.flags = Object.assign({ perfect:false }, S.flags || {});
+      delete S.diff;
+      save(); render();
+      confetti(80);
+      toast('Progresso importado com sucesso!', 'check', true);
+    }catch(err){
+      toast('Arquivo de backup inválido', 'x');
+    }
+  };
+  r.readAsText(f);
+});
+
+/* Relógio dos corações */
+setInterval(() => {
+  const before = S.hearts;
+  regenHearts();
+  if (S.hearts > before){ renderTop(); toast('Um coração voltou!', 'heart'); }
+  const nhText = $('#modal-root #nhText');
+  if (nhText){
+    const mins = Math.max(1, Math.ceil((S.heartsAt + HEART_MS - Date.now()) / 60000));
+    nhText.innerHTML = `Você precisa de pelo menos 1 coração para jogar. O próximo coração volta em <b>~${mins} min</b> — ou encha todos agora.`;
+  }
+}, 30000);
+
+if (S.view === 'lesson' || S.view === 'flash') S.view = 'home';
+render();
+
+if (!storeGet(KEY + '_onb')){
+  const m = openModal(`
+    <div class="scene-center">${booScene('boasVindas')}</div>
+    <h2 style="text-align:center">Olá! Eu sou o Wazyboo</h2>
+    <p style="text-align:center">Antes de começar, escolha o fundo que você prefere — sua escolha fica salva.</p>
+    <div id="onbTheme">${themeChooseHTML()}</div>
+    <p style="margin-top:18px">Agora me diga: como devo te chamar?</p>
+    <input type="text" id="onbName" maxlength="24" placeholder="Seu nome (ou apelido)">
+    <button class="btn purple" id="onbGo">${icon('sparkle',16)} Começar a treinar</button>`, false);
+  bindThemeChoose('#onbTheme');
+  const inp = m.querySelector('#onbName'); setTimeout(() => inp.focus(), 300);
+  const done = () => {
+    S.name = inp.value.trim().slice(0,24) || 'Explorador';
+    save();
+    storeSet(KEY + '_onb', '1');
+    closeModal(); renderTop(); render();
+    confetti(100);
+    toast('Bem-vindo(a), ' + S.name + '!', 'sparkle', true);
+  };
+  m.querySelector('#onbGo').onclick = done;
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') done(); });
+}
+</script>
+</body>
+</html>
