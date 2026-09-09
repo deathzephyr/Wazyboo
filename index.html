@@ -1239,20 +1239,47 @@ function setAvatarFromFile(file){
    EFEITOS SONOROS — arquivos na MESMA PASTA do index.html
    ================================================================ */
 const SOUND_FILES = {
-  ok:   'correto.mp3',
-  bad:  'incorreto.mp3',
-  win:  'correto.mp3',
+  ok: 'correto.mp3',
+  bad: 'incorreto.mp3',
+  win: 'correto.mp3',
   coin: 'correto.mp3',
 };
 const SOUNDS = {};
-Object.keys(SOUND_FILES).forEach(k => {
-  try{ SOUNDS[k] = new Audio(SOUND_FILES[k]); SOUNDS[k].preload = 'auto'; }catch(e){}
+Object.keys(SOUND_FILES).forEach(type => {
+  const audio = new Audio(SOUND_FILES[type]);
+  audio.preload = 'auto';
+  audio.volume = 0.8;
+  audio.onerror = () => console.warn('Não foi possível carregar o som:', SOUND_FILES[type]);
+  SOUNDS[type] = audio;
 });
+let soundCtx = null;
+function playFallbackSound(type){
+  try{
+    if (!soundCtx) soundCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = soundCtx;
+    if (ctx.state === 'suspended') ctx.resume();
+    const now = ctx.currentTime;
+    const notes = type === 'bad' ? [220, 165] : [660, 880];
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const start = now + i * 0.1;
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(0.1, start + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.12);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + 0.14);
+    });
+  }catch(e){}
+}
 function playSound(type){
   if (!S.settings || !S.settings.sound) return;
-  const a = SOUNDS[type];
-  if (!a) return;
-  try{ a.currentTime = 0; a.play().catch(() => {}); }catch(e){}
+  const audio = SOUNDS[type] || SOUNDS.ok;
+  if (!audio) return;
+  audio.currentTime = 0;
+  audio.play().catch(() => playFallbackSound(type));
 }
 
 /* ================================================================
