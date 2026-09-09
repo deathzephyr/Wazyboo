@@ -433,16 +433,19 @@ h1.ptitle{font-weight:900;font-size:26px;letter-spacing:-.3px;margin-bottom:6px}
 
 /* ---------- Ajustes da trilha no mobile ---------- */
 @media (max-width:880px){
-  .path{padding-top:84px;overflow:visible;padding-left:12px;padding-right:12px}
+  .path{overflow:visible;padding-left:12px;padding-right:12px}
   .path .trail-banner,
   .path .uhead{
+    position:absolute;
+    margin:0;
+    left:0;
+    right:0;
+  }
+  .trail-banner.standalone{
     position:-webkit-sticky;
     position:sticky;
     top:calc(env(safe-area-inset-top, 0px) + 62px);
     z-index:80;
-    margin:0 auto;
-    left:0;
-    right:0;
   }
   .pnode{width:58px;height:58px}
   .pnode .nic{width:24px;height:24px}
