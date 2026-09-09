@@ -10,7 +10,8 @@
 <style>
 /* ============================================================
    WAZYBOO — marca ROXA · temas branco/preto · layout PC + celular
-   Trilha única sequencial, sem fases repetitivas · v1.8
+   Trilha única sequencial, 33 fases sem repetição · trilha mobile-safe
+   Estrelas conquistadas agora são preenchidas por dentro
    ============================================================ */
 :root{
   --p1:#8B5CF6; --p2:#6D28D9; --p3:#A78BFA;
@@ -40,6 +41,7 @@ html[data-theme="dark"]{
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{font-family:'Nunito',sans-serif;color:var(--ink);background:var(--bg);min-height:100dvh;transition:background .25s,color .25s}
+body.in-trail{overflow-x:hidden} /* trava o pan horizontal apenas na trilha */
 button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;background:none;color:inherit}
 input{font-family:'Nunito',sans-serif}
 svg{display:block}
@@ -217,11 +219,11 @@ h1.ptitle{font-weight:900;font-size:26px;letter-spacing:-.3px;margin-bottom:6px}
 .trail-banner .progress{background:rgba(0,0,0,.28);margin-top:8px;height:12px}
 .trail-banner .progress i{background:#fff}
 
-/* ---------- Trilha (Aprender) ---------- */
+/* ---------- Trilha (Aprender) — mobile-safe ---------- */
 .path{position:relative;margin:14px auto 0}
 .path svg.trail-line{position:absolute;left:0;top:0;pointer-events:none}
 .path .trail-banner{position:absolute;left:0;right:0;z-index:1}
-.uhead{position:absolute;left:-16px;right:-16px;height:56px;border-radius:16px;color:#fff;
+.uhead{position:absolute;left:0;right:0;height:56px;border-radius:16px;color:#fff;
   display:flex;align-items:center;justify-content:space-between;padding:0 18px;z-index:1}
 .uhead b{font-weight:900;font-size:15px;letter-spacing:.6px;text-transform:uppercase}
 .uhead small{font-weight:800;font-size:11px;opacity:.9;letter-spacing:.5px;text-transform:uppercase}
@@ -229,6 +231,7 @@ h1.ptitle{font-weight:900;font-size:26px;letter-spacing:-.3px;margin-bottom:6px}
   position:absolute;width:70px;height:70px;border-radius:50%;z-index:2;
   display:flex;align-items:center;justify-content:center;color:#fff;
   transition:transform .1s, box-shadow .1s;user-select:none;cursor:pointer;
+  touch-action:pan-y pinch-zoom; /* só desliza a página na vertical */
 }
 .pnode .nic{display:flex;align-items:center;justify-content:center;width:28px;height:28px}
 .pnode .nic svg{display:block;transform:none}
@@ -408,6 +411,7 @@ h1.ptitle{font-weight:900;font-size:26px;letter-spacing:-.3px;margin-bottom:6px}
 .stars-row{display:flex;gap:8px;justify-content:center;margin:12px 0 4px}
 .stars-row .st{width:48px;height:48px;color:var(--line);transform:scale(0)}
 .stars-row .st.on{color:var(--y1)}
+.stars-row .st.on svg{filter:drop-shadow(0 3px 0 rgba(0,0,0,.14))}
 .stars-row .st:nth-child(1){animation:starin .5s .25s cubic-bezier(.3,1.8,.5,1) both}
 .stars-row .st:nth-child(2){animation:starin .5s .45s cubic-bezier(.3,1.8,.5,1) both}
 .stars-row .st:nth-child(3){animation:starin .5s .65s cubic-bezier(.3,1.8,.5,1) both}
@@ -450,17 +454,13 @@ h1.ptitle{font-weight:900;font-size:26px;letter-spacing:-.3px;margin-bottom:6px}
 <script>
 "use strict";
 /* ================================================================
-   WAZYBOO v1.8 — trilha única sequencial, 33 fases sem repetição
-   Fases removidas por redundância:
-   · Padrões duplos (repetia o 1º padrão)          · Padrões do dia a dia (conteúdo fraco)
-   · Sequências de formas (repetia padrões visuais)· Saltos alternados (variação da regra)
-   · Agrupando ideias (o tipo "associação" foi     · Pistas simples (Quem é quem cobre)
-     preservado dentro de Comparações)             · Comparando (repetia Ordem de chegada)
-   Todos os demais bugs corrigidos na v1.7 continuam resolvidos.
+   WAZYBOO v1.10 — trilha única sequencial, 33 fases sem repetição
+   Estrelas conquistadas agora são PREENCHIDAS por dentro; as não
+   conquistadas ficam vazias (só contorno).
    ================================================================ */
 
 const NOME_APP = 'Wazyboo';
-const APP_VERSION = '1.8';
+const APP_VERSION = '1.10';
 
 const IMG = {
   logo: 'logo.png',
@@ -557,6 +557,7 @@ const ICONS = {
   flame:'<path d="M12 22c4 0 7-2.5 7-6.5 0-3-2-5-3.5-7C14 6 13 4 13 2c-3 2-4 5-4 7-1-.8-1.5-2-1.5-3C5.5 8 5 10.5 5 13.5 5 19.5 8 22 12 22z"/>',
   coin:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>',
   star:'<polygon points="12 2 15 8.5 22 9.3 17 14 18.3 21 12 17.6 5.7 21 7 14 2 9.3 9 8.5"/>',
+  starFull:'<polygon points="12 2 15 8.5 22 9.3 17 14 18.3 21 12 17.6 5.7 21 7 14 2 9.3 9 8.5" fill="currentColor"/>',
   check:'<path d="M4 12l5 5L20 7"/>',
   x:'<path d="M6 6l12 12M18 6L6 18"/>',
   bulb:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.7 1 1.5 1 2.5h6c0-1 .2-1.8 1-2.5A6 6 0 0 0 12 3z"/>',
@@ -915,7 +916,7 @@ const LESSONS = [
 ]},
 ];
 
-/* ---------- Conquistas (marcos recalibrados para 33 fases) ---------- */
+/* ---------- Conquistas (marcos calibrados para 33 fases) ---------- */
 const doneCount = () => Object.keys(S.progress).length;
 const ACHIEVEMENTS = [
   { id:'first',   name:'Primeiro passo', desc:'Complete sua primeira lição', ico:'flag',   cond:()=>doneCount()>=1 },
@@ -1556,7 +1557,7 @@ function finishRun(){
       <div class="scene-center" style="margin-bottom:2px">${booScene(scene)}</div>
       <h1 class="ptitle" style="margin-top:4px">${titles[run.mode] || 'Concluído!'}</h1>
       <p class="sub">${esc(run.lesson.title)} <span class="diff-tag" style="background:${df.col}">${df.name}</span> · ${acc}% de acerto</p>
-      <div class="stars-row">${[1,2,3].map(i => `<span class="st ${i <= stars ? 'on' : ''}">${icon('star',44)}</span>`).join('')}</div>
+      <div class="stars-row">${[1,2,3].map(i => `<span class="st ${i <= stars ? 'on' : ''}">${icon(i <= stars ? 'starFull' : 'star',44)}</span>`).join('')}</div>
     </div>
     <div class="res-stats">
       <div class="stat-box pb"><div class="v">+${run.xp}</div><div class="k">XP total</div></div>
@@ -2002,12 +2003,16 @@ function openLessonOverview(lesson){
   };
 }
 
-/* ---------- APRENDER — trilha única, sem repetição ---------- */
+/* ---------- APRENDER — trilha única, mobile-safe ---------- */
 function viewLearn(){
   const wide = window.matchMedia('(min-width:1024px)').matches;
-  const PW = wide ? 480 : 340;
-  const OFF = wide ? [0,-60,-100,-60,0,60,100,60] : [0,-50,-85,-50,0,50,85,50];
-  const STEP = 116, HEADH = 56, HEADGAP = 36, BANH = 90, PAD = 70, C = PW / 2;
+  /* offsets moderados: TODOS os nós ficam sempre DENTRO da largura da
+     trilha — nada de nó escapando da tela e disparando o zoom-out */
+  const PW   = wide ? 480 : 340;
+  const NODE = wide ? 70  : 58;   /* no celular as bolinhas ficam maiores, fáceis de tocar */
+  const OFF  = wide ? [0,-60,-100,-60,0,60,100,60] : [0,-50,-60,-50,0,50,60,50];
+  const STEP = wide ? 120 : 136;  /* no celular as bolinhas ficam mais afastadas verticalmente */
+  const HEADH = 56, HEADGAP = 34, BANH = 90, PAD = 76, C = PW / 2;
   const doneTotal = doneCount();
   const cd = currentDiff();
   let y = PAD, rowsHtml = '', pts = [];
@@ -2034,10 +2039,10 @@ function viewLearn(){
     }
     const st = lessonState(l);
     const x = C + OFF[i % OFF.length];
-    pts.push({ x, y: y + 35, st });
+    pts.push({ x, y: y + NODE/2, st });
     const ic = st === 'locked' ? 'lock' : st === 'done' ? (S.progress[l.id].stars >= 3 ? 'crown' : 'check') : 'star';
     rowsHtml += `<button class="pnode ${st}${st==='done' && S.progress[l.id].stars >= 3 ? ' legend' : ''}"
-      data-l="${l.id}" style="left:${x-35}px;top:${y}px"
+      data-l="${l.id}" style="left:${x - NODE/2}px;top:${y}px;width:${NODE}px;height:${NODE}px"
       data-tip="Fase ${i+1} · ${esc(mod.title)} · ${esc(l.title)}"><span class="nic">${icon(ic,26)}</span></button>`;
     y += STEP;
   });
@@ -2048,7 +2053,7 @@ function viewLearn(){
     d += ` C ${pts[k-1].x} ${my}, ${p.x} ${my}, ${p.x} ${p.y}`;
   });
   const curIdx = pts.findIndex(p => p.st === 'open');
-  const bub = curIdx >= 0 ? `<div class="start-bub" style="left:${pts[curIdx].x}px;top:${pts[curIdx].y - 70}px">FASE ${curIdx+1}</div>` : '';
+  const bub = curIdx >= 0 ? `<div class="start-bub" style="left:${pts[curIdx].x}px;top:${pts[curIdx].y - 74}px">FASE ${curIdx+1}</div>` : '';
   const pctAll = Math.round(doneTotal / LESSONS.length * 100);
   return `<div class="view-enter">
     <h1 class="ptitle">${S.name ? 'Vamos, ' + esc(S.name) + '!' : 'Vamos aprender!'}</h1>
@@ -2061,8 +2066,8 @@ function viewLearn(){
         <div class="progress"><i style="width:${pctAll}%"></i></div>
       </div>
     </div>
-    <div class="path" style="height:${y}px;width:${PW}px">
-      <svg class="trail-line" width="${PW}" height="${y}" viewBox="0 0 ${PW} ${y}" fill="none">
+    <div class="path" style="height:${y + 40}px;width:${PW}px">
+      <svg class="trail-line" width="${PW}" height="${y + 40}" viewBox="0 0 ${PW} ${y + 40}" fill="none">
         <path d="${d}" stroke="var(--line)" stroke-width="13" stroke-linecap="round"/>
       </svg>
       ${rowsHtml}${bub}
@@ -2258,6 +2263,8 @@ function go(view){
 function render(){
   const app = $('#app');
   hideSheet();
+  /* trava o scroll horizontal apenas quando a trilha está na tela */
+  document.body.classList.toggle('in-trail', S.view === 'learn');
   if (S.view !== 'flash'){
     switch (S.view){
       case 'learn':      app.innerHTML = viewLearn(); bindLearn(); break;
