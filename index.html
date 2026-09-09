@@ -430,6 +430,23 @@ h1.ptitle{font-weight:900;font-size:26px;letter-spacing:-.3px;margin-bottom:6px}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:90}
 .float-xp{position:fixed;z-index:85;font-weight:900;color:var(--selT);font-size:16px;pointer-events:none;animation:fxp 1.1s ease-out both}
 @keyframes fxp{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}100%{opacity:0;transform:translateY(-40px)}}
+
+/* ---------- Ajustes da trilha no mobile ---------- */
+@media (max-width:880px){
+  .path{padding-top:84px;overflow:visible;padding-left:12px;padding-right:12px}
+  .path .trail-banner,
+  .path .uhead{
+    position:-webkit-sticky;
+    position:sticky;
+    top:calc(env(safe-area-inset-top, 0px) + 62px);
+    z-index:80;
+    margin:0 auto;
+    left:0;
+    right:0;
+  }
+  .pnode{width:58px;height:58px}
+  .pnode .nic{width:24px;height:24px}
+}
 </style>
 </head>
 <body>
